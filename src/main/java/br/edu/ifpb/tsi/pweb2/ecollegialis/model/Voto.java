@@ -13,8 +13,8 @@ public class Voto {
     private TIPOVOTO tipoVoto;
     private Boolean ausente;
 
-    public Voto(int id, TIPOVOTO tipoVoto, Boolean ausente) {
-        this.id = id;
+    public Voto(TIPOVOTO tipoVoto, Boolean ausente) {
+        //this.id = id;
         this.tipoVoto = tipoVoto;
         this.ausente = ausente;
     }

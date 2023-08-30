@@ -6,5 +6,12 @@ public class Aluno extends Usuario{
         super(id, nome, email, matricula, phone, admin);
         this.setAdmin(false);
     }
+    public Processo criarProcesso(String assunto){
+        Processo processo = new Processo(assunto);
+        // pegar no banco o professor coordenador e chamar a função professor.receberProcesso(processo) passando 
+        return processo;
+    }
+
+    
 
 }

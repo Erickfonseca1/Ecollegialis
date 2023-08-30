@@ -4,8 +4,9 @@ public class Assunto {
     private int id;
     private String nome;
 
-    public Assunto(int id, String nome) {
-        this.id = id;
+    public Assunto(String nome) {
+        //this.id = id;
+        //auto gerado pelo banco futuramente
         this.nome = nome;
     }
 

@@ -1,19 +1,30 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 public class Reuniao {
     private int id;
     private Date dataReuniao;
     private StatusReuniao status;
     private String ata;
+    private ArrayList<Processo> processos;
 
-    public Reuniao(int id, Date dataReuniao, StatusReuniao status, String ata) {
-        this.id = id;
-        this.dataReuniao = dataReuniao;
-        this.status = status;
-        this.ata = ata;
+    public ArrayList<Processo> getProcessos() {
+        return processos;
     }
+
+    public void setProcessos(ArrayList<Processo> processos) {
+        this.processos = processos;
+    }
+
+    public Reuniao(Date dataReuniao, String ata, ArrayList<Processo> processos) {
+        this.dataReuniao = dataReuniao;
+        this.ata = ata;
+        this.processos = processos;
+    }
+
+
 
     public int getId() {
         return this.id;
