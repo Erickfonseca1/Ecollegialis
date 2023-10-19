@@ -1,41 +1,27 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
-// criar enum do tipo de voto
-// COM_RELATOR, DIVERGENTE
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import lombok.Data;
 
-enum TIPOVOTO {
-    COM_RELATOR, DIVERGENTE
-}
-
-
+@Entity
+@Data
 public class Voto {
-    private int id;
-    private TIPOVOTO tipoVoto;
-    private Boolean ausente;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    public Voto(int id, TIPOVOTO tipoVoto, Boolean ausente) {
-        this.id = id;
-        this.tipoVoto = tipoVoto;
-        this.ausente = ausente;
-    }
+    @Enumerated(EnumType.ORDINAL)
+    private TipoVoto tipoVoto;
+    private boolean ausente;
 
-    public int getId() {
-        return id;
-    }
+    @ManyToOne
+    private Processo processo;
+    private String justificativa;
 
-    public TIPOVOTO getTipoVoto() {
-        return tipoVoto;
-    }
-
-    public Boolean getAusente() {
-        return ausente;
-    }
-
-    public void setTipoVoto(TIPOVOTO tipoVoto) {
-        this.tipoVoto = tipoVoto;
-    }
-
-    public void setAusente(Boolean ausente) {
-        this.ausente = ausente;
-    }
 }

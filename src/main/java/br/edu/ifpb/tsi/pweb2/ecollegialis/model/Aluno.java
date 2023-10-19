@@ -1,10 +1,27 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
-public class Aluno extends Usuario{
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-    public Aluno(int id, String nome, String email, String matricula, String phone , Boolean admin) {
-        super(id, nome, email, matricula, phone, admin);
-        this.setAdmin(false);
+import java.util.List;
+
+@EqualsAndHashCode(callSuper = true)
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+
+
+public class Aluno extends Usuario {
+    @OneToMany(mappedBy = "interessado")
+    private List<Processo> processos;
+
+    public void addProcesso(Processo processo) {
+        this.processos.add(processo);
     }
 
 }

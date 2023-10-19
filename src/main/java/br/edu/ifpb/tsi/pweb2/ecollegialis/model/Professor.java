@@ -1,20 +1,31 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+
+@EqualsAndHashCode(callSuper = true)
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
 public class Professor extends Usuario{
-    private Boolean coordenador;
-
-    public Professor(int id, String nome, String email, String matricula, String phone , Boolean admin) {
-        super(id,nome, email, matricula, phone, admin);
-        this.coordenador = false;
-        this.setAdmin(false);
-    }
     
-    public Boolean getCoordenador() {
-        return coordenador;
-    }
+    @ManyToOne
+    @JoinColumn(name="colegiado_id")
+    private Colegiado colegiado;
+    private boolean coordenador;
 
-    public void setCoordenador(Boolean coordenador) {
-        this.coordenador = coordenador;
-    }
+    @OneToMany(mappedBy = "professor")
+    private List<Voto> votos;
+
+    @OneToMany(mappedBy = "relator")
+    private List<Processo> processos;
 
 }
+
