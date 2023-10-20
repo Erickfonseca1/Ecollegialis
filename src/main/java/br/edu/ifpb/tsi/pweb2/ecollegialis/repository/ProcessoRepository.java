@@ -13,6 +13,7 @@ public interface ProcessoRepository extends JpaRepository<Processo, Long> {
     public List<Processo> findByAssuntoAndInteressado(Long idAssunto, Long idInteressado);
     public List<Processo> findByInteressadoAndStatus(Long idInteressado, StatusEnum status);
     public Processo findByNumero(String numero); 
+    public List<Processo> findAllByRelatorId(Long idRelator);
 
     @Query("SELECT p FROM Processo p WHERE p.status = 'EM_CURSO' OR p.status = 'EM_VOTACAO' OR p.status = 'EM_ESPERA' ORDER BY p.status ASC")
     public List<Processo> findProcessosEmCurso();
