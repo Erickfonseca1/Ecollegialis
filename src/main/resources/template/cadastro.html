@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/cadastroStyle.css">
+    <title>Cadastro</title>
+</head>
+<body>
+    <div id="content"></div>
+
+    <script>
+        // Carrega o conteúdo de default.html e insere no corpo da página
+        window.onload = function () {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "default.html", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("content").innerHTML = xhr.responseText;
+                    // Adicione aqui o conteúdo do formulário de cadastro
+                    var formCadastro = document.createElement("div");
+                    formCadastro.className = "container d-flex justify-content-center mt-5";
+                    formCadastro.innerHTML = `
+                    <form style="min-width: 650px;" class="p-4 border border-dark">
+                        <h1 class="h3 mb-4 fw-normal">Please sign up</h1>
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="floatingNome" placeholder="Marcos Paulo">
+                            <label for="floatingNome">Name</label>
+                        </div>
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="floatingMatricula" placeholder="20230001111">
+                            <label for="floatingMatricula">Matrícula</label>
+                        </div>
+                        <div class="form-floating">
+                            <input type="email" class="form-control" id="floatingEmail" placeholder="name@example.com">
+                            <label for="floatingEmail">Email address</label>
+                        </div>
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                            <label for="floatingPassword">Password</label>
+                        </div>
+                        <button class="btn btn-primary w-100 py-2" type="submit">Sign up</button>
+                    </form>
+                    `;
+                    document.getElementById("content").appendChild(formCadastro);
+                }
+            };
+            xhr.send();
+        };
+    </script>
+</body>
+</html>
