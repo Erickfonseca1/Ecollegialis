@@ -55,12 +55,41 @@ public class AlunoService {
         return processoRepository.findByNumero(numeroProcesso);
     }
 
+    public List<Processo> consultaProcessos(){
+        return processoRepository.findAllByInteressadoId(52L);
+    }
+
     public List<Processo> consultaProcessosPorAssunto(Long idInteressado){
-        return processoRepository.findByInteressado(idInteressado);
+        return processoRepository.findAllByInteressadoId(idInteressado);
     }
 
     public List<Processo> consultaProcessosPorStatus(Long idInteressado, StatusEnum status) {
-        return processoRepository.findByInteressadoAndStatus(idInteressado, status);
+        return processoRepository.findAllByInteressadoIdAndStatus(idInteressado, status);
+    }
+
+    public List<Processo> consultaProcessosPorStatus(StatusEnum status) {
+        return processoRepository.findAllByInteressadoIdAndStatus(52L, status);
+    }
+
+    public List<Processo> filtrarProcesso(String filtro, String order) {
+        try {
+            Long assuntoId = Long.parseLong(filtro);
+            if (order == null) {
+                return consultaProcessosPorAssunto(assuntoId);
+            }
+            else {
+                return consultaProcessosPorAssunto(assuntoId);
+            }
+
+        } catch (NumberFormatException e) {
+            StatusEnum filtroEnum = StatusEnum.valueOf(filtro);
+            if (order == null) {
+                return consultaProcessosPorStatus(filtroEnum);
+            }
+            else {
+                return consultaProcessosPorStatus(filtroEnum);
+            }
+        }
     }
 
     @Transactional
