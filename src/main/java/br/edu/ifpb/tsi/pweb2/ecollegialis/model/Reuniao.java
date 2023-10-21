@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.Date;
 import java.util.List;
 
@@ -16,22 +17,28 @@ public class Reuniao {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
     private Date dataReuniao;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private StatusReuniao status;
 
     private byte[] ata;
 
-    @OneToMany()
+    @OneToMany
     @JoinColumn(name = "reuniao_id")
     private List<Processo> processos;
 
     @ManyToOne
     private Colegiado colegiado;
 
+    public Reuniao(Date dataReuniao, StatusReuniao status, Colegiado colegiado) {
+        this.dataReuniao = dataReuniao;
+        this.status = status;
+        this.colegiado = colegiado;
+    }
+
     public void addProcesso(Processo processo) {
         this.processos.add(processo);
-
     }
 }
