@@ -26,6 +26,5 @@ public class Professor extends Usuario{
 
     @OneToMany(mappedBy = "relator")
     private List<Processo> processos;
-
 }
 
