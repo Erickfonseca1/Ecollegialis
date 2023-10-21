@@ -3,35 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tela com Borda Preta</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .black-border-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 2vh; 
-        }
-
-        .black-border {
-            width: 95%; /* Largura da tela */
-            height: 80vh; /* 80% da altura da tela */
-            border: 2px solid black; /* Borda preta de 2 pixels */
-            box-sizing: border-box; /* A borda é incluída no tamanho total */
-        }
-    </style>
+    <link rel="stylesheet" href="../static/css/bordaStyle.css">
+    <title>HomePage</title>
 </head>
 <body>
     <div id="content"></div>
 
     <script>
-        // Carrega o conteúdo de default.html e insere no corpo da página
         window.onload = function () {
             var xhr = new XMLHttpRequest();
             xhr.open("GET", "default.html", true);

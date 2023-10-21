@@ -1,0 +1,26 @@
+body {
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.black-border-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2vh; 
+}
+
+.black-border {
+    width: 95%; 
+    height: 80vh; 
+    border: 2px solid black; 
+    box-sizing: border-box; 
+    background-color: #1b1e23 ;
+}
+
+.background-dark {
+    background-color: #1b1e23;
+    color: white;
+}
