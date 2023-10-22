@@ -1,6 +1,8 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.service;
 
 
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Aluno;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Curso;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Professor;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.*;
 import jakarta.transaction.Transactional;
@@ -53,5 +55,51 @@ public class AdminService {
 
     public List<Professor> getAllTeachers() {
         return professorRepository.findAll();
+    }
+
+    public Professor getTeacher(Long id){
+        return professorRepository.findById(id).orElse(null);
+    }
+
+    @Transactional
+    public void registerStudent(Aluno aluno){
+        alunoRepository.save(aluno);
+    }
+
+    @Transactional
+    public void removeStudent(Long id) {
+        alunoRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void updateStudent(Aluno aluno) {
+        alunoRepository.save(aluno);
+    }
+
+    public List<Aluno> getAllStudents() {
+        return alunoRepository.findAll();
+    }
+
+    public Aluno getStudent(Long id) {
+        return alunoRepository.findById(id).orElse(null);
+    }
+
+    @Transactional
+    public void AddCourse(Curso curso) {
+        cursoRepository.save(curso);
+    }
+
+    @Transactional
+    public void removeCourse(Long id){
+        cursoRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void updateCourse(Curso curso) {
+        cursoRepository.save(curso);
+    }
+
+    public List<Curso> getAllCourses() {
+        return cursoRepository.findAll();
     }
 }
