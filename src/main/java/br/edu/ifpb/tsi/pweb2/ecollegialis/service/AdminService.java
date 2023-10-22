@@ -7,6 +7,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AdminService {
     private final ProfessorRepository professorRepository;
@@ -32,8 +34,24 @@ public class AdminService {
 
     @Transactional
     public void registerTeacher(Professor professor) {
-        if (professor.isCoordenador()) {
+        //TODO verificar se o professor a ser salvo é coordenador,
+        // se for, remover esse status do coordenador atual e atribuir
+        // ao professor que está sendo registrado.
 
-        }
+        professorRepository.save(professor);
+    }
+
+    @Transactional
+    public void removeTeacher(Long id) {
+        professorRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void updateTeacher(Professor professor) {
+        professorRepository.save(professor);
+    }
+
+    public List<Professor> getAllTeachers() {
+        return professorRepository.findAll();
     }
 }
