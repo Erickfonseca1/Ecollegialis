@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/bordaStyle.css">
+    <title>HomePage</title>
+</head>
+<body>
+    <div id="content"></div>
+
+    <script>
+        window.onload = function () {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "default.html", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("content").innerHTML = xhr.responseText;
+
+                    // Cria o contêiner e a borda preta de 80% da tela centralizados
+                    var blackBorderContainer = document.createElement("div");
+                    blackBorderContainer.className = "black-border-container";
+                    var blackBorder = document.createElement("div");
+                    blackBorder.className = "black-border";
+                    blackBorderContainer.appendChild(blackBorder);
+                    document.body.appendChild(blackBorderContainer);
+                }
+            };
+            xhr.send();
+        };
+    </script>
+</body>
+</html>
