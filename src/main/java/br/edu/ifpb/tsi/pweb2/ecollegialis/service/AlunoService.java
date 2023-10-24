@@ -35,9 +35,8 @@ public class AlunoService {
 
         processo.setStatus(StatusProcesso.CRIADO);
         processo.setTipoDecisao(null);
-        processo.setInteressado(aluno);
+        processo.setAluno(aluno);
         processo.setDataRecepcao(dataRecepcao);
-
         processoRepository.save(processo);
     }
 
@@ -55,39 +54,39 @@ public class AlunoService {
         return processoRepository.findByNumero(numeroProcesso);
     }
 
-    public List<Processo> consultaProcessos(){
-        return processoRepository.findAllByInteressadoId(52L);
+    public List<Processo> consultaProcessosPorStatus(Long id, StatusProcesso status) {
+        return processoRepository.findByIdAndStatus(id, status);
     }
 
-    public List<Processo> consultaProcessosPorAssunto(Long idInteressado){
-        return processoRepository.findAllByInteressadoId(idInteressado);
+    public List<Processo> consultaProcessosPorAssunto(Long idAluno, Long id){
+        return processoRepository.findAllByInteressadoIdAndAssuntoId(idAluno, id);
     }
 
-    public List<Processo> consultaProcessosPorStatus(Long idInteressado, StatusProcesso status) {
-        return processoRepository.findAllByInteressadoIdAndStatus(idInteressado, status);
+    public List<Processo> consultaProcessos(Long id){
+        return processoRepository.findAllById(id);
     }
 
-    public List<Processo> consultaProcessosPorStatus(StatusProcesso status) {
-        return processoRepository.findAllByInteressadoIdAndStatus(52L, status);
-    }
+    public List<Processo> filtrarProcesso(Long id, String filtro, String order) {
+        if (filtro.isBlank()) {
+            return consultaProcessos(id);
 
-    public List<Processo> filtrarProcesso(String filtro, String order) {
+        }
         try {
             Long assuntoId = Long.parseLong(filtro);
-            if (order == null) {
-                return consultaProcessosPorAssunto(assuntoId);
+            if (order.isBlank()) {
+                return consultaProcessosPorAssunto(id, assuntoId);
             }
             else {
-                return consultaProcessosPorAssunto(assuntoId);
+                return consultaProcessosPorAssunto(id, assuntoId);
             }
 
         } catch (NumberFormatException e) {
             StatusProcesso filtroEnum = StatusProcesso.valueOf(filtro);
-            if (order == null) {
-                return consultaProcessosPorStatus(filtroEnum);
+            if (order.isBlank()) {
+                return consultaProcessosPorStatus(id, filtroEnum);
             }
             else {
-                return consultaProcessosPorStatus(filtroEnum);
+                return consultaProcessosPorStatus(id, filtroEnum);
             }
         }
     }

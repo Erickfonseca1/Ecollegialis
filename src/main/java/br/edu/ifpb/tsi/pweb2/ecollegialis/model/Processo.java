@@ -18,10 +18,10 @@ public class Processo {
     private String numero;
     private Date dataRecepcao;
     private Date dataDistribuicao;
-    private Date dataParecer;
-    private byte[] parecer;
     private String textoRelator;
+    private Date dataParecer;
     private String textoAluno;
+    private byte[] parecer;
 
     @Enumerated(EnumType.STRING)
     private StatusProcesso status;
@@ -39,7 +39,7 @@ public class Processo {
 
     @ManyToOne
     @JoinColumn(name = "aluno_id")
-    private Aluno interessado;
+    private Aluno aluno;
 
     private boolean emPauta = false;
 
@@ -49,6 +49,10 @@ public class Processo {
 
     @ElementCollection
     private List<byte[]> anexos;
+
+    public TipoDecisao getTipoDecisao() {
+        return this.decisaoRelator;
+    }
 
     public void addAnexos(byte[] anexo) {
         this.anexos.add(anexo);
@@ -61,10 +65,5 @@ public class Processo {
     public void setTipoDecisao(TipoDecisao decisaoRelator) {
         this.decisaoRelator = decisaoRelator;
     }
-
-    public TipoDecisao getTipoDecisao() {
-        return this.decisaoRelator;
-    }
-
 
 }
