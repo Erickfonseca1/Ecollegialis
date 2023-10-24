@@ -45,7 +45,7 @@ public class Processo {
 
     @ManyToOne
     @JoinColumn(name = "professor_id")
-    private Professor relator;
+    private Professor professor;
 
     @ElementCollection
     private List<byte[]> anexos;

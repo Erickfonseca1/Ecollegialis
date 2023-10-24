@@ -2,6 +2,7 @@ package br.edu.ifpb.tsi.pweb2.ecollegialis.service;
 
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Aluno;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Processo;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Professor;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.StatusProcesso;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.AlunoRepository;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ProcessoRepository;
@@ -22,14 +23,15 @@ public class AlunoService {
     @Autowired
     private ProcessoRepository processoRepository;
 
+    // REQ 1 - Cadastrar novo processo
     @Transactional
-    public void cadastrarNovoProcesso(Processo processo) {
+    public void cadastrarNovoProcesso(Processo processo, Long idAluno) {
         String numeroProcesso = gerarNumeroProcesso();
         processo.setNumero(numeroProcesso);
 
         Date dataRecepcao = new Date();
 
-        Aluno aluno = alunoRepository.findById(52L).orElseThrow(() -> new IllegalArgumentException("Aluno não encontrado"));
+        Aluno aluno = alunoRepository.findById(idAluno).orElseThrow(() -> new IllegalArgumentException("Aluno não encontrado"));
 
         aluno.addProcesso(processo);
 
@@ -40,7 +42,6 @@ public class AlunoService {
         processoRepository.save(processo);
     }
 
-    // função que gera um número de processo aleatório
     private String gerarNumeroProcesso() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
         String dataFormatada = dateFormat.format(new Date());
@@ -51,30 +52,46 @@ public class AlunoService {
         return "P" + numeroProcesso;
     }
 
-    // função que consulta todos os processos de um aluno
-    public List<Processo> consultaProcessos(Long id){
-        return processoRepository.findAllById(id);
-    }
-
-    // função que consulta um processo pelo seu número
-    public Processo consultarProcessoPorNumero(String numeroProcesso) {
-        return processoRepository.findByNumero(numeroProcesso);
-    }
-
-    // função que consulta os processos de um aluno que possuem um determinado status
-    public List<Processo> consultaProcessosPorStatus(Long idAluno, StatusProcesso status) {
-        return processoRepository.findByIdAndStatus(idAluno, status);
-    }
-
-    // função que consulta os processos de um aluno que possuem um determinado assunto
-    public List<Processo> consultaProcessosPorAssunto(Long idAluno, Long id){
-        return processoRepository.findAllByInteressadoIdAndAssuntoId(idAluno, id);
-    }
-
     @Transactional
     public void adicionarAnexo(Processo processo, byte[] anexo) {
         processo.addAnexos(anexo);
         processoRepository.save(processo);
     }
 
+    //CRUDS
+
+    public List<Aluno> listarAlunos() {
+        return alunoRepository.findAll();
+    }
+
+    public Aluno buscarAlunosPorId(Long id) {
+        return alunoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Aluno não encontrado"));
+    }
+
+    @Transactional
+    public void criarAluno(Aluno aluno) {
+        alunoRepository.save(aluno);
+    }
+
+    @Transactional
+    public void removerAluno(Long id) {
+        Aluno aluno = alunoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Professor não encontrado"));
+        alunoRepository.delete(aluno);
+    }
+
+    @Transactional
+    public Aluno atualizarAluno(Aluno alunoAtualizado) {
+        Aluno alunoExistente = alunoRepository.findById(alunoAtualizado.getId()).orElse(null);
+        if (alunoExistente == null) {
+            throw new IllegalArgumentException("Aluno não encontrado");
+        }
+        alunoExistente.setNome(alunoAtualizado.getNome());
+        alunoExistente.setCurso(alunoAtualizado.getCurso());
+        alunoExistente.setFone(alunoAtualizado.getFone());
+        alunoExistente.setMatricula(alunoAtualizado.getMatricula());
+        alunoExistente.setLogin(alunoAtualizado.getLogin());
+        alunoExistente.setSenha(alunoAtualizado.getSenha());
+        alunoExistente.setAdmin(alunoAtualizado.isAdmin());
+        return alunoRepository.save(alunoExistente);
+    }
 }

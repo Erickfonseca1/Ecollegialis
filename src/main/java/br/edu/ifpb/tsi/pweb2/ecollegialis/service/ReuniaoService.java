@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 public class ReuniaoService {
-    
+
     @Autowired
     ReuniaoRepository reuniaoRepository;
 
@@ -25,57 +25,31 @@ public class ReuniaoService {
     ProcessoRepository processoRepository;
 
 
-    public List<Reuniao> listarReuniao(){
+    public List<Reuniao> listarReunioes() {
         return reuniaoRepository.findAll();
     }
 
-    public Reuniao buscarPorId(Long id) {
-        return reuniaoRepository.findById(id).get();
+    public Reuniao buscarReuniaoPorId(Long id) {
+        return reuniaoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Reuniao não encontrada"));
     }
 
-    public Reuniao criarReuniao(){
-        return this.reuniaoRepository.save(new Reuniao());
+    public Reuniao criarReuniao(Reuniao reuniao) {
+        return reuniaoRepository.save(reuniao);
     }
 
-    public void deletarReuniao(Reuniao reuniao){
-        if (reuniao.getId() != null && this.reuniaoRepository.existsById(reuniao.getId())) {
-            this.reuniaoRepository.delete(reuniao);
-        } else {
-            throw new RuntimeException("A reunião não existe");
-        }
+    public void deletarReuniao(Long id) {
+        Reuniao reuniao = reuniaoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Reuniao não encontrada"));
+        reuniaoRepository.delete(reuniao);
     }
 
-    public Reuniao alteraReuniao(Reuniao reuniao){
-        if (reuniao.getId() != null && this.reuniaoRepository.existsById(reuniao.getId())) {
-            return this.reuniaoRepository.save(reuniao);
-        } else {
-            throw new RuntimeException("A reunião não existe");
-        }
-    }
-    
-    public StatusReuniao buscarStatus(Long id) {
-        Reuniao reuniao = reuniaoRepository.findById(id).get();
-        return reuniao.getStatus();
+    public Reuniao atualizarReuniao(Reuniao reuniaoAtualizada, Long id) {
+        Reuniao reuniao = reuniaoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Reuniao não encontrada"));
+        reuniao.setDataReuniao(reuniaoAtualizada.getDataReuniao());
+        reuniao.setStatus(reuniaoAtualizada.getStatus());
+        reuniao.setAta(reuniaoAtualizada.getAta());
+        reuniao.setProcessos(reuniaoAtualizada.getProcessos());
+        reuniao.setColegiado(reuniaoAtualizada.getColegiado());
+        return reuniaoRepository.save(reuniao);
     }
 
-    public void adicionarProcesso(Long idReuniao, Long idProcesso) {
-        Reuniao reuniao = reuniaoRepository.findById(idReuniao).get();
-        reuniao.getProcessos().add(processoRepository.findById(idProcesso).get());
-        reuniaoRepository.save(reuniao);
-    }
-
-    public void adicionarColegiado(Long idReuniao, Long idColegiado) {
-        Reuniao reuniao = reuniaoRepository.findById(idReuniao).orElseThrow(() -> new RuntimeException("A reunião não existe"));
-        Colegiado colegiado = colegiadoRepository.findById(idColegiado).orElseThrow(() -> new RuntimeException("O colegiado não existe"));
-    
-        reuniao.setColegiado(colegiado);
-        reuniaoRepository.save(reuniao);
-    }
-
-    public void removerProcesso(Long idReuniao, Long idProcesso) {
-        Reuniao reuniao = reuniaoRepository.findById(idReuniao).get();
-        reuniao.getProcessos().remove(processoRepository.findById(idProcesso).get());
-        reuniaoRepository.save(reuniao);
-    }
-    
 }

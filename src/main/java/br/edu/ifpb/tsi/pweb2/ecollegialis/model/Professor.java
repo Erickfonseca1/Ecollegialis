@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 public class Professor extends Usuario{
-    
+
     @ManyToOne
     @JoinColumn(name="colegiado_id")
     private Colegiado colegiado;
@@ -24,7 +24,6 @@ public class Professor extends Usuario{
     @OneToMany(mappedBy = "professor")
     private List<Voto> votos;
 
-    @OneToMany(mappedBy = "relator")
+    @OneToMany(mappedBy = "professor")
     private List<Processo> processos;
 }
-

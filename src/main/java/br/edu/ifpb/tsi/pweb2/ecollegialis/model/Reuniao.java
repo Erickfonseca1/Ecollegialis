@@ -17,7 +17,6 @@ public class Reuniao {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
     private Date dataReuniao;
 
     @Enumerated(EnumType.STRING)
@@ -31,12 +30,6 @@ public class Reuniao {
 
     @ManyToOne
     private Colegiado colegiado;
-
-    public Reuniao(Date dataReuniao, StatusReuniao status, Colegiado colegiado) {
-        this.dataReuniao = dataReuniao;
-        this.status = status;
-        this.colegiado = colegiado;
-    }
 
     public void addProcesso(Processo processo) {
         this.processos.add(processo);

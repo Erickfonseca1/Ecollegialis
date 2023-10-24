@@ -12,69 +12,47 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-
 public class ProcessoService {
-    
-    @Autowired
-    private ProcessoRepository processoRepository;
 
-    @Autowired
-    private ProfessorService professorService;
+        @Autowired
+        ProcessoRepository processoRepository;
 
-    public ProcessoService(ProcessoRepository processoRepository) {
-        this.processoRepository = processoRepository;
-    }
-
-    public Processo buscarPorId(Long id) {
-        return processoRepository.findById(id).get();
-    }
-
-    public Processo criarProcesso(){
-        return this.processoRepository.save(new Processo());
-    }
-
-    public List<Processo> listarProcessos() {
-        return processoRepository.findAll();
-    }
-
-    public void deletarProcesso(Processo processo){
-        if (processo.getId() != null && this.processoRepository.existsById(processo.getId())) {
-            this.processoRepository.delete(processo);
-        } else {
-            throw new RuntimeException("O processo não existe");
-        }
-    }
-
-    public Processo alteraProcesso(Processo processo){
-        if (processo.getId() != null && this.processoRepository.existsById(processo.getId())) {
-            return this.processoRepository.save(processo);
-        } else {
-            throw new RuntimeException("O processo não existe");
-        }
-    }
-
-    public void votar (Long id, String voto, String justificativa) {
-        Processo processo = processoRepository.findById(id).get();
-        TipoDecisao tipoDecisao = null;
-        if (voto.equals("deferir")) {
-            tipoDecisao = TipoDecisao.DEFERIDO;
-        }
-        else {
-            tipoDecisao = TipoDecisao.INDEFERIDO;
+        public List<Processo> listarProcessos() {
+            return processoRepository.findAll();
         }
 
-        processo.setTipoDecisao(tipoDecisao);
-        processo.setTextoRelator(justificativa);
-        processoRepository.save(processo);
+        public Processo buscarProcessoPorId(Long id) {
+            return processoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Processo não encontrado"));
+        }
 
-    }
+        public Processo criarProcesso(Processo processo) {
+            return processoRepository.save(processo);
+        }
 
-    public Processo atribuirProcesso (Processo processo, Long idProfessor) {
-        processo.setRelator(professorService.buscarPorId(idProfessor));
-        return processoRepository.save(processo);
-    }
+        public void deletarProcesso(Long id) {
+            Processo processo = processoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Processo não encontrado"));
+            processoRepository.delete(processo);
+        }
 
-    public List<Processo> listarProcessosCoordenador (Long idCoordenador, StatusProcesso status) {
-        return processoRepository.findAllByCoordenadorAndStatus(idCoordenador, status);
-    }
+        public Processo atualizarProcesso(Processo processoAtualizado, Long id) {
+            Processo processo = processoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Processo não encontrado"));
+            processo.setNumero(processoAtualizado.getNumero());
+            processo.setDataRecepcao(processoAtualizado.getDataRecepcao());
+            processo.setDataDistribuicao(processoAtualizado.getDataDistribuicao());
+            processo.setTextoRelator(processoAtualizado.getTextoRelator());
+            processo.setDataParecer(processoAtualizado.getDataParecer());
+            processo.setTextoAluno(processoAtualizado.getTextoAluno());
+            processo.setParecer(processoAtualizado.getParecer());
+            processo.setStatus(processoAtualizado.getStatus());
+            processo.setTipoDecisao(processoAtualizado.getTipoDecisao());
+            processo.setAssunto(processoAtualizado.getAssunto());
+            processo.setVotos(processoAtualizado.getVotos());
+            processo.setAluno(processoAtualizado.getAluno());
+            processo.setEmPauta(processoAtualizado.isEmPauta());
+            processo.setProfessor(processoAtualizado.getProfessor());
+            processo.setAnexos(processoAtualizado.getAnexos());
+            return processoRepository.save(processo);
+        }
+
+
 }

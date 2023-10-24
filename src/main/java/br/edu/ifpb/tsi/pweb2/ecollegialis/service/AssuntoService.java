@@ -1,39 +1,49 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.service;
 
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Aluno;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Assunto;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Professor;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.AssuntoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Assunto;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.AssuntoRepository;
+import java.util.Optional;
 
 @Service
 public class AssuntoService {
-
     @Autowired
-    private AssuntoRepository assuntoRepository;
+    private AssuntoRepository assuntoRepositorio;
 
-    public AssuntoService(AssuntoRepository assuntoRepository) {
-        this.assuntoRepository = assuntoRepository;
+   //CRUDS
+
+    @Transactional
+    public void criarAssunto(Assunto assunto){
+        assuntoRepositorio.save(assunto);
+    }
+    public List<Assunto> listarAssuntos(){
+        return assuntoRepositorio.findAll();
     }
 
-    public Assunto buscarPorId(Long id) {
-        return assuntoRepository.findById(id).get();
+    public Assunto buscarAssuntoPorNome(String nome){
+        return assuntoRepositorio.findByNome(nome);
     }
 
-    public List<Assunto> listar() {
-        return assuntoRepository.findAll();
+    public void deletarAssuntoPorNome(String nome){
+        Assunto assunto = assuntoRepositorio.findByNome(nome);
+        assuntoRepositorio.delete(assunto);
     }
 
-    public Assunto criarAssunto(){
-        return this.assuntoRepository.save(new Assunto());
-    }
+   @Transactional
+    public Assunto atualizarAssunto(Assunto assuntoAtualizado){
+        Assunto assuntoExistente = assuntoRepositorio.findById(assuntoAtualizado.getId()).orElse(null);
+        if(assuntoExistente == null){
+            throw new IllegalArgumentException("Assunto não encontrado");
+        }
+        assuntoExistente.setNome(assuntoAtualizado.getNome());
+        assuntoExistente.setNome(assuntoAtualizado.getNome());
+        return assuntoRepositorio.save(assuntoExistente);
+   }
 
-    public Assunto encontrarPorId(Long id){
-        return this.assuntoRepository.findById(id).get();
-    }
-
-    public Assunto atualizarAssunto(Long id){
-        Assunto assunto = encontrarPorId(id);
-        return this.assuntoRepository.save(assunto);
-    }
 }

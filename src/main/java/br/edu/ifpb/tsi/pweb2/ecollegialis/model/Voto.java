@@ -1,12 +1,6 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -19,6 +13,10 @@ public class Voto {
     @Enumerated(EnumType.ORDINAL)
     private TipoVoto tipoVoto;
     private boolean ausente;
+
+    @ManyToOne
+    @JoinColumn(name="id_professor")
+    private Professor professor;
 
     @ManyToOne
     private Processo processo;

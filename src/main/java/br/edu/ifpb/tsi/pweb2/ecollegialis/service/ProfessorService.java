@@ -1,13 +1,9 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.service;
 
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Processo;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Professor;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Reuniao;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.TipoDecisao;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Voto;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ProcessoRepository;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ProfessorRepository;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ReuniaoRepository;
@@ -17,7 +13,7 @@ import java.util.List;
 
 @Service
 public class ProfessorService {
-    
+
     @Autowired
     private ProcessoRepository processoRepository;
 
@@ -30,51 +26,71 @@ public class ProfessorService {
     @Autowired
     private ReuniaoRepository reuniaoRepository;
 
-    public List<Reuniao> listarReuniao(){
-        return reuniaoRepository.findAll();
+    //CRUDS
+    @Transactional
+    public void criarProfessor(Professor professor) {
+        professorRepository.save(professor);
     }
 
-    public List<Processo> listarProcessos() {
-        return processoRepository.findAll();
+    public List<Professor> listarProfessores(){
+        return professorRepository.findAll();
+    }
+    public Professor buscarProfessorPorId(Long id){
+        return professorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Professor não encontrado"));
     }
 
-    // buscar professor por ID
-    public Professor buscarPorId(Long id) {
-        return professorRepository.findById(id).get();
+    public void deletarProfessor(Long id){
+        Professor professor = professorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Professor não encontrado"));
+        professorRepository.delete(professor);
     }
 
+    public Professor atualizarProfessor(Professor professorAtualizado) {
+        Professor professorExistente = professorRepository.findById(professorAtualizado.getId()).orElse(null);
+        if (professorExistente == null) {
+            throw new IllegalArgumentException("Aluno não encontrado");
+        }
+        professorExistente.setNome(professorAtualizado.getNome());
+        professorExistente.setCurso(professorAtualizado.getCurso());
+        return professorRepository.save(professorExistente);
+    }
 
+    //Criar metodo que faça a votação
     @Transactional
     public void votar(Long id, String voto, String justificativa) {
-        Processo processo = processoRepository.findById(id).get();
-        TipoDecisao tipoDecisao = null;
-        if (voto.equals("deferir")) {
-            tipoDecisao = TipoDecisao.DEFERIDO;
-        }
-        else {
-            tipoDecisao = TipoDecisao.INDEFERIDO;
+        Processo processo = processoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Processo não encontrado"));
+
+        TipoDecisao tipoDecisao;
+
+        switch (voto.toLowerCase()) {
+            case "deferir":
+                tipoDecisao = TipoDecisao.DEFERIDO;
+                break;
+            case "indeferir":
+                tipoDecisao = TipoDecisao.INDEFERIDO;
+                break;
+            case "pendente":
+                tipoDecisao = TipoDecisao.PENDENTE;
+                break;
+            default:
+                throw new IllegalArgumentException("Voto inválido: " + voto);
         }
 
         processo.setTipoDecisao(tipoDecisao);
         processo.setTextoRelator(justificativa);
         processoRepository.save(processo);
+    }
+
+    public List<Reuniao> listarReunioes(Usuario professor) {
+        return reuniaoRepository.AllReunioesByProfessorAndColegiado(professor.getId());
 
     }
 
-    public boolean login(Professor professor) {
-        Professor professorBanco = professorRepository.findByMatricula(professor.getMatricula());
-        
-        boolean is_valid = false;
-        
-        if(professorBanco != null) {
-            if (professor.getSenha().equals(professorBanco.getSenha())) {
-                is_valid = true;
-            }
+    public List<Reuniao> listarReunioesByStatus(Usuario professor, StatusReuniao status) {
+        if (status.equals(StatusReuniao.EM_ANDAMENTO)) {
+            return listarReunioes(professor);
         }
-        return is_valid;
+        return reuniaoRepository.AllReunioesByProfessorAndColegiadoAndStatus(professor.getId(), status);
     }
 
-    public void votar(Voto voto) {
-        votoRepository.save(voto);
-    }
 }
