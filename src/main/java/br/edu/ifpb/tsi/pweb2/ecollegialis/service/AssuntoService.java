@@ -36,4 +36,9 @@ public class AssuntoService {
         Assunto assunto = encontrarPorId(id);
         return this.assuntoRepository.save(assunto);
     }
+
+    public void deletarAssunto(Long id){
+        Assunto assunto = encontrarPorId(id);
+        this.assuntoRepository.delete(assunto);
+    }
 }
