@@ -8,14 +8,11 @@
     <link rel="stylesheet" href="../static/css/bordaStyle.css">
     <title>Planejamento de Reuniões</title>
     <style>
-        .white-text {
-            color: white;
-        }
-
         .page-container {
             max-width: 1900px;
-            margin: 0 auto;
+            margin-bottom: 90px;
         }
+
     </style>
 </head>
 <body class="page-container">
@@ -32,8 +29,9 @@
                 // Seção com dados de reunião
                 var dadosReuniao = document.createElement("div");
                 dadosReuniao.className = "black-border-container mt-4";
-                var dadosReuniaoConteudo = `
-    <div class="black-border">
+                var dadosReuniaoConteudo =
+                    `
+        <div class="black-border">
         <header class="p-2 background-dark">
             <div class="d-flex justify-content-between align-items-center">
                 <h3 class="mb-0">Dados das Reuniões</h3>
@@ -42,36 +40,21 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item my-3">
                 <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <strong>Data da Reunião:</strong> 23 de Outubro, 2023
-                    </div>
-                    <div>
-                        <button type="button" class="btn btn-primary me-2">Gerar PDF</button>
-                        <button type="button" class="btn btn-danger me-2">Excluir</button>
-                        <button type="button" class="btn btn-primary">Emitir PDF da Ata</button>
-                    </div>
-                </div>
-                <div><strong>Número de Processos:</strong> 5</div>
-                <div><strong>Status:</strong> Em andamento</div>
+         <div class="data-reuniao">
+        <strong>Data da Reunião:</strong> 23 de Outubro, 2023
+        </div>
+        <div>
+             <button type="button" class="btn btn-primary me-2">Gerar PDF</button>
+             <button type="button" class="btn btn-danger me-2">Excluir</button>
+             <button type="button" class="btn btn-primary">Emitir PDF da Ata</button>
+        </div>
+            </div>
+        <div><strong>Número de Processos:</strong> 5</div>
+        <div><strong>Status:</strong> Em andamento</div>
             </li>
-            <li class="list-group-item my-3">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <strong>Data da Reunião:</strong> 25 de Outubro, 2023
-                    </div>
-                    <div>
-                        <button type="button" class="btn btn-primary me-2">Gerar PDF</button>
-                        <button type="button" class="btn btn-danger me-2">Excluir</button>
-                        <button type="button" class="btn btn-primary">Emitir PDF da Ata</button>
-                    </div>
-                </div>
-                <div><strong>Número de Processos:</strong> 3</div>
-                <div><strong>Status:</strong> Concluída</div>
-            </li>
-            <!-- Adicione mais itens de reunião conforme necessário -->
         </ul>
-    </div>
-`;
+        </div>
+`
                 dadosReuniao.innerHTML = dadosReuniaoConteudo;
                 document.body.appendChild(dadosReuniao);
 
@@ -79,7 +62,7 @@
                 var novaReuniao = document.createElement("div");
                 novaReuniao.className = "black-border-container mt-4";
                 var novaReuniaoConteudo = `
-    <div class="black-border">
+    <div class="black-border page-container">
         <header class="p-2 background-dark">
             <div class="d-flex justify-content-between align-items-center">
                 <h3 class="mb-0">Nova Reunião</h3>
@@ -115,7 +98,7 @@
                             <th scope="col">Ações</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody"
                         <tr>
                             <th scope="row">7894512/22</th>
                             <td>Professor X</td>
@@ -148,7 +131,7 @@
             </form>
         </div>
     </div>
-`;
+`
                 novaReuniao.innerHTML = novaReuniaoConteudo;
                 document.body.appendChild(novaReuniao);
             }
