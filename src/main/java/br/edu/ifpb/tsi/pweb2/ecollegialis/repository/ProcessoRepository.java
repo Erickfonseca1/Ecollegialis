@@ -43,23 +43,9 @@ public interface ProcessoRepository extends JpaRepository<Processo, Long> {
     @Query("SELECT p FROM Processo p WHERE p.status = ?1")
     public List<Processo> findByIdAndStatus  (Long id, StatusProcesso status);
 
-    //Consulta: Obter Processo por coordenador e status
-    @Query("SELECT p FROM Processo p WHERE p.colegiado.coordenador.id = ?1 AND p.status = ?2")
-    public List<Processo> findAllByCoordenadorAndStatus(Long idCoordenador, StatusProcesso status);
-
-    //Consulta: listar Todos Processos Do Colegiado Por Status
-    @Query("SELECT p FROM Processo p WHERE p.colegiado.id = ?1 AND p.status = ?2")
-    public List<Processo> findAllByColegiadoAndStatus(Long idColegiado, StatusProcesso status);
-
-    //Consulta: listar Todos Processos Do Colegiado Por Aluno
-    @Query("SELECT p FROM Processo p WHERE p.colegiado.id = ?1 AND p.interessado.id = ?2")
-    public List<Processo> findAllByColegiadoAndInteressado(Long idColegiado, Long idInteressado);
-
     public List<Processo> findAllByInteressadoIdAndAssuntoId(Long id, Long idAssunto);
 
-
-
-
-    
-
+    //Consulta: Obter processos de um aluno que tenham um determinado assunto em string
+    @Query("SELECT p FROM Processo p WHERE p.aluno.id = ?1 AND p.assunto.nome = ?2")
+    public List<Processo> findAllByAlunoIdAndAssuntoNome(Long idAluno, String nomeAssunto);
 }

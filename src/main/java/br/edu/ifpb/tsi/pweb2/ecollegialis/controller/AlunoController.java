@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Aluno;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Assunto;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Processo;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.StatusProcesso;
@@ -52,18 +53,10 @@ public class AlunoController {
 
     }
 
-    @GetMapping("/processo")
-    public ModelAndView consultarProcessos(ModelAndView mav) {
+    @GetMapping("/processos")
+    public ModelAndView consultarProcessos(Aluno aluno, ModelAndView mav) {
         mav.setViewName("aluno/tela-aluno-listagem-processos");
-        mav.addObject("processos", alunoService.consultaProcessos());
+        mav.addObject("processos", alunoService.consultaProcessos(aluno.getId()));
         return mav;
-
-    }
-
-    @PostMapping("/processo/consultar")
-    public ModelAndView filtrarProcesso(String filtro, String order, ModelAndView modelAndView) {
-        modelAndView.addObject("processos", alunoService.filtrarProcesso(filtro, order));
-        modelAndView.setViewName("/aluno/tela-aluno-listagem-processos");
-        return modelAndView;
     }
 }

@@ -40,6 +40,7 @@ public class AlunoService {
         processoRepository.save(processo);
     }
 
+    // função que gera um número de processo aleatório
     private String gerarNumeroProcesso() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
         String dataFormatada = dateFormat.format(new Date());
@@ -50,45 +51,24 @@ public class AlunoService {
         return "P" + numeroProcesso;
     }
 
-    public Processo consultarProcessoPorNumero(String numeroProcesso) {
-        return processoRepository.findByNumero(numeroProcesso);
-    }
-
-    public List<Processo> consultaProcessosPorStatus(Long id, StatusProcesso status) {
-        return processoRepository.findByIdAndStatus(id, status);
-    }
-
-    public List<Processo> consultaProcessosPorAssunto(Long idAluno, Long id){
-        return processoRepository.findAllByInteressadoIdAndAssuntoId(idAluno, id);
-    }
-
+    // função que consulta todos os processos de um aluno
     public List<Processo> consultaProcessos(Long id){
         return processoRepository.findAllById(id);
     }
 
-    public List<Processo> filtrarProcesso(Long id, String filtro, String order) {
-        if (filtro.isBlank()) {
-            return consultaProcessos(id);
+    // função que consulta um processo pelo seu número
+    public Processo consultarProcessoPorNumero(String numeroProcesso) {
+        return processoRepository.findByNumero(numeroProcesso);
+    }
 
-        }
-        try {
-            Long assuntoId = Long.parseLong(filtro);
-            if (order.isBlank()) {
-                return consultaProcessosPorAssunto(id, assuntoId);
-            }
-            else {
-                return consultaProcessosPorAssunto(id, assuntoId);
-            }
+    // função que consulta os processos de um aluno que possuem um determinado status
+    public List<Processo> consultaProcessosPorStatus(Long idAluno, StatusProcesso status) {
+        return processoRepository.findByIdAndStatus(idAluno, status);
+    }
 
-        } catch (NumberFormatException e) {
-            StatusProcesso filtroEnum = StatusProcesso.valueOf(filtro);
-            if (order.isBlank()) {
-                return consultaProcessosPorStatus(id, filtroEnum);
-            }
-            else {
-                return consultaProcessosPorStatus(id, filtroEnum);
-            }
-        }
+    // função que consulta os processos de um aluno que possuem um determinado assunto
+    public List<Processo> consultaProcessosPorAssunto(Long idAluno, Long id){
+        return processoRepository.findAllByInteressadoIdAndAssuntoId(idAluno, id);
     }
 
     @Transactional
