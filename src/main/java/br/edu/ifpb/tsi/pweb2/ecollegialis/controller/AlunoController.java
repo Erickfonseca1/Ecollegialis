@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Assunto;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Processo;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.StatusEnum;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.StatusProcesso;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.AssuntoRepository;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.AlunoService;
 
@@ -40,8 +40,8 @@ public class AlunoController {
     }
 
     @ModelAttribute("statusItens")
-    public List<StatusEnum> getStatus() {
-        return List.of(StatusEnum.values());
+    public List<StatusProcesso> getStatus() {
+        return List.of(StatusProcesso.values());
     }
 
     @PostMapping("/processo/cadastrar")
