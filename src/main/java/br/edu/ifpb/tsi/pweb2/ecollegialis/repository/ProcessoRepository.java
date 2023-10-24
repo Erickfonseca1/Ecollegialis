@@ -1,6 +1,6 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.repository;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Processo;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.StatusEnum;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.StatusProcesso;
 
 import java.util.List;
 
@@ -9,19 +9,16 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ProcessoRepository extends JpaRepository<Processo, Long> {
 
-    // Consulta: Obter todos os processos de um determinado interessado
-    public List<Processo> findAllByInteressadoId(Long idInteressado);
-
-    // Consulta: Obter processos relacionados a um assunto específico de um interessado
-    public List<Processo> findAllByAssuntoIdAndInteressadoId(Long idAssunto, Long idInteressado);
-
-    // Consulta: Obter processos de um interessado com um status específico
-    public List<Processo> findAllByInteressadoIdAndStatus(Long idInteressado, StatusEnum status);
+    // Consulta: Obter todos os processos relacionados a um relator específico e a um colegiado específico
+    @Query("SELECT p FROM Colegiado c JOIN c.reunioes r JOIN r.processos p WHERE c.id = ?1 AND p.relator.id = ?2")
+    public List<Processo> findAllByColegiadoAndRelator(Long idColegiado, Long idRelator);
 
     // Consulta: Obter um processo pelo número
+    @Query("SELECT p FROM Processo p WHERE p.numero = ?1")
     public Processo findByNumero(String numero);
 
     // Consulta: Obter todos os processos relacionados a um relator específico
+    @Query("SELECT p FROM Processo p WHERE p.relator.id = ?1")
     public List<Processo> findAllByRelatorId(Long idRelator);
 
     // Consulta: Obter processos em curso, votação ou espera, ordenados pelo status
@@ -32,12 +29,8 @@ public interface ProcessoRepository extends JpaRepository<Processo, Long> {
     @Query("SELECT p FROM Colegiado c JOIN c.reunioes r JOIN r.processos p WHERE c.id = ?1")
     public List<Processo> findAllByColegiado(Long idColegiado);
 
-    // Consulta: Obter processos relacionados a um colegiado e a um interessado específico
-    @Query("SELECT p FROM Colegiado c JOIN c.reunioes r JOIN r.processos p WHERE c.id = ?1 AND p.interessado.id = ?2")
-    public List<Processo> findAllByColegiadoAndInteressado(Long idColegiado, Long idInteressado);
-
     // Consulta: Obter processos relacionados a um colegiado e a um relator específico
     @Query("SELECT p FROM Colegiado c JOIN c.reunioes r JOIN r.processos p WHERE c.id = ?1 AND p.relator.id = ?2")
-    public List<Processo> findAllByColegiadoAndRelator(Long idColegiado, Long idRelator);
+    
 
 }

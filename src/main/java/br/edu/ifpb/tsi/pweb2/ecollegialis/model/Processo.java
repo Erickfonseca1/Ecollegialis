@@ -21,7 +21,6 @@ public class Processo {
     private Date dataParecer;
     private byte[] parecer;
     private String textoRelator;
-
     private String textoAluno;
 
     @Enumerated(EnumType.STRING)

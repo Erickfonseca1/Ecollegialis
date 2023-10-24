@@ -17,7 +17,7 @@ import java.util.List;
 
 
 public class Aluno extends Usuario {
-    @OneToMany(mappedBy = "interessado")
+    @OneToMany(mappedBy = "aluno")
     private List<Processo> processos;
 
     public void addProcesso(Processo processo) {
