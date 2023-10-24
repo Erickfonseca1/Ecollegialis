@@ -33,7 +33,7 @@
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 document.getElementById("content").innerHTML = xhr.responseText;
-
+                // Italo acho que aqui seria coordenador reuniões
                 // Seção com dados de reunião
                 var dadosReuniao = document.createElement("div");
                 dadosReuniao.className = "black-border-container mt-4";

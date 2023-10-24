@@ -16,7 +16,7 @@
 <script>
     window.onload = function () {
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "defaultAlunos.html", true);
+        xhr.open("GET", "defaultCoordenador.html", true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 document.getElementById("content").innerHTML = xhr.responseText;
@@ -28,7 +28,7 @@
                         <div class="black-border">
                             <header class="p-2 background-dark">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <h3 class="mb-0" style="color: white;">Lista de Processos</h3>
+                                    <h3 class="mb-0" style="color: white;">Sessão Colegiado</h3>
                                     <div class="d-flex">
                                         <div class="mb-3">
                                             <label for="statusFilter" class="form-label" style="color: white;">Filtrar por Status</label>
@@ -51,7 +51,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <a href="cadastroProcessoAlun.html" class="btn btn-primary">Cadastrar Processo</a>
+                                    <a href="cadastroSessaoColegiado.html" class="btn btn-primary">+ Criar Sessão Colegiado</a>
                                 </div>
                             </header>
                             <table class="table table-dark table-striped">
