@@ -28,9 +28,6 @@ public interface ProcessoRepository extends JpaRepository<Processo, Long> {
     // Consulta: Obter todos os processos relacionados a um colegiado
     @Query("SELECT p FROM Colegiado c JOIN c.reunioes r JOIN r.processos p WHERE c.id = ?1")
     public List<Processo> findAllByColegiado(Long idColegiado);
-
-    // Consulta: Obter processos relacionados a um colegiado e a um relator específico
-    @Query("SELECT p FROM Colegiado c JOIN c.reunioes r JOIN r.processos p WHERE c.id = ?1 AND p.relator.id = ?2")
     
 
 }
