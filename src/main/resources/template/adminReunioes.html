@@ -8,11 +8,6 @@
     <link rel="stylesheet" href="../static/css/bordaStyle.css">
     <title>Planejamento de Reuniões</title>
     <style>
-<<<<<<< HEAD:src/main/resources/template/adminReunioes.html
-        .page-container {
-            max-width: 1900px;
-            margin-bottom: 90px;
-=======
         .white-text {
             color: white;
         }
@@ -20,7 +15,10 @@
         ul li {
             background-color: #343a40 !important;
             color: white !important;
->>>>>>> d7bacfdb02f2c097025700351e0323738a02ae1a:src/main/resources/template/Reunioes.html
+        }
+
+        .page-container {
+            margin-bottom: 90px !important;
         }
 
     </style>
@@ -39,34 +37,6 @@
                 // Seção com dados de reunião
                 var dadosReuniao = document.createElement("div");
                 dadosReuniao.className = "black-border-container mt-4";
-<<<<<<< HEAD:src/main/resources/template/adminReunioes.html
-                var dadosReuniaoConteudo =
-                    `
-        <div class="black-border">
-        <header class="p-2 background-dark">
-            <div class="d-flex justify-content-between align-items-center">
-                <h3 class="mb-0">Dados das Reuniões</h3>
-            </div>
-        </header>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item my-3">
-                <div class="d-flex justify-content-between align-items-center">
-         <div class="data-reuniao">
-        <strong>Data da Reunião:</strong> 23 de Outubro, 2023
-        </div>
-        <div>
-             <button type="button" class="btn btn-primary me-2">Gerar PDF</button>
-             <button type="button" class="btn btn-danger me-2">Excluir</button>
-             <button type="button" class="btn btn-primary">Emitir PDF da Ata</button>
-        </div>
-            </div>
-        <div><strong>Número de Processos:</strong> 5</div>
-        <div><strong>Status:</strong> Em andamento</div>
-            </li>
-        </ul>
-        </div>
-`
-=======
                 var dadosReuniaoConteudo = `
                     <div class="black-border">
                         <header class="p-2 background-dark">
@@ -122,87 +92,14 @@
                         </ul>
                     </div>
                 `;
->>>>>>> d7bacfdb02f2c097025700351e0323738a02ae1a:src/main/resources/template/Reunioes.html
                 dadosReuniao.innerHTML = dadosReuniaoConteudo;
                 document.body.appendChild(dadosReuniao);
 
                 // Botão Nova Reunião e campos para nova reunião
                 var novaReuniao = document.createElement("div");
-                novaReuniao.className = "black-border-container mt-4";
+                novaReuniao.className = "black-border-container mt-4 mbt";
                 var novaReuniaoConteudo = `
-<<<<<<< HEAD:src/main/resources/template/adminReunioes.html
-    <div class="black-border page-container">
-        <header class="p-2 background-dark">
-            <div class="d-flex justify-content-between align-items-center">
-                <h3 class="mb-0">Nova Reunião</h3>
-            </div>
-        </header>
-        <div class="p-4">
-            <form>
-                <div class="mb-3">
-                    <label for="dataReuniao" class="form-label" style="color: white">Data da Reunião</label>
-                    <input type="date" class="form-control" id="dataReuniao" style="width: 150px">
-                </div>
-                <div class="mb-3">
-                    <label for="observacoes" class="form-label" style="color: white">Observações</label>
-                    <div class="col-3">
-                        <textarea class="form-control" id="observacoes" style="height: 150px; width: 380px;"></textarea>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="selectProcessos" class="form-label" style="color: white">Selecionar Processos</label>
-                    <select class="form-select" id="selectProcessos" style="width: 220px">
-                        <option value="processo1">Processo 1</option>
-                        <option value="processo2">Processo 2</option>
-                        <!-- Adicione mais opções conforme necessário -->
-                    </select>
-                </div>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">Número</th>
-                            <th scope="col">Requisitante</th>
-                            <th scope="col">Assunto</th>
-                            <th scope="col">Relator</th>
-                            <th scope="col">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody"
-                        <tr>
-                            <th scope="row">7894512/22</th>
-                            <td>Professor X</td>
-                            <td>Assunto do Processo A</td>
-                            <td>Relator Fulano</td>
-                            <td><button type="button" class="btn btn-danger">Excluir</button></td>
-                        </tr>
-                        <!-- Adicione mais linhas conforme necessário -->
-                                        <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">Número</th>
-                            <th scope="col">Requisitante</th>
-                            <th scope="col">Assunto</th>
-                            <th scope="col">Relator</th>
-                            <th scope="col">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">5461544/32</th>
-                            <td>Professor Y</td>
-                            <td>Assunto do Processo B</td>
-                            <td>Relator Cicrano</td>
-                            <td><button type="button" class="btn btn-danger">Excluir</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button type="submit" class="btn btn-primary">Salvar Nova Reunião</button>
-            </form>
-        </div>
-    </div>
-`
-=======
-                <div class="black-border">
+                <div class="black-border page-container">
                     <header class="p-2 background-dark">
                         <div class="d-flex justify-content-between align-items-center">
                             <h3 class="mb-0">Nova Reunião</h3>
@@ -228,7 +125,7 @@
                                     <!-- Adicione mais opções conforme necessário -->
                                 </select>
                             </div>
-                            <table class="table table-striped">
+                            <table class="table table-striped dark ">
                                 <thead>
                                     <tr>
                                         <th scope="col">Número</th>
@@ -247,7 +144,7 @@
                                         <td><button type="button" class="btn btn-danger">Excluir</button></td>
                                     </tr>
                                     <!-- Adicione mais linhas conforme necessário -->
-                                                    <table class="table table-striped">
+                                    <table class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th scope="col">Número</th>
@@ -272,7 +169,6 @@
                     </div>
                 </div>
             `;
->>>>>>> d7bacfdb02f2c097025700351e0323738a02ae1a:src/main/resources/template/Reunioes.html
                 novaReuniao.innerHTML = novaReuniaoConteudo;
                 document.body.appendChild(novaReuniao);
             }
