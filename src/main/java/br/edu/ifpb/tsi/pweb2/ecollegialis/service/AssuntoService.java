@@ -30,6 +30,7 @@ public class AssuntoService {
         return assuntoRepositorio.findByNome(nome);
     }
 
+    @Transactional
     public void deletarAssuntoPorNome(String nome){
         Assunto assunto = assuntoRepositorio.findByNome(nome);
         assuntoRepositorio.delete(assunto);

@@ -39,11 +39,13 @@ public class ProfessorService {
         return professorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Professor não encontrado"));
     }
 
+    @Transactional
     public void deletarProfessor(Long id){
         Professor professor = professorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Professor não encontrado"));
         professorRepository.delete(professor);
     }
 
+    @Transactional
     public Professor atualizarProfessor(Professor professorAtualizado) {
         Professor professorExistente = professorRepository.findById(professorAtualizado.getId()).orElse(null);
         if (professorExistente == null) {

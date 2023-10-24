@@ -1,5 +1,6 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,15 +26,18 @@ public class ProcessoService {
             return processoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Processo não encontrado"));
         }
 
+        @Transactional
         public Processo criarProcesso(Processo processo) {
             return processoRepository.save(processo);
         }
 
+        @Transactional
         public void deletarProcesso(Long id) {
             Processo processo = processoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Processo não encontrado"));
             processoRepository.delete(processo);
         }
 
+        @Transactional
         public Processo atualizarProcesso(Processo processoAtualizado, Long id) {
             Processo processo = processoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Processo não encontrado"));
             processo.setNumero(processoAtualizado.getNumero());

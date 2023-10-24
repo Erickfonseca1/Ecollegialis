@@ -1,5 +1,6 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,15 +34,18 @@ public class ReuniaoService {
         return reuniaoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Reuniao não encontrada"));
     }
 
+    @Transactional
     public Reuniao criarReuniao(Reuniao reuniao) {
         return reuniaoRepository.save(reuniao);
     }
 
+    @Transactional
     public void deletarReuniao(Long id) {
         Reuniao reuniao = reuniaoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Reuniao não encontrada"));
         reuniaoRepository.delete(reuniao);
     }
 
+    @Transactional
     public Reuniao atualizarReuniao(Reuniao reuniaoAtualizada, Long id) {
         Reuniao reuniao = reuniaoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Reuniao não encontrada"));
         reuniao.setDataReuniao(reuniaoAtualizada.getDataReuniao());
