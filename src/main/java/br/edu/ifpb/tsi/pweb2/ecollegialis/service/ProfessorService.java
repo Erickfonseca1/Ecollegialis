@@ -38,6 +38,12 @@ public class ProfessorService {
         return processoRepository.findAll();
     }
 
+    // buscar professor por ID
+    public Professor buscarPorId(Long id) {
+        return professorRepository.findById(id).get();
+    }
+
+
     @Transactional
     public void votar(Long id, String voto, String justificativa) {
         Processo processo = processoRepository.findById(id).get();

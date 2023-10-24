@@ -15,6 +15,14 @@ public interface ProcessoRepository extends JpaRepository<Processo, Long> {
     @Query("SELECT p FROM Colegiado c JOIN c.reunioes r JOIN r.processos p WHERE c.id = ?1 AND p.relator.id = ?2")
     public List<Processo> findAllByColegiadoAndRelator(Long idColegiado, Long idRelator);
 
+    //Consulta: Obter find All By Colegiado And Status
+    @Query("SELECT p FROM Processo p WHERE p.colegiado.id = ?1 AND p.status = ?2")
+    public List<Processo> findAllByColegiadoAndStatus(Long idColegiado, StatusProcesso status);
+
+    //Consulta: find All By Colegiado And Interessado
+    @Query("SELECT p FROM Processo p WHERE p.colegiado.id = ?1 AND p.interessado.id = ?2")
+    public List<Processo> findAllByColegiadoAndInteressado(Long idColegiado, Long idInteressado);
+
     // Consulta: Obter um processo pelo número
     @Query("SELECT p FROM Processo p WHERE p.numero = ?1")
     public Processo findByNumero(String numero);
@@ -45,9 +53,11 @@ public interface ProcessoRepository extends JpaRepository<Processo, Long> {
 
     public List<Processo> findAllByInteressadoIdAndAssuntoId(Long id, Long idAssunto);
 
+    //Consulta: Obter processos de um aluno que tenham um determinado assunto em string
+    @Query("SELECT p FROM Processo p WHERE p.aluno.id = ?1 AND p.assunto.nome = ?2")
+    public List<Processo> findAllByAlunoIdAndAssuntoNome(Long idAluno, String nomeAssunto);
 
-
-
-    
-
+    //Consulta: find All By Coordenador And Status
+    @Query("SELECT p FROM Processo p WHERE p.colegiado.coordenador.id = ?1 AND p.status = ?2")
+    public List<Processo> findAllByCoordenadorAndStatus(Long idCoordenador, StatusProcesso status);
 }
