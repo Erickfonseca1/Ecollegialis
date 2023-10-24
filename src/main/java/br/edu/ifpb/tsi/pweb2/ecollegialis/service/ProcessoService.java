@@ -7,7 +7,6 @@ import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Processo;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.StatusProcesso;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.TipoDecisao;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ProcessoRepository;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.VotoRepository;
 import lombok.AllArgsConstructor;
 import java.util.List;
 

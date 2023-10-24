@@ -4,17 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Colegiado;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Processo;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Reuniao;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.StatusReuniao;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ColegiadoRepository;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ProcessoRepository;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ReuniaoRepository;
-import lombok.AllArgsConstructor;
 import java.util.List;
-import java.util.Optional;
 
-import javax.net.ssl.SSLEngineResult.Status;
 
 @Service
 public class ReuniaoService {
