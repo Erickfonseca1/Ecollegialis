@@ -32,10 +32,10 @@ public class CoordenadorService {
         return processoRepository.findAllById(id);
     }
 
-    public List<Professor> listarProfessoresDoColegiado(Long id) {
-        Professor coordenador = professorRepository.findById(id).get();
-        Colegiado colegiado = colegiadoRepository.findByCursoId(coordenador.getCurso().getId());
-        return colegiado.getMembros();
-    }
+//    public List<Professor> listarProfessoresDoColegiado(Long id) {
+//        Professor coordenador = professorRepository.findById(id).get();
+//        Colegiado colegiado = colegiadoRepository.findByCursoId(coordenador.getCurso().getId());
+//        return colegiado.getMembros();
+//    }
 
 }

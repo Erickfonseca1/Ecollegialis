@@ -69,8 +69,8 @@ public class AlunoService {
     }
 
     @Transactional
-    public void criarAluno(Aluno aluno) {
-        alunoRepository.save(aluno);
+    public Aluno criarAluno(Aluno aluno) {
+        return alunoRepository.save(aluno);
     }
 
     @Transactional

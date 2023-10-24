@@ -20,8 +20,5 @@ public class Usuario {
     private String login;
     private String senha;
     private boolean admin;
-    @ManyToOne
-    @JoinColumn(name="curso_id")
-    private Curso curso;
-
+    private String curso;
 }
