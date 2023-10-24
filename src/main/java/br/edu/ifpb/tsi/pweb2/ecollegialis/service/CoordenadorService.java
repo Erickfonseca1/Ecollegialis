@@ -39,7 +39,7 @@ public class CoordenadorService {
 
     public List<Processo> listarTodosProcessosDoColegiadoPorStatus(Professor coordenador, Colegiado colegiado, StatusProcesso status) {
         if (coordenador.isCoordenador()) {
-            return processoRepository.findAllByInteressadoIdAndStatus(colegiado.getId(), status);
+            return processoRepository.findAllByColegiadoAndStatus(colegiado.getId(), status);
         } else {
             throw new RuntimeException("Este professor não pode realizar esta consulta, pois não é coordenador!");
         }

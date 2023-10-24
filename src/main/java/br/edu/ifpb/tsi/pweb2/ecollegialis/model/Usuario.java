@@ -20,7 +20,6 @@ public class Usuario {
     private Long id;
     private String nome;
     private String fone;
-    private boolean admin;
     private String login;
     private String matricula;
     private String senha;
