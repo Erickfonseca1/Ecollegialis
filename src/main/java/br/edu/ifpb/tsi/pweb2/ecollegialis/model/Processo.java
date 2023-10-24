@@ -25,7 +25,7 @@ public class Processo {
     private String textoAluno;
 
     @Enumerated(EnumType.STRING)
-    private StatusEnum status;
+    private StatusProcesso status;
 
     @Enumerated(EnumType.ORDINAL)
     private TipoDecisao decisaoRelator;

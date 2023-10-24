@@ -8,7 +8,7 @@ import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Colegiado;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Processo;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Professor;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Reuniao;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.StatusEnum;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.StatusProcesso;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.StatusReuniao;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ColegiadoRepository;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ProcessoRepository;
@@ -37,7 +37,7 @@ public class CoordenadorService {
         }
     }
 
-    public List<Processo> listarTodosProcessosDoColegiadoPorStatus(Professor coordenador, Colegiado colegiado, StatusEnum status) {
+    public List<Processo> listarTodosProcessosDoColegiadoPorStatus(Professor coordenador, Colegiado colegiado, StatusProcesso status) {
         if (coordenador.isCoordenador()) {
             return processoRepository.findAllByInteressadoIdAndStatus(colegiado.getId(), status);
         } else {

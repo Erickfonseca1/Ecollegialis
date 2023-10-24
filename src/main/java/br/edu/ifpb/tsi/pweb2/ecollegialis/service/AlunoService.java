@@ -2,7 +2,7 @@ package br.edu.ifpb.tsi.pweb2.ecollegialis.service;
 
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Aluno;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Processo;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.StatusEnum;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.StatusProcesso;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.AlunoRepository;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ProcessoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class AlunoService {
 
         aluno.addProcesso(processo);
 
-        processo.setStatus(StatusEnum.CRIADO);
+        processo.setStatus(StatusProcesso.CRIADO);
         processo.setTipoDecisao(null);
         processo.setInteressado(aluno);
         processo.setDataRecepcao(dataRecepcao);
@@ -63,11 +63,11 @@ public class AlunoService {
         return processoRepository.findAllByInteressadoId(idInteressado);
     }
 
-    public List<Processo> consultaProcessosPorStatus(Long idInteressado, StatusEnum status) {
+    public List<Processo> consultaProcessosPorStatus(Long idInteressado, StatusProcesso status) {
         return processoRepository.findAllByInteressadoIdAndStatus(idInteressado, status);
     }
 
-    public List<Processo> consultaProcessosPorStatus(StatusEnum status) {
+    public List<Processo> consultaProcessosPorStatus(StatusProcesso status) {
         return processoRepository.findAllByInteressadoIdAndStatus(52L, status);
     }
 
@@ -82,7 +82,7 @@ public class AlunoService {
             }
 
         } catch (NumberFormatException e) {
-            StatusEnum filtroEnum = StatusEnum.valueOf(filtro);
+            StatusProcesso filtroEnum = StatusProcesso.valueOf(filtro);
             if (order == null) {
                 return consultaProcessosPorStatus(filtroEnum);
             }
