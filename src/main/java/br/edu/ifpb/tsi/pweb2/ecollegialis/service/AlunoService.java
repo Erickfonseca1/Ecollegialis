@@ -43,7 +43,7 @@ public class AlunoService {
     }
 
     private String gerarNumeroProcesso() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
         String dataFormatada = dateFormat.format(new Date());
 
         int parteAleatoria = (int) (Math.random() * 1000);

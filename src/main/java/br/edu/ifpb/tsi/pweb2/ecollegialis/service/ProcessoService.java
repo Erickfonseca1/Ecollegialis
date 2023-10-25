@@ -1,12 +1,10 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.service;
 
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Processo;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.StatusProcesso;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.TipoDecisao;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ProcessoRepository;
 import lombok.AllArgsConstructor;
 import java.util.List;
@@ -57,6 +55,4 @@ public class ProcessoService {
             processo.setAnexos(processoAtualizado.getAnexos());
             return processoRepository.save(processo);
         }
-
-
 }
