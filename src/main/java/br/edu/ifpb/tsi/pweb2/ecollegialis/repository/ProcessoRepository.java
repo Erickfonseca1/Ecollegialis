@@ -18,4 +18,5 @@ public interface ProcessoRepository extends JpaRepository<Processo, Long> {
     //REQ:7 Consulta: selecionar todos processos do colegiado, filtrando-os por status aluno ou professor relator.
     @Query("SELECT p FROM Processo p WHERE p.status = ?1 AND (p.aluno.id = ?2 OR p.professor.id = ?3)")
     public List<Processo> findAllByStatusAndAlunoIdAndProfessorId(StatusProcesso status, Long idAluno, Long idProfessor);
+
 }
