@@ -43,7 +43,6 @@ public class ColegiadoService {
         colegiado.setDataFim(colegiadoAtualizado.getDataFim());
         colegiado.setDescricao(colegiadoAtualizado.getDescricao());
         colegiado.setPortaria(colegiadoAtualizado.getPortaria());
-        colegiado.setCurso(colegiadoAtualizado.getCurso());
         colegiado.setMembros(colegiadoAtualizado.getMembros());
         colegiado.setReunioes(colegiadoAtualizado.getReunioes());
         return colegiadoRepository.save(colegiado);
