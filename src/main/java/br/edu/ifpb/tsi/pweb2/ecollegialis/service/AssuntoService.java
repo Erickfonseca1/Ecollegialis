@@ -19,9 +19,7 @@ public class AssuntoService {
    //CRUDS
 
     @Transactional
-    public void criarAssunto(Assunto assunto){
-        assuntoRepositorio.save(assunto);
-    }
+    public Assunto criarAssunto(Assunto assunto) { return assuntoRepositorio.save(assunto); }
     public List<Assunto> listarAssuntos(){
         return assuntoRepositorio.findAll();
     }
