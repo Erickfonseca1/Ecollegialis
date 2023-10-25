@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/assuntos")
 public class AssuntoController {
@@ -14,28 +16,30 @@ public class AssuntoController {
     @Autowired
     private AssuntoService assuntoService;
 
-    @PostMapping("/cadastrar-assunto")
+    @PostMapping("/criar")
     public ResponseEntity<Object> criarAssunto(@RequestBody Assunto assunto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(assuntoService.criarAssunto(assunto));
     }
 
-    @GetMapping("/buscar-por-nome/{nome}")
-    @ResponseBody
-    @ResponseStatus(HttpStatus.OK)
-    public Assunto buscarAssuntoPorNome(@PathVariable String nome) {
-        return assuntoService.buscarAssuntoPorNome(nome);
+    @GetMapping("/{id}")
+    public Assunto buscarAssunto(@PathVariable("id") Long id) {
+        return assuntoService.buscarAssuntoPorId(id);
     }
 
-    @DeleteMapping("/deletar-por-nome/{nome}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> deletarAssuntoPorNome(@PathVariable String nome) {
-        assuntoService.deletarAssuntoPorNome(nome);
-        return ResponseEntity.status(HttpStatus.OK).body("Assunto deletado com sucesso!");
+    @GetMapping
+    public ResponseEntity<List<Assunto>> listagemAssunto() {
+        return ResponseEntity.status(HttpStatus.OK).body(assuntoService.listarAssuntos());
     }
 
-    @PutMapping("/{id}")
-    @ResponseBody
-    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deletarAssunto(@PathVariable (value = "id") Long id){
+        var assuntoExistente = assuntoService.buscarAssuntoPorId(id);
+        assuntoService.deletarAssunto(assuntoExistente);
+        return ResponseEntity.status(HttpStatus.OK).body("OK: Assunto excluído com sucesso!");
+    }
+
+
+    @PutMapping("/atualizar/{id}")
     public Assunto atualizarAssunto(@RequestBody Assunto assuntoAtualizado) {
         return assuntoService.atualizarAssunto(assuntoAtualizado);
     }

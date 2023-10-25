@@ -17,16 +17,6 @@ public class AlunoController {
     @Autowired
     private AlunoService alunoService;
 
-    @PostMapping("/cadastrar-processo/{idAluno}")
-    public void cadastrarNovoProcesso(@RequestBody Processo processo, @PathVariable Long idAluno) {
-        alunoService.cadastrarNovoProcesso(processo, idAluno);
-    }
-
-    @PostMapping("/adicionar-anexo")
-    public void adicionarAnexo(@RequestBody Processo processo, @RequestBody byte[] anexo) {
-        alunoService.adicionarAnexo(processo, anexo);
-    }
-
     @GetMapping("/listar")
     public List<Aluno> listarAlunos() {
         return alunoService.listarAlunos();
@@ -34,6 +24,7 @@ public class AlunoController {
 
     @GetMapping("/{id}")
     public Aluno buscarAlunoPorId(@PathVariable Long id) {
+
         return alunoService.buscarAlunosPorId(id);
     }
 
@@ -47,7 +38,7 @@ public class AlunoController {
         alunoService.removerAluno(id);
     }
 
-    @PutMapping("/atualizar")
+    @PutMapping("/atualizar/{id}")
     public Aluno atualizarAluno(@RequestBody Aluno alunoAtualizado) {
         return alunoService.atualizarAluno(alunoAtualizado);
     }
