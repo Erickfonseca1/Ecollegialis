@@ -1,27 +1,20 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
-
-
 public class Aluno extends Usuario {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @OneToMany(mappedBy = "aluno")
     private List<Processo> processos;
 
-    public void addProcesso(Processo processo) {
-        this.processos.add(processo);
-    }
-
+    // Getters e setters
 }
+

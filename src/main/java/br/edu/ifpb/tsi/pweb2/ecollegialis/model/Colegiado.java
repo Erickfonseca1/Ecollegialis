@@ -1,43 +1,25 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-
 public class Colegiado {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date dataInicio;
-
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date dataFim;
     private String descricao;
     private String portaria;
+    private String curso;
 
-    @OneToOne
-    @JoinColumn(name = "curso_id")
-    private Curso curso;
-
-    @OneToMany(mappedBy = "colegiado")
-    private List<Professor> membros;
-
-    @OneToMany(mappedBy = "colegiado")
-    private List<Reuniao> reunioes;
-
-    public void addReuniao(Reuniao reuniao) {
-        this.reunioes.add(reuniao);
-    }
+    // Getters e setters
 }
+

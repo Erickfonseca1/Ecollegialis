@@ -1,27 +1,22 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
-@Entity
 @Data
+@Entity
 public class Voto {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Enumerated(EnumType.ORDINAL)
-    private TipoVoto tipoVoto;
+    private TipoVoto voto;
     private boolean ausente;
 
     @ManyToOne
-    private Processo processo;
-    private String justificativa;
+    private Professor professor;
 
+    @ManyToOne
+    private Processo processo;
+
+    // Getters e setters
 }
