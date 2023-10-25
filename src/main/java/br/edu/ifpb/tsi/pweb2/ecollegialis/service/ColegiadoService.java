@@ -18,6 +18,7 @@ public class ColegiadoService {
     ProfessorService professorService;
 
     public List<Colegiado> listarColegiados() {
+
         return colegiadoRepository.findAll();
     }
 
@@ -27,6 +28,7 @@ public class ColegiadoService {
 
     @Transactional
     public Colegiado criarColegiado(Colegiado colegiado) {
+
         return colegiadoRepository.save(colegiado);
     }
 
@@ -43,8 +45,6 @@ public class ColegiadoService {
         colegiado.setDataFim(colegiadoAtualizado.getDataFim());
         colegiado.setDescricao(colegiadoAtualizado.getDescricao());
         colegiado.setPortaria(colegiadoAtualizado.getPortaria());
-        colegiado.setMembros(colegiadoAtualizado.getMembros());
-        colegiado.setReunioes(colegiadoAtualizado.getReunioes());
         return colegiadoRepository.save(colegiado);
     }
 
@@ -52,7 +52,6 @@ public class ColegiadoService {
     public Colegiado adicionarProfessor(Long idColegiado, Long idProfessor){
         Professor professor = professorService.buscarProfessorPorId(idProfessor);
         Colegiado colegiado = colegiadoRepository.findById(idColegiado).orElseThrow(() -> new IllegalArgumentException("Colegiado não encontrado"));
-        colegiado.getMembros().add(professor);
         professor.setColegiado(colegiado);
         return colegiadoRepository.save(colegiado);
     }
@@ -61,7 +60,6 @@ public class ColegiadoService {
     public Colegiado removerProfessor(int idColegiado, int idProfessor){
         Professor professor = professorService.buscarProfessorPorId((long) idProfessor);
         Colegiado colegiado = colegiadoRepository.findById((long) idColegiado).orElseThrow(() -> new IllegalArgumentException("Colegiado não encontrado"));
-        colegiado.getMembros().remove(professor);
         professor.setColegiado(null);
         return colegiadoRepository.save(colegiado);
     }

@@ -15,17 +15,14 @@ import java.util.List;
 public class Reuniao {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Date dataReuniao;
-
-    @Enumerated(EnumType.STRING)
     private StatusReuniao status;
-
+    @Column ()
     private byte[] ata;
 
     @OneToMany
-    @JoinColumn(name = "reuniao_id")
     private List<Processo> processos;
 
     @ManyToOne

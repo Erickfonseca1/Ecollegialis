@@ -19,6 +19,4 @@ public class Usuario {
     private String matricula;
     private String login;
     private String senha;
-    private boolean admin;
-    private String curso;
 }

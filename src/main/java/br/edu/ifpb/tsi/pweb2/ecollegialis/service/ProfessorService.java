@@ -29,10 +29,12 @@ public class ProfessorService {
     //CRUDS
     @Transactional
     public Professor criarProfessor(Professor professor) {
+
         return professorRepository.save(professor);
     }
 
     public List<Professor> listarProfessores(){
+
         return professorRepository.findAll();
     }
     public Professor buscarProfessorPorId(Long id){
@@ -52,47 +54,7 @@ public class ProfessorService {
             throw new IllegalArgumentException("Aluno não encontrado");
         }
         professorExistente.setNome(professorAtualizado.getNome());
-        professorExistente.setCurso(professorAtualizado.getCurso());
         return professorRepository.save(professorExistente);
-    }
-
-    //Criar metodo que faça a votação
-    @Transactional
-    public void votar(Long id, String voto, String justificativa) {
-        Processo processo = processoRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Processo não encontrado"));
-
-        TipoDecisao tipoDecisao;
-
-        switch (voto.toLowerCase()) {
-            case "deferir":
-                tipoDecisao = TipoDecisao.DEFERIDO;
-                break;
-            case "indeferir":
-                tipoDecisao = TipoDecisao.INDEFERIDO;
-                break;
-            case "pendente":
-                tipoDecisao = TipoDecisao.PENDENTE;
-                break;
-            default:
-                throw new IllegalArgumentException("Voto inválido: " + voto);
-        }
-
-        processo.setTipoDecisao(tipoDecisao);
-        processo.setTextoRelator(justificativa);
-        processoRepository.save(processo);
-    }
-
-    public List<Reuniao> listarReunioes(Usuario professor) {
-        return reuniaoRepository.AllReunioesByProfessorAndColegiado(professor.getId());
-
-    }
-
-    public List<Reuniao> listarReunioesByStatus(Usuario professor, StatusReuniao status) {
-        if (status.equals(StatusReuniao.EM_ANDAMENTO)) {
-            return listarReunioes(professor);
-        }
-        return reuniaoRepository.AllReunioesByProfessorAndColegiadoAndStatus(professor.getId(), status);
     }
 
 }

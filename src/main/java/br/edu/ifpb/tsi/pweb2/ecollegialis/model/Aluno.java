@@ -20,8 +20,4 @@ public class Aluno extends Usuario {
     @OneToMany(mappedBy = "aluno")
     private List<Processo> processos;
 
-    public void addProcesso(Processo processo) {
-        this.processos.add(processo);
-    }
-
 }

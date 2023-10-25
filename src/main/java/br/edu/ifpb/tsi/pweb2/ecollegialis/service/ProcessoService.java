@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ProcessoRepository;
 import lombok.AllArgsConstructor;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -15,8 +16,12 @@ public class ProcessoService {
 
         @Autowired
         ProcessoRepository processoRepository;
+        AssuntoService assuntoService;
+        AlunoService alunoService;
+        ProfessorService professorService;
 
         public List<Processo> listarProcessos() {
+
             return processoRepository.findAll();
         }
 
@@ -26,7 +31,17 @@ public class ProcessoService {
 
         @Transactional
         public Processo criarProcesso(Processo processo) {
-            return processoRepository.save(processo);
+            var assunto = assuntoService.buscarAssuntoPorId(processo.getAssunto().getId());
+            var aluno = alunoService.buscarAlunosPorId(processo.getAluno().getId());
+
+            if (assunto != null && aluno != null) {
+                processo.setAssunto(assunto);
+                processo.setAluno(aluno);
+                processo = processoRepository.save(processo);
+                return processo;
+            } else {
+                throw new RuntimeException("Assunto ou aluno não encontrados");
+            }
         }
 
         @Transactional
@@ -41,18 +56,33 @@ public class ProcessoService {
             processo.setNumero(processoAtualizado.getNumero());
             processo.setDataRecepcao(processoAtualizado.getDataRecepcao());
             processo.setDataDistribuicao(processoAtualizado.getDataDistribuicao());
-            processo.setTextoRelator(processoAtualizado.getTextoRelator());
             processo.setDataParecer(processoAtualizado.getDataParecer());
-            processo.setTextoAluno(processoAtualizado.getTextoAluno());
             processo.setParecer(processoAtualizado.getParecer());
             processo.setStatus(processoAtualizado.getStatus());
-            processo.setTipoDecisao(processoAtualizado.getTipoDecisao());
             processo.setAssunto(processoAtualizado.getAssunto());
             processo.setVotos(processoAtualizado.getVotos());
             processo.setAluno(processoAtualizado.getAluno());
-            processo.setEmPauta(processoAtualizado.isEmPauta());
             processo.setProfessor(processoAtualizado.getProfessor());
-            processo.setAnexos(processoAtualizado.getAnexos());
             return processoRepository.save(processo);
         }
+
+
+        public Processo mudarDecisao(int id, TipoDecisao novaDecisao){
+            Optional<Processo> processoOptional = this.processoRepository.findById((long) id);
+            if (processoOptional.isPresent()) {
+                Processo processo = processoOptional.get();
+                processo.setParecer(novaDecisao);
+                return this.processoRepository.save(processo);
+            } else {
+                throw new RuntimeException("Processo não encontrado");
+            }
+        }
+
+        public List<Processo> listarProcessosCoordenador() {
+            return processoRepository.findAllByStatusAndAlunoIdAndProfessorId(StatusProcesso.CRIADO, null, null);
+        }
+
+
+
+
 }

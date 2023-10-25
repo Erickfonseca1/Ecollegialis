@@ -13,57 +13,30 @@ import java.util.List;
 @Entity
 public class Processo {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String numero;
     private Date dataRecepcao;
     private Date dataDistribuicao;
-    private String textoRelator;
     private Date dataParecer;
-    private String textoAluno;
-    private byte[] parecer;
-
-    @Enumerated(EnumType.STRING)
-    private StatusProcesso status;
-
-    @Enumerated(EnumType.ORDINAL)
-    private TipoDecisao decisaoRelator;
-
-    @OneToOne
-    @JoinColumn(name = "assunto_id")
-    private Assunto assunto;
-
-    @OneToMany
-    @JoinColumn(name = "processo_id")
-    private List<Voto> votos;
+    private TipoDecisao parecer;
 
     @ManyToOne
-    @JoinColumn(name = "aluno_id")
-    private Aluno aluno;
-
-    private boolean emPauta = false;
-
-    @ManyToOne
-    @JoinColumn(name = "professor_id")
     private Professor professor;
 
-    @ElementCollection
-    private List<byte[]> anexos;
+    @ManyToOne
+    private Aluno aluno;
 
-    public TipoDecisao getTipoDecisao() {
-        return this.decisaoRelator;
-    }
+    @OneToOne
+    private Assunto assunto;
 
-    public void addAnexos(byte[] anexo) {
-        this.anexos.add(anexo);
-    }
+    @ManyToOne
+    private Reuniao reuniao;
 
-    public void addVoto(Voto voto) {
-        this.votos.add(voto);
-    }
+    @OneToMany
+    private List<Voto> votos;
 
-    public void setTipoDecisao(TipoDecisao decisaoRelator) {
-        this.decisaoRelator = decisaoRelator;
-    }
+    private String requerimento;
+    private StatusProcesso status;
 
 }

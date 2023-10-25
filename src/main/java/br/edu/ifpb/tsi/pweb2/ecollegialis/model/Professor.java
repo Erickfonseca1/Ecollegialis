@@ -17,8 +17,8 @@ import java.util.List;
 public class Professor extends Usuario{
 
     @ManyToOne
-    @JoinColumn(name="colegiado_id")
     private Colegiado colegiado;
+
     private boolean coordenador;
 
     @OneToMany(mappedBy = "professor")

@@ -24,14 +24,13 @@ public class AssuntoService {
         return assuntoRepositorio.findAll();
     }
 
-    public Assunto buscarAssuntoPorNome(String nome){
-        return assuntoRepositorio.findByNome(nome);
+    public Assunto buscarAssuntoPorId(Long id){
+        return assuntoRepositorio.findById(id).orElseThrow(() -> new IllegalArgumentException("Assunto não encontrado"));
     }
 
     @Transactional
-    public void deletarAssuntoPorNome(String nome){
-        Assunto assunto = assuntoRepositorio.findByNome(nome);
-        assuntoRepositorio.delete(assunto);
+    public void deletarAssunto(Assunto assunto){
+        this.assuntoRepositorio.delete(assunto);
     }
 
    @Transactional

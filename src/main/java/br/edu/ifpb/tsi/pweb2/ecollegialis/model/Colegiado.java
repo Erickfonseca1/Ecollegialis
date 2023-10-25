@@ -18,22 +18,13 @@ public class Colegiado {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private Date dataInicio;
-
     private Date dataFim;
     private String descricao;
     private String portaria;
-
     private String curso;
 
     @OneToMany(mappedBy = "colegiado")
-    private List<Professor> membros;
+    private List<Professor> professores;
 
-    @OneToMany(mappedBy = "colegiado")
-    private List<Reuniao> reunioes;
-
-    public void addReuniao(Reuniao reuniao) {
-        this.reunioes.add(reuniao);
-    }
 }
