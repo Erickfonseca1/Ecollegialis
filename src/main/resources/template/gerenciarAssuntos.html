@@ -16,32 +16,43 @@
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 document.getElementById("content").innerHTML = xhr.responseText;
-                var listaAssuntos = document.createElement("div");
-                listaAssuntos.className = "container mt-5 p-4 border border-dark";
-                listaAssuntos.innerHTML = `
-                        <h1>Gerenciar Assuntos de Processos</h1>
-                        <table class="table table-dark table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Assunto</th>
-                                    <th scope="col">Descrição</th>
-                                    <th scope="col">Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Aqui serão listados os assuntos de processos com opções para editar e remover -->
-                                <tr>
-                                    <td>Assunto</td>
-                                    <td>Descrição</td>
-                                    <td>
-                                        <button class="btn btn-primary">Editar</button>
-                                        <button class="btn btn-danger">Remover</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    `;
-                document.getElementById("content").appendChild(listaAssuntos);
+                var container = document.createElement("div");
+                container.className = "container mt-5 p-4 border border-dark";
+                container.innerHTML = `
+                    <h1>Gerenciar Assuntos de Processos</h1>
+                    <form class="mb-4">
+                        <div class="mb-3">
+                            <label for="inputAssunto" class="form-label">Assunto</label>
+                            <input type="text" class="form-control" id="inputAssunto">
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputDescricao" class="form-label">Descrição</label>
+                            <textarea class="form-control" id="inputDescricao" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Criar Assunto</button>
+                    </form>
+                    <table class="table table-dark table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Assunto</th>
+                                <th scope="col">ID</th>
+                                <th scope="col">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Aqui serão listados os assuntos de processos com opções para editar e remover -->
+                            <tr>
+                                <td>Assunto</td>
+                                <td>ID</td>
+                                <td>
+                                    <button class="btn btn-primary">Editar</button>
+                                    <button class="btn btn-danger">Remover</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `;
+                document.getElementById("content").appendChild(container);
             }
         };
         xhr.send();
