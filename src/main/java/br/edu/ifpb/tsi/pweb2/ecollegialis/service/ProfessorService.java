@@ -28,8 +28,8 @@ public class ProfessorService {
 
     //CRUDS
     @Transactional
-    public void criarProfessor(Professor professor) {
-        professorRepository.save(professor);
+    public Professor criarProfessor(Professor professor) {
+        return professorRepository.save(professor);
     }
 
     public List<Professor> listarProfessores(){
