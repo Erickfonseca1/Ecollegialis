@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/bordaStyle.css">
+    <title>Distribuir Processo</title>
+</head>
+
+<body>
+<div id="content"></div>
+
+<script>
+    window.onload = function () {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "defaultCoordenador.html", true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                document.getElementById("content").innerHTML = xhr.responseText;
+
+                // Adicione aqui o formulário de distribuição de processo
+                var distribuirProcessoForm = document.createElement("div");
+                distribuirProcessoForm.className = "container d-flex justify-content-center mt-5";
+                distribuirProcessoForm.innerHTML = `
+                    <form style="min-width: 650px;" class="p-4 border border-dark">
+                        <h1 class="h3 mb-4 fw-normal">Distribuir Processo</h1>
+                        <div class="mb-3">
+                            <label for="numProcesso" class="form-label">Número do Processo</label>
+                            <input type="text" class="form-control" id="numProcesso" placeholder="Número do Processo">
+                        </div>
+                        <div class="mb-3">
+                            <label for="relator" class="form-label">Relator</label>
+                            <select class="form-select" id="relator">
+                                <option value="professor1">Professor 1</option>
+                                <option value="professor2">Professor 2</option>
+                                <!-- Adicione aqui a lista de professores membros do colegiado -->
+                            </select>
+                        </div>
+                        <button class="btn btn-primary w-100 py-2" type="submit">Distribuir</button>
+                    </form>
+                `;
+                document.getElementById("content").appendChild(distribuirProcessoForm);
+            }
+        };
+        xhr.send();
+    };
+</script>
+
+<!-- ... (outros scripts e links) ... -->
+</body>
+
+</html>

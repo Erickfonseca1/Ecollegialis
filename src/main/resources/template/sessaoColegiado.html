@@ -21,59 +21,32 @@
             if (xhr.readyState == 4 && xhr.status == 200) {
                 document.getElementById("content").innerHTML = xhr.responseText;
 
-                // Adicione aqui a lista de processos com os filtros e opções de ordenação
-                var listaProcessos = document.createElement("div");
-                listaProcessos.className = "black-border-container mt-4";
-                var listaProcessosConteudo = `
-                        <div class="black-border">
-                            <header class="p-2 background-dark">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h3 class="mb-0" style="color: white;">Sessão Colegiado</h3>
-                                    <div class="d-flex">
-                                        <div class="mb-3">
-                                            <label for="statusFilter" class="form-label" style="color: white;">Filtrar por Status</label>
-                                            <select class="form-select" id="statusFilter">
-                                                <option value="todos">Todos</option>
-                                                <option value="aberto">Aberto</option>
-                                                <option value="pendente">Pendente</option>
-                                                <option value="concluido">Concluído</option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3 ms-3">
-                                            <label for="assuntoFilter" class="form-label" style="color: white;">Filtrar por Assunto</label>
-                                            <input type="text" class="form-control" id="assuntoFilter">
-                                        </div>
-                                        <div class="ms-3">
-                                            <label for="ordenacao" class="form-label" style="color: white;">Ordenar por Data de Criação</label>
-                                            <select class="form-select" id="ordenacao">
-                                                <option value="recentes">Mais recentes</option>
-                                                <option value="antigos">Mais antigos</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <a href="cadastroSessaoColegiado.html" class="btn btn-primary">+ Criar Sessão Colegiado</a>
-                                </div>
-                            </header>
-                            <table class="table table-dark table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Número</th>
-                                        <th scope="col">Requisitante</th>
-                                        <th scope="col">Assunto</th>
-                                        <th scope="col">Relator</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Data de Criação</th>
-                                        <th scope="col">Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Aqui serão listados os processos com base nos filtros e ordenação -->
-                                </tbody>
-                            </table>
+                // Adicione aqui o formulário de criação de sessão do colegiado
+                var criarSessaoForm = document.createElement("div");
+                criarSessaoForm.className = "container d-flex justify-content-center mt-5";
+                criarSessaoForm.innerHTML = `
+                    <form style="min-width: 650px;" class="p-4 border border-dark">
+                        <h1 class="h3 mb-4 fw-normal">Criar Sessão Colegiado</h1>
+                        <div class="mb-3">
+                            <label for="dataSessao" class="form-label">Data da Sessão</label>
+                            <input type="date" class="form-control" id="dataSessao">
                         </div>
-                    `;
-                listaProcessos.innerHTML = listaProcessosConteudo;
-                document.body.appendChild(listaProcessos);
+                        <div class="mb-3">
+                            <label for="pautaSessao" class="form-label">Pauta da Sessão</label>
+                            <textarea class="form-control" id="pautaSessao" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="membrosSessao" class="form-label">Membros do Colegiado</label>
+                            <select multiple class="form-select" id="membrosSessao">
+                                <option value="membro1">Membro 1</option>
+                                <option value="membro2">Membro 2</option>
+                                <!-- Adicione aqui a lista de membros do colegiado -->
+                            </select>
+                        </div>
+                        <button class="btn btn-primary w-100 py-2" type="submit">Criar Sessão</button>
+                    </form>
+                `;
+                document.getElementById("content").appendChild(criarSessaoForm);
             }
         };
         xhr.send();

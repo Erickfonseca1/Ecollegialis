@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/crudStyle.css">
+    <title>Gerenciar Assuntos de Processos</title>
+</head>
+<body>
+<div id="content"></div>
+
+<script>
+    window.onload = function () {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "defaultAdmin.html", true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                document.getElementById("content").innerHTML = xhr.responseText;
+                var listaAssuntos = document.createElement("div");
+                listaAssuntos.className = "container mt-5 p-4 border border-dark";
+                listaAssuntos.innerHTML = `
+                        <h1>Gerenciar Assuntos de Processos</h1>
+                        <table class="table table-dark table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Assunto</th>
+                                    <th scope="col">Descrição</th>
+                                    <th scope="col">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Aqui serão listados os assuntos de processos com opções para editar e remover -->
+                                <tr>
+                                    <td>Assunto</td>
+                                    <td>Descrição</td>
+                                    <td>
+                                        <button class="btn btn-primary">Editar</button>
+                                        <button class="btn btn-danger">Remover</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    `;
+                document.getElementById("content").appendChild(listaAssuntos);
+            }
+        };
+        xhr.send();
+    };
+</script>
+</body>
+</html>

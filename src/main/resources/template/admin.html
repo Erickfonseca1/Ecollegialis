@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/bordaStyle.css">
+    <title>Admin</title>
+</head>
+
+<body>
+<div id="content"></div>
+
+<script>
+    window.onload = function () {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "defaultAdmin.html", true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                document.getElementById("content").innerHTML = xhr.responseText;
+
+                // Adicione aqui a lista de operações do Admin
+                var adminPanel = document.createElement("div");
+                adminPanel.className = "black-border-container mt-4";
+                adminPanel.innerHTML = `
+                        <div class="black-border">
+                            <header class="p-2 background-dark">
+                                <h3 class="mb-0" style="color: white;">Admin Panel</h3>
+                            </header>
+                            <div class="d-grid gap-3 col-6 mx-auto p-4">
+                                <a href="gerenciarColegiados.html" class="btn btn-primary">Gerenciar Colegiados</a>
+                                <a href="gerenciarUsuario.html" class="btn btn-primary">Gerenciar Usuários</a>
+                                <a href="gerenciarAssuntos.html" class="btn btn-primary">Gerenciar Assuntos de Processos</a>
+                            </div>
+                        </div>
+                    `;
+                document.getElementById("content").appendChild(adminPanel);
+            }
+        };
+        xhr.send();
+    };
+</script>
+</body>
+
+</html>

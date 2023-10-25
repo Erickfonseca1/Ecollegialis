@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/crudStyle.css">
+    <title>CRUD Colegiado</title>
+</head>
+<body>
+<div id="content"></div>
+
+<script>
+    window.onload = function () {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "defaultAdmin.html", true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                document.getElementById("content").innerHTML = xhr.responseText;
+                var formColegiado = document.createElement("div");
+                formColegiado.className = "container mt-5 p-4 border border-dark";
+                formColegiado.innerHTML = `
+                        <form style="min-width: 650px;">
+                            <h1 class="h3 mb-4 fw-normal">Cadastro de Colegiado</h1>
+                            <div class="form-floating mb-3">
+                                <input type="date" class="form-control" id="floatingDataInicio" placeholder="dd/mm/aaaa">
+                                <label for="floatingDataInicio">Data de Início</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="date" class="form-control" id="floatingDataFim" placeholder="dd/mm/aaaa">
+                                <label for="floatingDataFim">Data de Fim</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <textarea class="form-control" id="floatingDescricao" style="height: 100px"></textarea>
+                                <label for="floatingDescricao">Descrição</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="floatingPortaria" placeholder="Portaria">
+                                <label for="floatingPortaria">Portaria</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="floatingCurso" placeholder="Curso">
+                                <label for="floatingCurso">Curso</label>
+                            </div>
+                            <button class="btn btn-primary w-100 py-2" type="submit">Salvar</button>
+                        </form>
+                    `;
+                document.getElementById("content").appendChild(formColegiado);
+            }
+        };
+        xhr.send();
+    };
+</script>
+</body>
+</html>
