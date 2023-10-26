@@ -18,7 +18,7 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotBlank(message = "Campo não existente")
+    @NotBlank(message = "Campo obrigatório")
     private String nome;
     private String fone;
     @NotBlank(message = "Campo obrigatório")
