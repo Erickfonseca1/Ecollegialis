@@ -65,12 +65,4 @@ public class AlunoController {
         return mv;
     }
 
-    @PutMapping("/{id}/editar-aluno")
-    public ModelAndView editarAluno(@PathVariable(value = "id") Long id, ModelAndView mv) {
-        Aluno aluno = alunoService.findById(id);
-        mv.addObject("aluno", aluno);
-        mv.setViewName("formAluno");
-        return mv;
-    }
-
 }
