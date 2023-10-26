@@ -45,7 +45,7 @@ public class AlunoController {
         return "redirect:/aluno/form-aluno";
     }
 
-    @GetMapping("/form-aluno")
+    @RequestMapping("/form-aluno")
     public ModelAndView showForm() {
         ModelAndView mv = new ModelAndView("formAluno");
         mv.addObject("aluno", new Aluno());
