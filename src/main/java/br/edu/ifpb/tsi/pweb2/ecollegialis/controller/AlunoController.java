@@ -28,10 +28,10 @@ public class AlunoController {
         this.alunoService = alunoService;
     }
 
-    @RequestMapping("/form-aluno")
-    public ModelAndView showForm() {
-        ModelAndView mv = new ModelAndView("formAluno");
-        mv.addObject("aluno", new Aluno());
+    @RequestMapping("/aluno")
+    public ModelAndView showHomepage(ModelAndView mv) {
+        mv.addObject("nome", "FelaDaPuta");
+        mv.setViewName("aluno");
         return mv;
     }
 
@@ -45,11 +45,18 @@ public class AlunoController {
         return "redirect:/aluno/form-aluno";
     }
 
+    @GetMapping("/form-aluno")
+    public ModelAndView showForm() {
+        ModelAndView mv = new ModelAndView("formAluno");
+        mv.addObject("aluno", new Aluno());
+        return mv;
+    }
+
     @GetMapping("/lista-alunos")
     public ModelAndView listaAlunos() {
         List<Aluno> alunos = alunoService.findAll();
         ModelAndView modelAndView = new ModelAndView("listaAlunos");
-        modelAndView.addObject("alunos", alunos);
+        modelAndView.addObject("alunos", alunoService.findAll());
         return modelAndView;
     }
 
