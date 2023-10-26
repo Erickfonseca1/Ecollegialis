@@ -7,10 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.w3c.dom.Text;
@@ -35,6 +32,13 @@ public class AlunoController {
         return mv;
     }
 
+    @RequestMapping("/form-aluno")
+    public ModelAndView showForm() {
+        ModelAndView mv = new ModelAndView("formAluno");
+        mv.addObject("aluno", new Aluno());
+        return mv;
+    }
+
     @PostMapping("/salvar-aluno")
     public String salvarAluno(@Valid Aluno aluno, BindingResult result) {
         if (result.hasErrors()) {
@@ -45,18 +49,11 @@ public class AlunoController {
         return "redirect:/aluno/form-aluno";
     }
 
-    @RequestMapping("/form-aluno")
-    public ModelAndView showForm() {
-        ModelAndView mv = new ModelAndView("formAluno");
-        mv.addObject("aluno", new Aluno());
-        return mv;
-    }
-
     @GetMapping("/lista-alunos")
     public ModelAndView listaAlunos() {
         List<Aluno> alunos = alunoService.findAll();
         ModelAndView modelAndView = new ModelAndView("listaAlunos");
-        modelAndView.addObject("alunos", alunoService.findAll());
+        modelAndView.addObject("alunos", alunos);
         return modelAndView;
     }
 
@@ -65,6 +62,14 @@ public class AlunoController {
         alunoService.deleteById(id);
         attr.addFlashAttribute("mensagem", "Aluno removido com sucesso!");
         mv.setViewName("redirect:/aluno/lista-alunos");
+        return mv;
+    }
+
+    @PutMapping("/{id}/editar-aluno")
+    public ModelAndView editarAluno(@PathVariable(value = "id") Long id, ModelAndView mv) {
+        Aluno aluno = alunoService.findById(id);
+        mv.addObject("aluno", aluno);
+        mv.setViewName("formAluno");
         return mv;
     }
 
