@@ -45,8 +45,21 @@ public class AlunoController {
             return "formAluno";
         }
 
-        alunoService.save(aluno);
-        return "redirect:/aluno/form-aluno";
+        if (aluno.getId() != null) {
+            alunoService.update(aluno);
+        } else {
+            alunoService.save(aluno);
+        }
+
+        return "redirect:/aluno/lista-alunos";
+    }
+
+    @GetMapping("/{id}/editar")
+    public ModelAndView exibirFormularioEdicao(@PathVariable(value = "id") Long id) {
+        Aluno aluno = alunoService.findById(id);
+        ModelAndView modelAndView = new ModelAndView("formAluno");
+        modelAndView.addObject("aluno", aluno);
+        return modelAndView;
     }
 
     @GetMapping("/lista-alunos")
