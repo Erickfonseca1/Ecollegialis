@@ -41,14 +41,12 @@ public class AlunoController {
             return "formAluno";
         }
 
-        //dar um console no objeto aluno que vem
         System.out.println(aluno.getId());
 
         if (aluno.getId() != null) {
-            // Se o aluno já possui um ID, chame o método editarAluno para atualizá-lo.
             alunoService.update(aluno);
         } else {
-            alunoService.save(aluno);git add
+            alunoService.save(aluno);
         }
 
         return "redirect:/aluno/lista-alunos";
