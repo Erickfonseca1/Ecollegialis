@@ -1,9 +1,16 @@
-package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
+package br.edu.ifpb.pweb2.ecollegialis.model;
 
-import jakarta.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 @Data
 @AllArgsConstructor
@@ -17,6 +24,5 @@ public class Usuario {
     private String nome;
     private String fone;
     private String matricula;
-    private String login;
     private String senha;
 }

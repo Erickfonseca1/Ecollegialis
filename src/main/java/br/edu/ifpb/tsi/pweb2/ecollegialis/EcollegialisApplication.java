@@ -1,4 +1,4 @@
-package br.edu.ifpb.tsi.pweb2.ecollegialis;
+package br.edu.ifpb.pweb2.ecollegialis;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
