@@ -7,9 +7,11 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/assunto")
@@ -36,6 +38,23 @@ public class AssuntoController {
         }
 
         assuntoService.save(assunto);
-        return "redirect:/assunto/form-assunto"; // Redireciona de volta para o formulário
+        return "redirect:/assunto/form-assunto";
     }
+
+    @GetMapping("/lista-assuntos")
+    public ModelAndView listaAssuntos() {
+        List<Assunto> assuntos = assuntoService.findAll();
+        ModelAndView modelAndView = new ModelAndView("listaAssuntos");
+        modelAndView.addObject("assuntos", assuntos);
+        return modelAndView;
+    }
+
+    @RequestMapping("/{id}/delete")
+    public ModelAndView deletarAssunto(@PathVariable(value = "id") Long id, ModelAndView mv, RedirectAttributes attr) {
+        assuntoService.deleteById(id);
+        attr.addFlashAttribute("mensagem", "Assunto removido com sucesso!");
+        mv.setViewName("redirect:/assunto/lista-assuntos");
+        return mv;
+    }
+
 }

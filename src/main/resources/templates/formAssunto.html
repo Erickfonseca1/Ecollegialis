@@ -11,11 +11,34 @@
             color: #fff; /* Cor do texto */
         }
         .container {
+            width: 500px;
             background-color: #444; /* Cor de fundo do formulário */
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
             margin-top: 50px;
+        }
+        .btn-minimal {
+            display: flex;
+            justify-content: center;
+            color: #fff;
+            margin-top: 20px;
+
+            .btn {
+                width: 200px;
+            }
+        }
+        .btn-save {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+            color: #fff;
+            margin-top: 20px;
+
+            .btn {
+                padding: 10px 30px;
+                width: 200px;
+            }
         }
     </style>
 </head>
@@ -24,11 +47,19 @@
     <h1 class="text-center">Formulário de Assunto</h1>
     <form th:action="@{/assunto/salvar-assunto}" method="post">
         <div class="form-group">
-            <label for="assunto">Assunto:</label>
-            <input type="text" class="form-control" id="assunto" name="assunto" th:field="*{assunto.nome}" required>
+            <label for="assunto">Assunto :</label>
+            <input type="text" class="form-control" id="assunto"  name="assunto" th:field="*{assunto.nome}" required>
         </div>
-        <button type="submit" class="btn btn-primary">Salvar</button>
+        <div class="btn-save">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
     </form>
+
+    <div class="btn-minimal">
+        <a href="/assunto/lista-assuntos" class="btn btn-secondary">Lista de Assuntos</a>
+    </div>
+
+
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

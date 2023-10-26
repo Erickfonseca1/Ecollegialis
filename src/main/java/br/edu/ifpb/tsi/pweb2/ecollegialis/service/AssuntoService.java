@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AssuntoService {
@@ -32,4 +33,11 @@ public class AssuntoService {
     public void deleteById(Long id) {
         assuntoRepository.deleteById(id);
     }
+
+    public void editarAssunto(Long id, String novoNome) {
+        Assunto assunto = findById(id);
+        assunto.setNome(novoNome);
+        assuntoRepository.save(assunto);
+    }
+
 }
