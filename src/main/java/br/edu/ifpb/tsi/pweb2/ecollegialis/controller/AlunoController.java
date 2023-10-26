@@ -2,19 +2,14 @@ package br.edu.ifpb.tsi.pweb2.ecollegialis.controller;
 
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Aluno;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.AlunoService;
-import ch.qos.logback.core.model.Model;
 import jakarta.validation.Valid;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.w3c.dom.Text;
-
 import java.util.List;
-import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/aluno")

@@ -33,10 +33,4 @@ public class AlunoService {
         alunoRepository.deleteById(id);
     }
 
-    public void editarAluno(Long id, String novoNome) {
-        Aluno aluno = findById(id);
-        aluno.setNome(novoNome);
-        alunoRepository.save(aluno);
-    }
-
 }

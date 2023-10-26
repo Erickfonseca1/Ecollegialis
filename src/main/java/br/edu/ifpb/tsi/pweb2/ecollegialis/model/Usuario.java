@@ -26,4 +26,6 @@ public class Usuario {
     @NotBlank(message = "Campo obrigatório")
     @Size(min = 3, max = 60, message = "Senha deve ter entre 3 e 60 caracteres")
     private String senha;
+
+
 }
