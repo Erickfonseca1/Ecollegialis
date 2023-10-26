@@ -46,9 +46,13 @@
 <div class="container">
     <h1 class="text-center">Formulário de Aluno</h1>
     <form th:action="@{/aluno/salvar-aluno}" method="post" th:object="${aluno}">
+        <div>
+            <input type="hidden" th:field="*{id}">
+        </div>
         <div class="form-group">
             <label for="nome">Nome:</label>
             <input type="text" class="form-control" id="nome" name="nome" th:field="*{nome}" required>
+            <p class="texto-erro" th:if="${#fields.hasErrors('nome')}" th:errorclass="error" th:errors="*{nome}"></p>
         </div>
         <div class="form-group">
             <label for="matricula">Matrícula:</label>
@@ -57,6 +61,7 @@
         <div class="form-group">
             <label for="matricula">Telefone:</label>
             <input type="text" class="form-control" id="fone" name="fone" th:field="*{fone}" required>
+
         </div>
         <div class="form-group">
             <label for="matricula">Senha:</label>

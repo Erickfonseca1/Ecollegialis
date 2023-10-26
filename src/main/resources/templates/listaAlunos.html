@@ -37,11 +37,13 @@
             <th>ID</th>
             <th>Nome</th>
             <th>Matrícula</th>
+            <th>Telefone</th>
             <th>Ações</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="aluno : ${alunos}">
+            <td th:text="${aluno.id}"></td>
             <td th:text="${aluno.nome}"></td>
             <td th:text="${aluno.matricula}"></td>
             <td th:text="${aluno.fone}"></td>
