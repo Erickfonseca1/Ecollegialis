@@ -13,7 +13,7 @@
     // Carrega o conteúdo de default.html e insere no corpo da página
     window.onload = function () {
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "defaultLogin.html", true);
+        xhr.open("GET", "default/defaultLogin.html", true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 document.getElementById("content").innerHTML = xhr.responseText;

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/css/crudStyle.css">
-    <title>CRUD Professores</title>
+    <link rel="stylesheet" href="../../static/css/crudStyle.css">
+    <title>CRUD Alunos</title>
 </head>
 <body>
 <div id="content"></div>
@@ -12,15 +12,15 @@
 <script>
     window.onload = function () {
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "defaultAdmin.html", true);
+        xhr.open("GET", "../default/defaultAdmin.html", true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 document.getElementById("content").innerHTML = xhr.responseText;
-                var formProfessor = document.createElement("div");
-                formProfessor.className = "container mt-5 p-4 border border-dark";
-                formProfessor.innerHTML = `
+                var formAluno = document.createElement("div");
+                formAluno.className = "container mt-5 p-4 border border-dark";
+                formAluno.innerHTML = `
                         <form style="min-width: 650px;">
-                            <h1 class="h3 mb-4 fw-normal">Cadastro de Professor</h1>
+                            <h1 class="h3 mb-4 fw-normal">Cadastro de Aluno</h1>
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="floatingNome" placeholder="Fulano da Silva">
                                 <label for="floatingNome">Nome</label>
@@ -34,19 +34,17 @@
                                 <label for="floatingMatricula">Matrícula</label>
                             </div>
                             <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="floatingLogin" placeholder="fulano123">
+                                <label for="floatingLogin">Login</label>
+                            </div>
+                            <div class="form-floating mb-3">
                                 <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
                                 <label for="floatingPassword">Password</label>
-                            </div>
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    Coordenador
-                                </label>
                             </div>
                             <button class="btn btn-primary w-100 py-2" type="submit">Salvar</button>
                         </form>
                     `;
-                document.getElementById("content").appendChild(formProfessor);
+                document.getElementById("content").appendChild(formAluno);
             }
         };
         xhr.send();

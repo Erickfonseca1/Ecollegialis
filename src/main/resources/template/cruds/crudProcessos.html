@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/css/crudStyle.css">
+    <link rel="stylesheet" href="../../static/css/crudStyle.css">
     <title>CRUD Processo</title>
 </head>
 <body>
@@ -12,7 +12,7 @@
 <script>
     window.onload = function () {
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "defaultAdmin.html", true);
+        xhr.open("GET", "../default/defaultAdmin.html", true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 document.getElementById("content").innerHTML = xhr.responseText;

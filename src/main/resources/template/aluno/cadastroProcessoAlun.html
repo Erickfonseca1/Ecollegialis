@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="../static/css/bordaStyle.css">
+    <link rel="stylesheet" href="../../static/css/bordaStyle.css">
     <title>Cadastro de Novo Processo</title>
 </head>
 
@@ -16,7 +16,7 @@
 <script>
     window.onload = function () {
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "defaultCoordenador.html", true);
+        xhr.open("GET", "../default/defaultAlunos.html", true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 document.getElementById("content").innerHTML = xhr.responseText;
@@ -34,7 +34,12 @@
                                 <form>
                                     <div class="mb-3">
                                         <label for="assunto" class="form-label" style="color: white;">Assunto</label>
-                                        <input type="text" class="form-control" id="assunto">
+                                        <select type="text" class="form-control" id="assunto">
+                                            <option value="assunto1">Assunto 1</option>
+                                            <option value="assunto2">Assunto 2</option>
+                                            <option value="assunto3">Assunto 3</option>
+
+                                        </select>
                                     </div>
                                     <div class="mb-3">
                                         <label for="textoRequerimento" class="form-label"
@@ -44,6 +49,7 @@
                                     <div class="mb-3">
                                         <label for="status" class="form-label" style="color: white;">Status</label>
                                         <select class="form-select" id="status">
+                                            <option value="default"></option>
                                             <option value="aberto">Aberto</option>
                                             <option value="pendente">Pendente</option>
                                             <option value="concluido">Concluído</option>

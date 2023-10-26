@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/css/crudStyle.css">
-    <title>Gerenciar Usuários</title>
+    <link rel="stylesheet" href="../../static/css/crudStyle.css">
+    <title>Gerenciar Colegiados</title>
 </head>
 <body>
 <div id="content"></div>
@@ -12,31 +12,33 @@
 <script>
     window.onload = function () {
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "defaultAdmin.html", true);
+        xhr.open("GET", "../default/defaultAdmin.html", true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 document.getElementById("content").innerHTML = xhr.responseText;
-                var listaUsuarios = document.createElement("div");
-                listaUsuarios.className = "container mt-5 p-4 border border-dark";
-                listaUsuarios.innerHTML = `
-                        <h1>Gerenciar Usuários</h1>
+                var listaColegiados = document.createElement("div");
+                listaColegiados.className = "container mt-5 p-4 border border-dark";
+                listaColegiados.innerHTML = `
+                        <h1>Gerenciar Colegiados</h1>
                         <table class="table table-dark table-striped">
                             <thead>
                                 <tr>
-                                    <th scope="col">Nome</th>
-                                    <th scope="col">Fone</th>
-                                    <th scope="col">Matrícula</th>
-                                    <th scope="col">Login</th>
+                                    <th scope="col">Data de Início</th>
+                                    <th scope="col">Data de Fim</th>
+                                    <th scope="col">Descrição</th>
+                                    <th scope="col">Portaria</th>
+                                    <th scope="col">Curso</th>
                                     <th scope="col">Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Aqui serão listados os usuários com opções para editar e remover -->
+                                <!-- Aqui serão listados os colegiados com opções para editar e remover -->
                                 <tr>
-                                    <td>Nome</td>
-                                    <td>Fone</td>
-                                    <td>Matrícula</td>
-                                    <td>Login</td>
+                                    <td>Data de Início</td>
+                                    <td>Data de Fim</td>
+                                    <td>Descrição</td>
+                                    <td>Portaria</td>
+                                    <td>Curso</td>
                                     <td>
                                         <button class="btn btn-primary">Editar</button>
                                         <button class="btn btn-danger">Remover</button>
@@ -45,7 +47,7 @@
                             </tbody>
                         </table>
                     `;
-                document.getElementById("content").appendChild(listaUsuarios);
+                document.getElementById("content").appendChild(listaColegiados);
             }
         };
         xhr.send();
