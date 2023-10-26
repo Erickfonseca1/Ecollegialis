@@ -1,10 +1,9 @@
-package br.edu.ifpb.pweb2.ecollegialis.repository;
+package br.edu.ifpb.tsi.pweb2.ecollegialis.repository;
 
 
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Aluno;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import br.edu.ifpb.pweb2.ecollegialis.model.Aluno;
-
 public interface AlunoRepository extends JpaRepository<Aluno, Long> {
-    
+
 }

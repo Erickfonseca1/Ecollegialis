@@ -1,10 +1,6 @@
-package br.edu.ifpb.pweb2.ecollegialis.model;
+package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
-
-
-import javax.persistence.Entity;
-
-
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,6 +10,4 @@ import lombok.EqualsAndHashCode;
 @Data
 @AllArgsConstructor
 @Entity
-
-
 public class Aluno extends Usuario {}
