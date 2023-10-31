@@ -49,4 +49,9 @@ public class Colegiado{
     public void addReuniao(Reuniao reuniao) {
         this.reunioesColegiado.add(reuniao);
     }
+
+    //criar um metodo para buscar todos os professores
+    public List<Professor> getProfessores() {
+        return professoresColegiado;
+    }
 }

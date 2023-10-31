@@ -13,6 +13,10 @@ public class AssuntoService {
     @Autowired
     private AssuntoRepository assuntoRepository;
 
+    public List<Assunto> findAllAssuntos() {
+        return assuntoRepository.findAll();
+    }
+
     //CRUD de Assunto
     public Assunto save(Assunto assunto) {
         return assuntoRepository.save(assunto);
@@ -23,7 +27,7 @@ public class AssuntoService {
     }
 
     public Assunto findById(Long id) {
-        return assuntoRepository.findById(id).get();
+        return assuntoRepository.findById(id).orElse(null);
     }
 
     public void update(Assunto assunto) {

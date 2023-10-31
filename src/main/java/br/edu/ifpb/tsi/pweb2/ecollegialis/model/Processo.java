@@ -43,22 +43,18 @@ public class Processo {
     private TipoDecisao decisaoRelator;
 
     @ManyToOne
-    @JoinColumn(name = "assunto_id")
     private Assunto assunto;
 
     @OneToMany
-    @JoinColumn(name = "processo_id")
     private List<Voto> votos;
 
     @ManyToOne
-    @JoinColumn(name = "aluno_id")
-    private Aluno interessado;
+    private Aluno aluno;
 
     private boolean emPauta = false;
 
     @ManyToOne
-    @JoinColumn(name = "professor_id")
-    private Professor relator;
+    private Professor professor;
 
     @ElementCollection
     private List<byte[]> anexos;

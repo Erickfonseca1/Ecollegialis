@@ -12,4 +12,8 @@ public enum StatusEnum {
     public String getStatus(){
         return this.status;
     }
+
+    public String setStatus(String status){
+        return this.status = status;
+    }
 }
