@@ -17,7 +17,6 @@ public class Voto {
 
     @Enumerated(EnumType.ORDINAL)
     private TipoVoto voto;
-
     private boolean ausente;
 
     @ManyToOne

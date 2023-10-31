@@ -22,8 +22,8 @@ public class Professor extends Usuario{
     @OneToMany
     private List<Processo> processos;
 
-    public Professor(Long id, String nome, String fone, String matricula, String senha, boolean coordenador) {
-        super(id, nome, fone, matricula, senha);
+    public Professor(Long id, String nome, String fone, String matricula, String senha, boolean coordenador, boolean admin) {
+        super(id, nome, fone, matricula, senha, admin);
         this.coordenador = coordenador;
     }
     public Professor() {

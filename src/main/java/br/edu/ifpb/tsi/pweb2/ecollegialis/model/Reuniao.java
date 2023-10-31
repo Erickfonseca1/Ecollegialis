@@ -2,6 +2,7 @@ package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
 import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusReuniao;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,10 +22,11 @@ public class Reuniao {
     private Long id;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @FutureOrPresent(message = "A data da reunião deve ser no presente ou no futuro")
     private Date dataReuniao;
 
     @Enumerated(EnumType.ORDINAL)
-    private StatusReuniao reuniao;
+    private StatusReuniao status;
 
     private byte[] ata;
 
@@ -32,7 +34,6 @@ public class Reuniao {
     private Colegiado colegiado;
 
     @OneToMany
-    @JoinColumn(name = "reuniao_id")
     private List<Processo> processos = new ArrayList<>();
 
     public void addProcesso(Processo processo) {
