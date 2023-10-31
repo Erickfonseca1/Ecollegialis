@@ -21,10 +21,10 @@ public class Colegiado{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date dataInicio;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     @Future(message = "Data deve ser futura")
     private Date dataFim;
 
@@ -37,16 +37,16 @@ public class Colegiado{
     @NotBlank(message = "Campo obrigatório")
     private String curso;
 
-//    @OneToMany(mappedBy = "colegiado")
-//    private List<Professor> membros = new ArrayList<>();
+    @OneToMany(mappedBy = "colegiado")
+    private List<Professor> professoresColegiado = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "colegiado")
-//    private List<Reuniao> reunioes = new ArrayList<>();
+    @OneToMany(mappedBy = "colegiado")
+    private List<Reuniao> reunioesColegiado = new ArrayList<>();
 
     @OneToOne
     private Aluno aluno;
 
-//    public void addReuniao(Reuniao reuniao) {
-//        this.reunioes.add(reuniao);
-//    }
+    public void addReuniao(Reuniao reuniao) {
+        this.reunioesColegiado.add(reuniao);
+    }
 }

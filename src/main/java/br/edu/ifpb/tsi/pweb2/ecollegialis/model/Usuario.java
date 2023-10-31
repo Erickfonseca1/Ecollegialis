@@ -18,14 +18,16 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @NotBlank(message = "Campo obrigatório")
     private String nome;
+
     private String fone;
     @NotBlank(message = "Campo obrigatório")
+
     private String matricula;
     @NotBlank(message = "Campo obrigatório")
+
     @Size(min = 3, max = 60, message = "Senha deve ter entre 3 e 60 caracteres")
     private String senha;
-
-
 }
