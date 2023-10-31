@@ -1,45 +1,74 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.controller;
 
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Aluno;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Processo;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.AlunoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
-@RestController
-@RequestMapping("/alunos")
+@Controller
+@RequestMapping("/aluno")
 public class AlunoController {
 
+    private final AlunoService alunoService;
+
+
     @Autowired
-    private AlunoService alunoService;
-
-    @GetMapping("/listar")
-    public List<Aluno> listarAlunos() {
-        return alunoService.listarAlunos();
+    public AlunoController(AlunoService alunoService) {
+        this.alunoService = alunoService;
     }
 
-    @GetMapping("/{id}")
-    public Aluno buscarAlunoPorId(@PathVariable Long id) {
-
-        return alunoService.buscarAlunosPorId(id);
+    @RequestMapping("/form-aluno")
+    public ModelAndView showForm() {
+        ModelAndView mv = new ModelAndView("formAluno");
+        mv.addObject("aluno", new Aluno());
+        return mv;
     }
 
-    @PostMapping("/criar")
-    public ResponseEntity<Object> criarAluno(@RequestBody Aluno aluno) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(alunoService.criarAluno(aluno));
+    @PostMapping("/salvar-aluno")
+    public String salvarAluno(@Valid Aluno aluno, BindingResult result) {
+        if (result.hasErrors()) {
+            return "formAluno";
+        }
+
+        System.out.println(aluno.getId());
+
+        if (aluno.getId() != null) {
+            alunoService.update(aluno);
+        } else {
+            alunoService.save(aluno);
+        }
+
+        return "redirect:/aluno/lista-alunos";
     }
 
-    @DeleteMapping("/remover/{id}")
-    public void removerAluno(@PathVariable Long id) {
-        alunoService.removerAluno(id);
+    @GetMapping("/{id}/editar")
+    public ModelAndView exibirFormularioEdicao(@PathVariable(value = "id") Long id) {
+        Aluno aluno = alunoService.findById(id);
+        ModelAndView modelAndView = new ModelAndView("formAluno");
+        modelAndView.addObject("aluno", aluno);
+        return modelAndView;
     }
 
-    @PutMapping("/atualizar/{id}")
-    public Aluno atualizarAluno(@RequestBody Aluno alunoAtualizado) {
-        return alunoService.atualizarAluno(alunoAtualizado);
+    @GetMapping("/lista-alunos")
+    public ModelAndView listaAlunos() {
+        List<Aluno> alunos = alunoService.findAll();
+        ModelAndView modelAndView = new ModelAndView("listaAlunos");
+        modelAndView.addObject("alunos", alunos);
+        return modelAndView;
     }
+
+    @RequestMapping("/{id}/delete")
+    public ModelAndView deletarAluno(@PathVariable(value = "id") Long id, ModelAndView mv, RedirectAttributes attr) {
+        alunoService.deleteById(id);
+        attr.addFlashAttribute("mensagem", "Aluno removido com sucesso!");
+        mv.setViewName("redirect:/aluno/lista-alunos");
+        return mv;
+    }
+
 }

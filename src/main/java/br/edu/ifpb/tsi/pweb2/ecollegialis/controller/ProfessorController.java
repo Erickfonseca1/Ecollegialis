@@ -2,48 +2,74 @@ package br.edu.ifpb.tsi.pweb2.ecollegialis.controller;
 
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Aluno;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Professor;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Reuniao;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Usuario;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.ProfessorService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-
-@RestController
-@CrossOrigin(origins = "*", maxAge = 3600)
+@Controller
 @RequestMapping("/professor")
-@AllArgsConstructor
 public class ProfessorController {
+
     private final ProfessorService professorService;
 
-    @PostMapping("/criar")
-    public ResponseEntity<Object> criarProfessor(@RequestBody Professor professor){
-        return ResponseEntity.status(HttpStatus.CREATED).body(professorService.criarProfessor(professor));
+    @Autowired
+    public ProfessorController(ProfessorService professorService) {
+        this.professorService = professorService;
+    }
+    @RequestMapping("/form-professor")
+    public ModelAndView showForm() {
+        ModelAndView mv = new ModelAndView("formProfessor");
+        mv.addObject("professor", new Professor());
+        return mv;
     }
 
-    @GetMapping("/listar")
-    public ResponseEntity<Object> listarProfessores(){
-        return ResponseEntity.ok(professorService.listarProfessores());
+    @PostMapping("/salvar-professor")
+    public String salvarProfessor(@Valid Professor professor, BindingResult result) {
+        if (result.hasErrors()) {
+            return "formProfessor";
+        }
+
+        System.out.println(professor.getId());
+
+        if (professor.getId() != null) {
+            professorService.update(professor);
+        } else {
+            professorService.save(professor);
+        }
+
+        return "redirect:/professor/lista-professores";
     }
 
-    @GetMapping("/buscar/{id}")
-    public ResponseEntity<Object> buscarProfessorPorId(@PathVariable Long id){
-        return ResponseEntity.ok(professorService.buscarProfessorPorId(id));
+    @GetMapping("/{id}/editar")
+    public ModelAndView exibirFormularioEdicao(@PathVariable(value = "id") Long id) {
+        Professor professor = professorService.findById(id);
+        ModelAndView modelAndView = new ModelAndView("formProfessor");
+        modelAndView.addObject("professor", professor);
+        return modelAndView;
     }
 
-    @DeleteMapping("/deletar/{id}")
-    public ResponseEntity<Object> deletarProfessor(@PathVariable Long id){
-        professorService.deletarProfessor(id);
-        return ResponseEntity.ok().build();
+    @GetMapping("/lista-professores")
+    public ModelAndView listaProfessores() {
+        List<Professor> professores = professorService.findAll();
+        ModelAndView modelAndView = new ModelAndView("listaProfessores");
+        modelAndView.addObject("professores", professores);
+        return modelAndView;
     }
 
-    @PutMapping("/atualizar/{id}")
-    public ResponseEntity<Object> atualizarProfessor(@Valid @RequestBody Professor professor){
-        return ResponseEntity.ok(professorService.atualizarProfessor(professor));
+    @RequestMapping("{id}/delete")
+    public ModelAndView deletarProfessor(@PathVariable(value = "id") Long id, ModelAndView mv, RedirectAttributes attr) {
+        professorService.deleteById(id);
+        attr.addFlashAttribute("mensagem", "Professor removido com sucesso!");
+        mv.setViewName("redirect:/professor/lista-professores");
+        return mv;
     }
-
 }
