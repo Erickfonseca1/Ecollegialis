@@ -1,6 +1,5 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.controller;
 
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Aluno;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Professor;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.ProfessorService;
 import jakarta.validation.Valid;
