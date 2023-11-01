@@ -31,7 +31,7 @@ public class Reuniao {
     private byte[] ata;
 
     @ManyToOne
-    private Colegiado colegiado;
+    private Colegiado reuniaoColegiado;
 
     @OneToMany
     private List<Processo> processos = new ArrayList<>();

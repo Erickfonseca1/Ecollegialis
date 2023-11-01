@@ -1,35 +1,43 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
-@EqualsAndHashCode(callSuper = true)
 @Data
-@AllArgsConstructor
 @Entity
-public class Aluno extends Usuario {
+public class Aluno {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @OneToMany(mappedBy = "aluno")
-    private List<Processo> processos = new ArrayList<>();
+    @NotBlank(message="Campo obrigatório!")
+    private String nome;
 
-    @OneToOne
-    private Colegiado colegiado;
+    @NotBlank(message="Campo obrigatório!")
+    private String fone;
 
-    public Aluno(Long id, String nome, String fone, String matricula, String senha, boolean admin) {
-        super(id, nome, fone, matricula, senha, admin);
+    @NotBlank(message="Campo obrigatório!")
+    @Pattern(regexp= "[0-9]{11}", message="Por favor, insira uma matrícula válida! (11 dígitos)")
+    private String matricula;
+
+    @NotBlank(message="Campo obrigatório!")
+    @Size(min=3, max=25 ,message="A senha deverá ter pelo menos 3 caracteres e no máximo 25")
+    private String senha;
+
+    @OneToMany(mappedBy = "alunoProcesso")
+    private List<Processo> listaProcessos;
+
+    public Aluno(){}
+
+    public void adicionarProcesso(Processo processo){
+        this.listaProcessos.add(processo);
     }
 
-    public Aluno() {}
-
-    public void addProcesso(Processo processo) {
-        this.processos.add(processo);
-    }
 }

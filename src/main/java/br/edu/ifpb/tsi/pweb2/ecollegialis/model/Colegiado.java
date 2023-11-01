@@ -1,57 +1,44 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-public class Colegiado{
+public class Colegiado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date dataInicio;
-
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    @Future(message = "Data deve ser futura")
     private Date dataFim;
 
-    @NotBlank(message = "Campo obrigatório")
+    @NotBlank(message="Campo obrigatório!")
     private String descricao;
 
-    @NotBlank(message = "Campo obrigatório")
     private String portaria;
 
-    @NotBlank(message = "Campo obrigatório")
+    @NotBlank(message="Campo obrigatório!")
     private String curso;
 
-    @OneToMany(mappedBy = "colegiado")
-    private List<Professor> professoresColegiado = new ArrayList<>();
+    @ManyToMany
+    private List<Professor> professorColegiado;
 
-    @OneToMany(mappedBy = "colegiado")
-    private List<Reuniao> reunioesColegiado = new ArrayList<>();
+    @OneToMany(mappedBy = "colegiadoProcesso")
+    private List<Processo> processos;
 
-    @OneToOne
-    private Aluno aluno;
+    @OneToMany(mappedBy = "reuniaoColegiado")
+    private List<Reuniao> reunioes = new ArrayList<>();
 
-    public void addReuniao(Reuniao reuniao) {
-        this.reunioesColegiado.add(reuniao);
+    public Colegiado(){}
+
+    public Colegiado(List<Professor> professores){
+        this.professorColegiado = professores;
     }
 
-    //criar um metodo para buscar todos os professores
-    public List<Professor> getProfessores() {
-        return professoresColegiado;
-    }
 }

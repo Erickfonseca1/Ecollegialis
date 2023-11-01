@@ -5,12 +5,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class Assunto {
@@ -21,7 +19,8 @@ public class Assunto {
     @NotBlank(message = "O campo 'nome' é obrigatório.")
     @Size(min=5, max = 40, message = "O nome deve ter entre 5 e 40 caracteres!")
     private String nome;
+    public Assunto(){}
 
-    @OneToMany
+    @OneToMany(mappedBy = "assuntoProcesso")
     private List<Processo> processos;
 }
