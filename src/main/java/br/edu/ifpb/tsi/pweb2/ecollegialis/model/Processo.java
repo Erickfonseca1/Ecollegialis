@@ -45,7 +45,7 @@ public class Processo {
     @Enumerated(EnumType.STRING)
     private TipoDecisao tipoDecisao;
 
-    @OneToMany(mappedBy = "votoProcesso")
+    @OneToMany(mappedBy = "votoProcesso") // verificar cascade
     private List<Voto> listaDeVotos;
 
     @NotBlank(message="Campo obrigatório!")

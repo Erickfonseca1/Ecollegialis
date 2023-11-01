@@ -21,6 +21,6 @@ public class Assunto {
     private String nome;
     public Assunto(){}
 
-    @OneToMany(mappedBy = "assuntoProcesso")
+    @OneToMany(mappedBy = "assuntoProcesso") // verificar cascade
     private List<Processo> processos;
 }

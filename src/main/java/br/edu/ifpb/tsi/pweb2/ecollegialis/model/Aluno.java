@@ -31,7 +31,7 @@ public class Aluno {
     @Size(min=3, max=25 ,message="A senha deverá ter pelo menos 3 caracteres e no máximo 25")
     private String senha;
 
-    @OneToMany(mappedBy = "alunoProcesso")
+    @OneToMany(mappedBy = "alunoProcesso", cascade = {CascadeType.REMOVE, CascadeType.MERGE}) // verificar o cascade
     private List<Processo> listaProcessos;
 
     public Aluno(){}

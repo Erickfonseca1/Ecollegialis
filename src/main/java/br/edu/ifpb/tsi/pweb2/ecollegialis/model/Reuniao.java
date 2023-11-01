@@ -33,7 +33,7 @@ public class Reuniao {
     @ManyToOne
     private Colegiado reuniaoColegiado;
 
-    @OneToMany
+    @OneToMany // verificar mapeamento e cascade
     private List<Processo> processos = new ArrayList<>();
 
     public void addProcesso(Processo processo) {

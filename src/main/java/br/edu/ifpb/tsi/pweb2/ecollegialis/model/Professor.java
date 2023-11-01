@@ -28,10 +28,10 @@ public class Professor {
     @Size(min=3, max=42 ,message="A senha deverá ter pelo menos 3 caracteres e no máximo 42")
     protected String senha;
 
-    @OneToMany(mappedBy = "professorRelator")
+    @OneToMany(mappedBy = "professorRelator") // verificar cascade
     protected List<Processo> listaDeProcessos;
 
-    @ManyToMany(mappedBy = "professorColegiado")
+    @ManyToMany(mappedBy = "professorColegiado") // verificar cascade
     protected List<Colegiado> listaColegiados;
 
     public Professor(){}
