@@ -1,7 +1,16 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.service;
 
+import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusReuniao;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.TipoDecisao;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Processo;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Professor;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Reuniao;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Usuario;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ProcessoRepository;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ProfessorRepository;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ReuniaoRepository;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.VotoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,49 +21,63 @@ import java.util.List;
 public class ProfessorService {
 
     @Autowired
+    private ProcessoRepository processoRepository;
+
+    @Autowired
+    private VotoRepository votoRepository;
+
+    @Autowired
     private ProfessorRepository professorRepository;
 
-    public List<Professor> findAllProfessores() {
-        return professorRepository.findAll();
+    @Autowired
+    private ReuniaoRepository reuniaoRepository;
+
+    public List<Processo> listarProcessosDesignados(Usuario professor){
+        return processoRepository.findAllByRelatorId(professor.getId());
     }
 
-    public List<Professor> findProfessoresWithProcesso() {
-        List<Professor> professores = new ArrayList<Professor>();
-        for (Professor professor : professorRepository.findAll()) {
-            if (!professor.getListaDeProcessos().isEmpty()) {
-                professores.add(professor);
-            }
+    @Transactional
+    public void votar(Processo processo) {
+        Processo processpBD = processoRepository.findById(processo.getId()).get();
+        processpBD.setTipoDecisao(processo.getTipoDecisao());
+        processpBD.setTextoRelator(processo.getTextoRelator());
+        processoRepository.save(processpBD);
+
+    }
+
+
+    public List<Reuniao> listarReunioes(Usuario professor) {
+        return reuniaoRepository.AllReunioesByProfessorAndColegiado(professor.getId());
+
+    }
+
+    public List<Reuniao> listarReunioesByStatus(Usuario professor, StatusReuniao status) {
+        if (status.equals(StatusReuniao.SEM_FILTRO)) {
+            return listarReunioes(professor);
         }
-        return professores;
+        return reuniaoRepository.AllReunioesByProfessorAndColegiadoAndStatus(professor.getId(), status);
     }
 
-    public List<Professor> findProfessorWithColegiado(){
-        List<Professor> professores = new ArrayList<Professor>();
-        for (Professor professor : professorRepository.findAll()) {
-            if (professor.getListaColegiados() != null) {
-                professores.add(professor);
-            }
+
+    public Processo buscarProcesso(Long id) {
+        return processoRepository.findById(id).get();
+    }
+
+
+    @Transactional
+    public void votar(Long id, String voto, String justificativa) {
+        Processo processo = processoRepository.findById(id).get();
+        TipoDecisao tipoDecisao = null;
+        if (voto.equals("deferir")) {
+            tipoDecisao = TipoDecisao.DEFERIMENTO;
         }
-        return professores;
-    }
+        else {
+            tipoDecisao = TipoDecisao.INDEFERIMENTO;
+        }
 
-    public Professor save(Professor professor) {
-        return professorRepository.save(professor);
-    }
+        processo.setTipoDecisao(tipoDecisao);
+        processo.setTextoRelator(justificativa);
+        processoRepository.save(processo);
 
-    public Professor findById(Long id) {
-        return professorRepository.findById(id).orElse(null);
-    }
-
-    public List<Professor> findAll() {
-        return professorRepository.findAll();
-    }
-
-    public void deleteById(Long id) {
-        professorRepository.deleteById(id);
-    }
-
-    public void update(Professor professor) {
-        professorRepository.save(professor);
     }
 }
