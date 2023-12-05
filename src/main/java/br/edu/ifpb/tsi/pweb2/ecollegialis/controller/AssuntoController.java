@@ -25,7 +25,7 @@ public class AssuntoController {
 
     @RequestMapping("/form-assunto")
     public ModelAndView showForm() {
-        ModelAndView mv = new ModelAndView("formAssunto");
+        ModelAndView mv = new ModelAndView("Assunto/formAssunto");
         mv.addObject("assunto", new Assunto());
         return mv;
     }
@@ -33,7 +33,7 @@ public class AssuntoController {
     @PostMapping("/salvar-assunto")
     public String salvarAssunto(@Valid Assunto assunto, BindingResult result) {
         if (result.hasErrors()) {
-            return "formAssunto";
+            return "Assunto/formAssunto";
         }
 
         assuntoService.save(assunto);
@@ -43,7 +43,7 @@ public class AssuntoController {
     @GetMapping("/lista-assuntos")
     public ModelAndView listaAssuntos() {
         List<Assunto> assuntos = assuntoService.findAll();
-        ModelAndView modelAndView = new ModelAndView("listaAssuntos");
+        ModelAndView modelAndView = new ModelAndView("Assunto/listaAssuntos");
         modelAndView.addObject("assuntos", assuntos);
         return modelAndView;
     }

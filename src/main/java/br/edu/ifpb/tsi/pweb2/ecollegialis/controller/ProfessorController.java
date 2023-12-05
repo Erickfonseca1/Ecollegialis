@@ -26,7 +26,7 @@ public class ProfessorController {
     }
     @RequestMapping("/form-professor")
     public ModelAndView showForm() {
-        ModelAndView mv = new ModelAndView("formProfessor");
+        ModelAndView mv = new ModelAndView("Professor/formProfessor");
         mv.addObject("professor", new Professor());
         return mv;
     }
@@ -34,7 +34,7 @@ public class ProfessorController {
     @PostMapping("/salvar-professor")
     public String salvarProfessor(@Valid Professor professor, BindingResult result) {
         if (result.hasErrors()) {
-            return "formProfessor";
+            return "Professor/formProfessor";
         }
 
         System.out.println(professor.getId());
@@ -51,7 +51,7 @@ public class ProfessorController {
     @GetMapping("/{id}/editar")
     public ModelAndView exibirFormularioEdicao(@PathVariable(value = "id") Long id) {
         Professor professor = professorService.findById(id);
-        ModelAndView modelAndView = new ModelAndView("formProfessor");
+        ModelAndView modelAndView = new ModelAndView("Professor/formProfessor");
         modelAndView.addObject("professor", professor);
         return modelAndView;
     }
@@ -59,7 +59,7 @@ public class ProfessorController {
     @GetMapping("/lista-professores")
     public ModelAndView listaProfessores() {
         List<Professor> professores = professorService.findAll();
-        ModelAndView modelAndView = new ModelAndView("listaProfessores");
+        ModelAndView modelAndView = new ModelAndView("Professor/listaProfessores");
         modelAndView.addObject("professores", professores);
         return modelAndView;
     }

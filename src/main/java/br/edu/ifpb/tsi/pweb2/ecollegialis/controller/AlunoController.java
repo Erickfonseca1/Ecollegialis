@@ -22,7 +22,7 @@ public class AlunoController {
 
     @RequestMapping("/form-aluno")
     public ModelAndView showForm() {
-        ModelAndView mv = new ModelAndView("formAluno");
+        ModelAndView mv = new ModelAndView("Aluno/formAluno");
         mv.addObject("aluno", new Aluno());
         return mv;
     }
@@ -30,7 +30,7 @@ public class AlunoController {
     @PostMapping("/salvar-aluno")
     public String salvarAluno(@Valid Aluno aluno, BindingResult result) {
         if (result.hasErrors()) {
-            return "formAluno";
+            return "Aluno/formAluno";
         }
 
         System.out.println(aluno.getId());
