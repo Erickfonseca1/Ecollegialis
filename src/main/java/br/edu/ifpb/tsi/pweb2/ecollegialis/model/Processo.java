@@ -4,6 +4,8 @@ import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusEnum;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.TipoDecisao;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,57 +13,73 @@ import java.util.Date;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Processo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-
     private String numero;
-    private Date dataCriacao;
+    private Date dataRecepcao;
     private Date dataDistribuicao;
     private Date dataParecer;
     private byte[] parecer;
-    private byte[] documento;
 
-    @ManyToOne
-    private Professor professorRelator;
 
-    @ManyToOne
-    private Aluno alunoProcesso;
+    @Size(min = 0, max = 500, message = "O texto deve ter no máximo 500 caracteres")
+    private String textoRelator;
 
-    @ManyToOne
-    private Colegiado colegiadoProcesso;
-
-    @ManyToOne
-    private Assunto assuntoProcesso;
+    @NotBlank(message = "O texto não pode ser vazio")
+    @Size(min = 6, max = 500, message = "O texto deve ter entre 6 e 500 caracteres")
+    private String textoAluno;
 
     @Enumerated(EnumType.STRING)
-    private TipoDecisao tipoDecisao;
+    private StatusEnum status;
 
-    @OneToMany(mappedBy = "votoProcesso") // verificar cascade
-    private List<Voto> listaDeVotos;
+    @Enumerated(EnumType.ORDINAL)
+    private TipoDecisao decisaoRelator;
 
-    @NotBlank(message="Campo obrigatório!")
-    private String textoRequerimento;
+    @ManyToOne
+    @JoinColumn(name = "assunto_id")
+    private Assunto assunto;
 
-    @Enumerated(EnumType.STRING)
-    private StatusEnum estadoProcesso;
+    @OneToMany
+    @JoinColumn(name = "processo_id")
+    private List<Voto> votos;
 
-    public Processo( Aluno aluno, Assunto assunto, String textoRequerimento, Colegiado colegiado) {
-        this.alunoProcesso = aluno;
-        this.estadoProcesso = StatusEnum.CRIADO;
-        this.dataCriacao = new Date();
-        this.assuntoProcesso = assunto;
-        this.textoRequerimento = textoRequerimento;
-        this.colegiadoProcesso = colegiado;
+    @ManyToOne
+    @JoinColumn(name = "aluno_id")
+    private Aluno interessado;
+
+    private boolean emPauta = false;
+
+    @ManyToOne
+    @JoinColumn(name = "professor_id")
+    private Professor relator;
+
+    @ManyToOne
+    @JoinColumn(name = "curso_id")
+    private Curso curso;
+
+    @ElementCollection
+    private List<byte[]> anexos;
+
+    public void addAnexos(byte[] anexo) {
+        this.anexos.add(anexo);
     }
 
-    public Processo(Aluno aluno,Assunto assunto){
-        this.alunoProcesso = aluno;
-        this.assuntoProcesso = assunto;
+    public void addVoto(Voto voto) {
+        this.votos.add(voto);
     }
+
+    public void setTipoDecisao(TipoDecisao decisaoRelator) {
+        this.decisaoRelator = decisaoRelator;
+    }
+
+    public TipoDecisao getTipoDecisao() {
+        return this.decisaoRelator;
+    }
+
 
 }
