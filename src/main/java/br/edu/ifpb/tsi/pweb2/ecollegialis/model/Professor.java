@@ -1,47 +1,32 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+
+@EqualsAndHashCode(callSuper = true)
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-public class Professor {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Professor extends Usuario{
 
-    @NotBlank(message="Campo obrigatório!")
-    protected String nome;
+    @ManyToOne
+    @JoinColumn(name="colegiado_id")
+    private Colegiado colegiado;
+    private boolean coordenador;
 
-    @NotBlank(message="Campo obrigatório!")
-    protected String fone;
+    @OneToMany(mappedBy = "professor")
+    private List<Voto> votos;
 
-    @NotBlank(message="Campo obrigatório!")
-    @Pattern(regexp= "[0-9]{6}", message="Matrícula deve conter exatamente 6 números!")
-    protected String matricula;
+    @OneToMany(mappedBy = "relator")
+    private List<Processo> processos;
 
-    @Size(min=3, max=42 ,message="A senha deverá ter pelo menos 3 caracteres e no máximo 42")
-    protected String senha;
 
-    @OneToMany(mappedBy = "professorRelator") // verificar cascade
-    protected List<Processo> listaDeProcessos;
-
-    @ManyToMany(mappedBy = "professorColegiado") // verificar cascade
-    protected List<Colegiado> listaColegiados;
-
-    public Professor(){}
-
-    public void adicionarProcesso(Processo processo){
-        this.listaDeProcessos.add(processo);
-    }
-
-    public void adicionarColegiado(Colegiado colegiado){
-        this.listaColegiados.add(colegiado);
-    }
 
 }

@@ -6,22 +6,21 @@ import jakarta.validation.constraints.FutureOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Reuniao {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
     @FutureOrPresent(message = "A data da reunião deve ser no presente ou no futuro")
     private Date dataReuniao;
 
@@ -30,11 +29,12 @@ public class Reuniao {
 
     private byte[] ata;
 
-    @ManyToOne
-    private Colegiado reuniaoColegiado;
+    @OneToMany()
+    @JoinColumn(name = "reuniao_id")
+    private List<Processo> processos;
 
-    @OneToMany // verificar mapeamento e cascade
-    private List<Processo> processos = new ArrayList<>();
+    @ManyToOne
+    private Colegiado colegiado;
 
     public void addProcesso(Processo processo) {
         this.processos.add(processo);
