@@ -1,6 +1,7 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.controller;
 
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Assunto;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.service.AssuntoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

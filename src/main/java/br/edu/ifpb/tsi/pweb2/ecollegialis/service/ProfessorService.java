@@ -36,6 +36,26 @@ public class ProfessorService {
         return processoRepository.findAllByRelatorId(professor.getId());
     }
 
+    public void save(Professor professor) {
+        professorRepository.save(professor);
+    }
+
+    public void update(Professor professor) {
+        professorRepository.save(professor);
+    }
+
+
+    public Professor findById(Long id) {
+        return professorRepository.findById(id).get();
+    }
+    public List<Professor> findAll() {
+        return professorRepository.findAll();
+    }
+
+    public void deleteById(Long id) {
+        professorRepository.deleteById(id);
+    }
+
     @Transactional
     public void votar(Processo processo) {
         Processo processpBD = processoRepository.findById(processo.getId()).get();

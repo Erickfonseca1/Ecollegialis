@@ -26,8 +26,8 @@ public class Coordenador{
         this.curso = curso;
     }
 
-    public void delegarProcesso(Processo processo, Professor professor){
+    /* public void delegarProcesso(Processo processo, Professor professor){
         professor.adicionarProcesso(processo);
-    }
+    } */
 
 }

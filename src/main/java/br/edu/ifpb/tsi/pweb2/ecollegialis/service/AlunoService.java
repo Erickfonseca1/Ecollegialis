@@ -100,4 +100,12 @@ public class AlunoService {
         processo.addAnexos(anexo);
         processoRepository.save(processo);
     }
+
+    public void update(Aluno aluno) {
+        alunoRepository.save(aluno);
+    }
+
+    public void save(Aluno aluno) {
+        alunoRepository.save(aluno);
+    }
 }
