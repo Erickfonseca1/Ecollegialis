@@ -112,4 +112,12 @@ public class AlunoService {
     public List<Aluno> findAll() {
         return alunoRepository.findAll();
     }
+
+    public Aluno findById(Long id) {
+        return alunoRepository.findById(id).get();
+    }
+
+    public void delete(Long id) {
+        alunoRepository.deleteById(id);
+    }
 }
