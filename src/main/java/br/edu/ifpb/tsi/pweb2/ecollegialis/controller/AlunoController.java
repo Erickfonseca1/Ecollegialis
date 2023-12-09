@@ -47,6 +47,14 @@ public class AlunoController {
         return mv;
     }
 
+    // @GetMapping("/new")
+    // public ModelAndView current(ModelAndView modelAndView, Aluno aluno) {
+    //     modelAndView.setViewName("alunos/new");
+    //     modelAndView.addObject("aluno", aluno);
+
+    //     return modelAndView;
+    // }
+
     @GetMapping("/list")
     public ModelAndView listaAlunos() {
         List<Aluno> alunos = alunoService.findAll();
@@ -71,46 +79,36 @@ public class AlunoController {
         return mv;
     }
 
-    @GetMapping("/new")
-    public ModelAndView current(ModelAndView modelAndView, Aluno aluno) {
-        modelAndView.setViewName("alunos/new");
-        modelAndView.addObject("aluno", aluno);
-
-        return modelAndView;
-    }
+    
 
     @GetMapping("/{id}/edit")
-    public ModelAndView edit(@PathVariable Long id, ModelAndView modelAndView, RedirectAttributes attr) {
-        try {
-            Aluno aluno = alunoService.findById(id);
-
-            var request = new Aluno();
-
-            modelAndView.setViewName("alunos/edit");
-            modelAndView.addObject("alunoId", aluno.getId());
-            modelAndView.addObject("aluno", request);
-
-        } catch (Exception e) {
-            attr.addFlashAttribute("message", "Error: "+e);
-            attr.addFlashAttribute("error", "true");
-            modelAndView.setViewName("redirect:/alunos");
-        }
-
+    public ModelAndView exibirFormularioEdicao(@PathVariable(value = "id") Long id) {
+        Aluno aluno = alunoService.findById(id);
+        ModelAndView modelAndView = new ModelAndView("Aluno/formAluno");
+        modelAndView.addObject("aluno", aluno);
         return modelAndView;
     }
 
-    @GetMapping("/{id}/delete")
+    // @PostMapping("/{id}/delete")
+    // public ModelAndView deletarAluno(@PathVariable(value = "id") Long id, ModelAndView mv, RedirectAttributes attr) {
+    //     alunoService.deleteById(id);
+    //     attr.addFlashAttribute("mensagem", "Aluno removido com sucesso!");
+    //     mv.setViewName("redirect:/aluno/list");
+    //     return mv;
+    // }
+
+    @PostMapping("/{id}/delete")
     public ModelAndView deletarAluno(ModelAndView modelAndView, @PathVariable (value = "id") Long id, RedirectAttributes attr){
         try {
             var alunoExistente = alunoService.findById(id);
             alunoService.delete(alunoExistente.getId());
             attr.addFlashAttribute("message", "OK: Aluno excluído com sucesso!");
             attr.addFlashAttribute("error", "false");
-            modelAndView.setViewName("redirect:/alunos");
+            modelAndView.setViewName("redirect:/aluno/list");
         } catch (Exception e) {
             attr.addFlashAttribute("message", "Error: "+e);
             attr.addFlashAttribute("error", "true");
-            modelAndView.setViewName("redirect:/alunos");
+            modelAndView.setViewName("redirect:/aluno/list");
         }
 
         return modelAndView;

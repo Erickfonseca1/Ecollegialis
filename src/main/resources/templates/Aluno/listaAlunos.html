@@ -29,7 +29,7 @@
 <div class="container">
     <h1 class="text-center">Lista de Alunos</h1>
     <div class="btn-novo-aluno">
-        <a th:href="@{/aluno/form-aluno}" class="btn btn-primary">Adicionar aluno</a>
+        <a th:href="@{/aluno/new}" class="btn btn-primary">Adicionar aluno</a>
     </div>
     <table class="table table-dark table-striped">
         <thead>
@@ -49,7 +49,7 @@
             <td th:text="${aluno.fone}"></td>
             <td>
                 <div class="btn-group">
-                    <a th:href="@{/aluno/{id}/editar(id=${aluno.id})}" class="btn btn-warning mx-1">Editar</a>
+                    <a th:href="@{/aluno/{id}/edit(id=${aluno.id})}" class="btn btn-warning mx-1">Editar</a>
                     <form th:action="@{/aluno/{id}/delete(id=${aluno.id})}" method="post">
                         <button type="submit" class="btn btn-danger">Deletar</button>
                     </form>

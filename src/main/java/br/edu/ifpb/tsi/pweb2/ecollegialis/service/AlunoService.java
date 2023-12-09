@@ -120,4 +120,8 @@ public class AlunoService {
     public void delete(Long id) {
         alunoRepository.deleteById(id);
     }
+    
+    public void deleteById(Long id) {
+        alunoRepository.deleteById(id);
+    }
 }
