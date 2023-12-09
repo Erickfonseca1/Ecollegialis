@@ -10,9 +10,7 @@
 <header th:replace="~{layouts :: header('Formulário Processo')}"></header>
 <body>
     <div class="container">
-
-        <!-- Adicione o contexto do Thymeleaf ao formulário -->
-        <form th:object="${processo}" method="post" action="/salvar-processo">
+        <form th:object="${processo}" method="post" action="@{/salvar-processo}">
             <!-- Campos do formulário -->
 
             <label for="assunto-input" class="form-label">Assunto:</label>
@@ -21,7 +19,7 @@
             </select>
             <!-- Adicione outros campos do seu modelo aqui -->
 
-            <button type="submit" class="btn">Salvar</button>
+            <button type="submit" class="btn mt-3" style="background-color: #236da3; color: #fff;">Salvar</button>
         </form>
     </div>
 
