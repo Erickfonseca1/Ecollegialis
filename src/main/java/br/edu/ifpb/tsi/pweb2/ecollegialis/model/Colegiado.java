@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -24,13 +25,15 @@ public class Colegiado {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+
+    @NotBlank(message = "Campo obrigatório")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     @PastOrPresent(message = "A data de início deve ser a data atual")
-    private Date dataInicio;
+    private LocalDate dataInicio;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @FutureOrPresent(message = "A data de fim deve ser a data atual ou posterior")
-    private Date dataFim;
+    private LocalDate dataFim;
 
     @NotBlank(message = "Campo obrigatório")
     @Size(min = 5, max = 500, message = "A descrição deve ter entre 5 e 500 caracteres")
