@@ -2,6 +2,7 @@ package br.edu.ifpb.tsi.pweb2.ecollegialis.controller;
 
 import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusEnum;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Aluno;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Assunto;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.AssuntoRepository;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.AlunoService;
 import jakarta.servlet.http.HttpSession;

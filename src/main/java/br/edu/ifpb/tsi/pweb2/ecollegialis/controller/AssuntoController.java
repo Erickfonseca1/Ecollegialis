@@ -55,5 +55,4 @@ public class AssuntoController {
         mv.setViewName("redirect:/assunto/lista-assuntos");
         return mv;
     }
-
 }

@@ -6,21 +6,22 @@
     <title>Formulário de Processo</title>
     <!-- Adicione os estilos ou links necessários, como Bootstrap, aqui -->
 </head>
+<head th:replace="~{layouts :: head('Processo')}"></head>
+<header th:replace="~{layouts :: header('Formulário Processo')}"></header>
 <body>
     <div class="container">
-        <h1>Formulário de Processo</h1>
 
         <!-- Adicione o contexto do Thymeleaf ao formulário -->
         <form th:object="${processo}" method="post" action="/salvar-processo">
             <!-- Campos do formulário -->
 
             <label for="assunto-input" class="form-label">Assunto:</label>
-            <select class="form-select" th:field="*{assunto.id}" id="assunto-input">
-              <option th:each="ass : ${assuntoItens}" th:value="${ass.id}" th:text="${ass.nome}"></option>
+            <select class="form-select" id="assunto" name="assunto">
+              <option th:each="assunto : ${assuntos}" th:value="${assunto.id}" th:text="${assunto.nome}"></option>
             </select>
             <!-- Adicione outros campos do seu modelo aqui -->
 
-            <button type="submit">Salvar</button>
+            <button type="submit" class="btn">Salvar</button>
         </form>
     </div>
 
