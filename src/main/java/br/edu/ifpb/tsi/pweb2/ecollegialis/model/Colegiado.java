@@ -52,6 +52,9 @@ public class Colegiado {
     @OneToMany(mappedBy = "colegiado")
     private List<Reuniao> reunioes;
 
+    public Colegiado(Colegiado colegiado) {
+    }
+
     public void addReuniao(Reuniao reuniao) {
         this.reunioes.add(reuniao);
     }
