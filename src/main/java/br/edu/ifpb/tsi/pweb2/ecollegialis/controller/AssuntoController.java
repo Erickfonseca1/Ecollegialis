@@ -33,11 +33,11 @@ public class AssuntoController {
     @PostMapping("/salvar-assunto")
     public String salvarAssunto(@Valid Assunto assunto, BindingResult result) {
         if (result.hasErrors()) {
-            return "Assunto/formAssunto";
+            return "Assunto/list";
         }
 
         assuntoService.save(assunto);
-        return "redirect:/assunto/form-assunto";
+        return "redirect:/assunto/list";
     }
 
     @GetMapping("/list")
