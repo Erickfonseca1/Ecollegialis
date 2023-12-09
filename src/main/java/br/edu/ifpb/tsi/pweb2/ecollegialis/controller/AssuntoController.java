@@ -23,7 +23,7 @@ public class AssuntoController {
         this.assuntoService = assuntoService;
     }
 
-    @RequestMapping("/form-assunto")
+    @GetMapping("/new")
     public ModelAndView showForm() {
         ModelAndView mv = new ModelAndView("Assunto/formAssunto");
         mv.addObject("assunto", new Assunto());
@@ -40,7 +40,7 @@ public class AssuntoController {
         return "redirect:/assunto/form-assunto";
     }
 
-    @GetMapping("/lista-assuntos")
+    @GetMapping("/list")
     public ModelAndView listaAssuntos() {
         List<Assunto> assuntos = assuntoService.findAll();
         ModelAndView modelAndView = new ModelAndView("Assunto/listaAssuntos");
