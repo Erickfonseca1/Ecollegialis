@@ -1,15 +1,17 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.controller;
 
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Colegiado;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Processo;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Professor;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.service.ColegiadoService;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.service.ProcessoService;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.ProfessorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -17,58 +19,164 @@ import java.util.List;
 @Controller
 @RequestMapping("/professor")
 public class ProfessorController {
-
-    private final ProfessorService professorService;
+    @Autowired
+    private ProfessorService professorService;
 
     @Autowired
-    public ProfessorController(ProfessorService professorService) {
-        this.professorService = professorService;
-    }
-    @RequestMapping("/form-professor")
-    public ModelAndView showForm() {
-        ModelAndView mv = new ModelAndView("Professor/formProfessor");
-        mv.addObject("professor", new Professor());
-        return mv;
-    }
+    private ColegiadoService colegiadoService;
 
-    @PostMapping("/salvar-professor")
-    public String salvarProfessor(@Valid Professor professor, BindingResult result) {
-        if (result.hasErrors()) {
-            return "Professor/formProfessor";
-        }
+    @Autowired
+    private ProcessoService processoService;
 
-        System.out.println(professor.getId());
-
-        if (professor.getId() != null) {
-            professorService.update(professor);
-        } else {
-            professorService.save(professor);
-        }
-
-        return "redirect:/professor/lista-professores";
-    }
-
-    @GetMapping("/{id}/editar")
-    public ModelAndView exibirFormularioEdicao(@PathVariable(value = "id") Long id) {
-        Professor professor = professorService.findById(id);
-        ModelAndView modelAndView = new ModelAndView("Professor/formProfessor");
-        modelAndView.addObject("professor", professor);
-        return modelAndView;
-    }
-
-    @GetMapping("/lista-professores")
-    public ModelAndView listaProfessores() {
+    @GetMapping
+    public ModelAndView getProfessores(ModelAndView modelAndView) {
         List<Professor> professores = professorService.findAll();
-        ModelAndView modelAndView = new ModelAndView("Professor/listaProfessores");
+
+        modelAndView.setViewName("professores/index");
         modelAndView.addObject("professores", professores);
+
+
         return modelAndView;
     }
 
-    @RequestMapping("{id}/delete")
-    public ModelAndView deletarProfessor(@PathVariable(value = "id") Long id, ModelAndView mv, RedirectAttributes attr) {
-        professorService.deleteById(id);
-        attr.addFlashAttribute("mensagem", "Professor removido com sucesso!");
-        mv.setViewName("redirect:/professor/lista-professores");
-        return mv;
+    @GetMapping("/new")
+    public ModelAndView current(ModelAndView modelAndView, Professor professor) {
+
+        List<Colegiado> colegiados = colegiadoService.findAll();
+
+        modelAndView.setViewName("professores/new");
+        modelAndView.addObject("professorDTO", professor);
+        modelAndView.addObject("colegiados", colegiados);
+
+        return modelAndView;
+    }
+
+    @GetMapping("/{id}/delete")
+    public ModelAndView deletarProfessor(ModelAndView modelAndView, @PathVariable (value = "id") Long id, RedirectAttributes attr){
+        try {
+            var professorExistente = professorService.findById(id);
+            professorService.deleteById(professorExistente.getId());
+            attr.addFlashAttribute("message", "OK: Professor excluído com sucesso!");
+            attr.addFlashAttribute("error", "false");
+            modelAndView.setViewName("redirect:/professores");
+        } catch (Exception e) {
+            attr.addFlashAttribute("message", "Error: "+e);
+            attr.addFlashAttribute("error", "true");
+            modelAndView.setViewName("redirect:/professores");
+        }
+
+        return modelAndView;
+    }
+
+    @GetMapping("/{id}/edit")
+    public ModelAndView edit(@PathVariable Long id, ModelAndView modelAndView, RedirectAttributes attr) {
+        try {
+            Professor professor = professorService.findById(id);
+
+            var request = new Professor();
+
+            modelAndView.setViewName("professores/edit");
+            modelAndView.addObject("professorId", professor.getId());
+            modelAndView.addObject("professor", request);
+
+        } catch (Exception e) {
+            attr.addFlashAttribute("message", "Error: "+e);
+            attr.addFlashAttribute("error", "true");
+            modelAndView.setViewName("redirect:/professores");
+        }
+
+        return modelAndView;
+    }
+
+    @GetMapping("/{id}/atribuir")
+    public ModelAndView atribuirprocesso(@PathVariable Long id, ModelAndView modelAndView, RedirectAttributes attr) {
+        try {
+            Professor professor = professorService.findById(id);
+            List<Professor> professores = professorService.findAll();
+            List<Processo> processos = processoService.findAll();
+            List<Colegiado> colegiados = colegiadoService.findAll();
+
+            var request = new Professor();
+
+            modelAndView.setViewName("professores/atribuirprocesso");
+            modelAndView.addObject("professorId", professor.getId());
+            modelAndView.addObject("professor", request);
+            modelAndView.addObject("professores", professores);
+            modelAndView.addObject("processos", processos);
+            modelAndView.addObject("colegiados", colegiados);
+            modelAndView.addObject("professorNome", professor.getNome());
+
+        } catch (Exception e) {
+            attr.addFlashAttribute("message", "Error: "+e);
+            attr.addFlashAttribute("error", "true");
+            modelAndView.setViewName("redirect:/professores");
+        }
+
+        return modelAndView;
+    }
+
+    @GetMapping ("{id}/adicionarcolegiado")
+    public ModelAndView adicionarcolegiado(@PathVariable Long id, ModelAndView modelAndView, RedirectAttributes attr) {
+        try {
+            Professor professor = professorService.findById(id);
+            List<Professor> professores = professorService.findAll();
+            List<Colegiado> colegiados = colegiadoService.findAll();
+
+            var request = new Professor();
+
+            modelAndView.setViewName("professores/atribuircolegiado");
+            modelAndView.addObject("professorId", professor.getId());
+            modelAndView.addObject("professor", request);
+            modelAndView.addObject("professores", professores);
+            modelAndView.addObject("colegiados", colegiados);
+
+        } catch (Exception e) {
+            attr.addFlashAttribute("message", "Error: "+e);
+            attr.addFlashAttribute("error", "true");
+            modelAndView.setViewName("redirect:/professores");
+        }
+
+        return modelAndView;
+    }
+
+    @PostMapping("/{id}")
+    public ModelAndView atualizarProfessor(ModelAndView modelAndView, @PathVariable Long id, @Valid Professor professor, BindingResult bindingResult, RedirectAttributes attr){
+
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("redirect:/professores/{id}/edit");
+        } else {
+
+            attr.addFlashAttribute("message", "OK: Professor editado com sucesso!");
+            attr.addFlashAttribute("error", "false");
+            professorService.update(professor, id);
+
+            modelAndView.setViewName("redirect:/professores");
+        }
+
+        return modelAndView;
+    }
+
+    @PostMapping("/{id}/atribuirprocesso")
+    public ModelAndView atribuirprocesso(ModelAndView modelAndView, @PathVariable Long id, @Valid Professor professorObj, BindingResult bindingResult, RedirectAttributes attr){
+
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("redirect:/professores/{id}/edit");
+        } else {
+
+            attr.addFlashAttribute("message", "OK: Professor editado com sucesso!");
+            attr.addFlashAttribute("error", "false");
+            professorService.update(professorObj, id);
+
+            modelAndView.setViewName("redirect:/professores");
+        }
+
+        return modelAndView;
+    }
+
+    @GetMapping("/{id}")
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    public Professor buscaProfessor(@PathVariable Long id){
+        return professorService.findById(id);
     }
 }

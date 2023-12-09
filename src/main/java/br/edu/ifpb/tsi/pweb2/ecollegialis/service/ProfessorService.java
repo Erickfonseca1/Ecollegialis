@@ -40,7 +40,13 @@ public class ProfessorService {
         professorRepository.save(professor);
     }
 
-    public void update(Professor professor) {
+    public void update(Professor professorObj, Long id) {
+        Professor professor = findById(id);
+        professor.setNome(professorObj.getNome());
+        professor.setMatricula(professorObj.getMatricula());
+        professor.setSenha(professorObj.getSenha());
+        professor.setCoordenador(professorObj.isCoordenador());
+        professor.setCurso(professorObj.getCurso());
         professorRepository.save(professor);
     }
 
