@@ -13,6 +13,14 @@ public class ProcessoService {
     @Autowired
     private ProcessoRepository processoRepository;
 
+    public void save(Processo processo) {
+        processoRepository.save(processo);
+    }
+
+    public void update(Processo processo) {
+        processoRepository.save(processo);
+    }
+
     public List<Processo> findAll() {
         return processoRepository.findAll();
     }
