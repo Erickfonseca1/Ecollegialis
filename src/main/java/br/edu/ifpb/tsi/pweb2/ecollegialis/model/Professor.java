@@ -17,7 +17,7 @@ import java.util.List;
 public class Professor extends Usuario{
 
     @ManyToOne
-    @JoinColumn(name="colegiado_id")
+    @JoinColumn(name="colegiadoID")
     private Colegiado colegiado;
     private boolean coordenador;
 

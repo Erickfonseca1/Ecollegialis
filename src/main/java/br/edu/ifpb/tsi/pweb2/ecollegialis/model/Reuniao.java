@@ -30,7 +30,7 @@ public class Reuniao {
     private byte[] ata;
 
     @OneToMany()
-    @JoinColumn(name = "reuniao_id")
+    @JoinColumn(name = "reuniaoID")
     private List<Processo> processos;
 
     @ManyToOne

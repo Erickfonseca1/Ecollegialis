@@ -42,7 +42,7 @@ public class Usuario {
 
     private boolean admin;
     @ManyToOne
-    @JoinColumn(name="curso_id")
+    @JoinColumn(name="cursoID")
     private Curso curso;
 
 }

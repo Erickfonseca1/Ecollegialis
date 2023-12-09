@@ -32,7 +32,7 @@ public class AlunoService {
 
         processo.setTipoDecisao(null);
 
-        processo.setInteressado(aluno);
+        processo.setAlunoProcesso(aluno);
 
         processo.setCurso(aluno.getCurso());
 
@@ -41,7 +41,7 @@ public class AlunoService {
     }
 
     public List<Processo> consultaProcessos(Long id){
-        return processoRepository.findAllByInteressadoId(id);
+        return processoRepository.findAllByalunoProcessoId(id);
     }
 
 
@@ -71,28 +71,28 @@ public class AlunoService {
     }
 
     public List<Processo> consultaProcessosPorAssunto(Long idAluno, Long id){
-        return processoRepository.findAllByInteressadoIdAndAssuntoId(idAluno, id);
+        return processoRepository.findAllByalunoProcessoIdAndAssuntoId(idAluno, id);
     }
 
     public List<Processo> consultaProcessosPorStatus(Long id, StatusEnum status) {
-        return processoRepository.findAllByInteressadoIdAndStatus(id, status);
+        return processoRepository.findAllByalunoProcessoIdAndStatus(id, status);
 
     }
 
     public List<Processo> consultarProcessosPorAssuntoOrdenados(Long idAluno, Long id){
-        return processoRepository.findAllByInteressadoIdAndAssuntoIdOrderByDataRecepcaoDesc(idAluno, id);
+        return processoRepository.findAllByalunoProcessoIdAndAssuntoIdOrderByDataRecepcaoDesc(idAluno, id);
 
     }
 
     public List<Processo> consultarProcessosPorStatusOrdenados(Long id, StatusEnum status){
-        return processoRepository.findAllByInteressadoIdAndStatusOrderByDataRecepcaoDesc(id, status);
+        return processoRepository.findAllByalunoProcessoIdAndStatusOrderByDataRecepcaoDesc(id, status);
 
 
 
     }
 
     public List<Processo> consultarProcessosOrdenados(Aluno aluno){
-        return processoRepository.findAllByInteressadoIdOrderByDataRecepcaoDesc(6L);
+        return processoRepository.findAllByalunoProcessoIdOrderByDataRecepcaoDesc(6L);
     }
 
     @Transactional
@@ -107,5 +107,9 @@ public class AlunoService {
 
     public void save(Aluno aluno) {
         alunoRepository.save(aluno);
+    }
+
+    public List<Aluno> findAll() {
+        return alunoRepository.findAll();
     }
 }

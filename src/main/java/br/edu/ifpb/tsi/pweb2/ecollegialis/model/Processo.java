@@ -41,25 +41,25 @@ public class Processo {
     private TipoDecisao decisaoRelator;
 
     @ManyToOne
-    @JoinColumn(name = "assunto_id")
+    @JoinColumn(name = "assuntoID")
     private Assunto assunto;
 
     @OneToMany
-    @JoinColumn(name = "processo_id")
+    @JoinColumn(name = "processoID")
     private List<Voto> votos;
 
     @ManyToOne
-    @JoinColumn(name = "aluno_id")
-    private Aluno interessado;
+    @JoinColumn(name = "alunoID")
+    private Aluno alunoProcesso;
 
     private boolean emPauta = false;
 
     @ManyToOne
-    @JoinColumn(name = "professor_id")
+    @JoinColumn(name = "professorID")
     private Professor relator;
 
     @ManyToOne
-    @JoinColumn(name = "curso_id")
+    @JoinColumn(name = "cursoID")
     private Curso curso;
 
     @ElementCollection

@@ -41,7 +41,7 @@ public class Colegiado {
     private String portaria;
 
     @OneToOne
-    @JoinColumn(name = "curso_id")
+    @JoinColumn(name = "cursoID")
     private Curso curso;
 
     @OneToMany(mappedBy = "colegiado")
