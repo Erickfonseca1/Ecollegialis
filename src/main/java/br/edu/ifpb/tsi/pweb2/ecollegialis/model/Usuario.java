@@ -33,10 +33,6 @@ public class Usuario {
     private String matricula;
 
     @NotBlank(message="Campo obrigatório")
-    @Email(message = "Email inválido")
-    private String login;
-
-    @NotBlank(message="Campo obrigatório")
     @Size(min = 3, max = 60, message = "Senha deve ter entre 3 e 60 caracteres")
     private String senha;
 

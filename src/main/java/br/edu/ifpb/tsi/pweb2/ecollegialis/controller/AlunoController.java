@@ -27,6 +27,7 @@ public class AlunoController {
     @PostMapping("/salvar-aluno")
     public String salvarAluno(@Valid Aluno aluno, BindingResult result) {
         if (result.hasErrors()) {
+            System.out.println(result.getAllErrors());
             return "Aluno/formAluno";
         }
         if (aluno.getId() != null) {
@@ -48,7 +49,7 @@ public class AlunoController {
     @GetMapping("/list")
     public ModelAndView listaAlunos() {
         List<Aluno> alunos = alunoService.findAll();
-        ModelAndView modelAndView = new ModelAndView("listaAlunos");
+        ModelAndView modelAndView = new ModelAndView("Aluno/listaAlunos");
         modelAndView.addObject("alunos", alunos);
         return modelAndView;
     }
