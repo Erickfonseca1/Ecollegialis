@@ -1,6 +1,6 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!-- <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Assuntos</title>
@@ -28,14 +28,16 @@
             }
         }
     </style>
-</head>
+</head> -->
+<head th:replace="~{layouts :: head('Lista dos Assuntos')}"></head>
 <body>
+<header th:replace="~{layouts :: header('Listagem de Assuntos')}"></header>
+
 <div class="container">
-    <h1 class="text-center">Lista de Assuntos</h1>
     <div class="btn-novo-assunto">
-        <a href="/assunto/form-assunto" class="btn btn-primary">Adicionar assunto</a>
+        <a href="/assunto/new" class="btn" style="background-color: #236da3; color: #fff;">Adicionar assunto</a>
     </div>
-    <table class="table table-dark table-striped">
+    <table class="table table-light table-striped mt-2">
         <thead>
         <tr>
             <th>ID</th>
