@@ -49,6 +49,10 @@ public class Processo {
     private List<Voto> votos;
 
     @ManyToOne
+    @JoinColumn(name = "reuniaoID")
+    private Reuniao reuniao;
+
+    @ManyToOne
     @JoinColumn(name = "alunoID")
     private Aluno alunoProcesso;
 
