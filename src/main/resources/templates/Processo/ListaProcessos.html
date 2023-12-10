@@ -1,0 +1,65 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<style>
+    body {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .container {
+        width: 100%;
+        margin: 0;
+        padding: 30px;
+
+        .btn-novo-processo {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+    }
+</style>  
+<head th:replace="~{layouts :: head('Lista dos Processos')}"></head>
+<body>
+<!-- <header th:replace="~{layouts :: header('Listagem de Assuntos')}"></header> -->
+
+<div th:replace="~{sidebar :: aside('Lista dos Processos')}"></div>
+<div class="container">
+    <h1>Lista de Processos</h1>
+    <div class="btn-novo-processo">
+        <a href="/processo/new" class="btn" style="background-color: #236da3; color: #fff;">Adicionar Processo</a>
+    </div>
+
+    <!-- Adição do ternário para verificar se há assuntos -->
+    <th:block th:if="${not #lists.isEmpty(processos)}">
+        <table class="table table-light table-striped mt-2">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Assunto</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="processo : ${processos}">
+                <td th:text="${processo.id}"></td>
+                <td th:text="${processo.assunto}"></td>
+                <td>
+                    <form th:action="@{/assunto/{id}/delete(id=${assunto.id})}">
+                        <button type="submit" class="btn btn-danger">Deletar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </th:block>
+
+    <!-- Mensagem quando não há assuntos -->
+    <th:block th:if="${#lists.isEmpty(processos)}">
+        <p>Não há processos disponíveis.</p>
+    </th:block>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

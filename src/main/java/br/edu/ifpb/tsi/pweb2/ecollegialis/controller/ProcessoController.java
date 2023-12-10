@@ -38,6 +38,14 @@ public class ProcessoController {
     return mv;
   }
 
+  @GetMapping("/list")
+  public ModelAndView listarProcessos() {
+    ModelAndView mv = new ModelAndView("Processo/ListaProcessos");
+    List<Processo> processos = processoService.findAll();
+    mv.addObject("processos", processos);
+    return mv;
+  }
+
   @PostMapping("/salvar-processo")
   public String salvarProcesso(@Valid Processo processo, BindingResult result) {
     if (result.hasErrors()) {

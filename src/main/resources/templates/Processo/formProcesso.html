@@ -1,25 +1,74 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário de Processo</title>
-    <!-- Adicione os estilos ou links necessários, como Bootstrap, aqui -->
-</head>
-<head th:replace="~{layouts :: head('Processo')}"></head>
-<header th:replace="~{layouts :: header('Formulário Processo')}"></header>
+<style>
+    body {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .container {
+        width: 100%;
+        margin: 0;
+        padding: 30px;
+
+        .header {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+
+            .info {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: start;
+            margin-bottom: 20px;
+            }
+
+            .btn-lista-assuntos {
+                display: flex;
+                justify-content: flex-end;
+                margin-bottom: 20px;
+            }
+        }
+
+        
+    }
+</style>    
+<head th:replace="~{layouts :: head('Novo Processo')}"></head>
 <body>
+    <div th:replace="~{sidebar :: aside('Novo Processo')}"></div>
     <div class="container">
+        <div class="header">
+            <div class="info">
+                <h1>Novo Processo</h1>
+                <p>Aqui você pode cadastrar um novo processo</p>
+            </div>
+
+            <div class="btn-minimal btn-lista-assuntos">
+                <a href="/processo/list" class="btn" style="background-color: #236da3; color: #fff;">Lista de Processos</a>
+            </div> 
+        </div>
         <form th:object="${processo}" method="post" action="@{/salvar-processo}">
             <!-- Campos do formulário -->
 
             <label for="assunto-input" class="form-label">Assunto:</label>
-            <select class="form-select" id="assunto" name="assunto">
+            <select class="form-select mb-3" id="assunto" name="assunto">
               <option th:each="assunto : ${assuntos}" th:value="${assunto.id}" th:text="${assunto.nome}"></option>
             </select>
-            <!-- Adicione outros campos do seu modelo aqui -->
+            
+            <div class="mb-3">
+                <label for="text" class="form-label">Descrição do processo:</label>
+                <textarea class="form-control" id="text" rows="3"></textarea>
+            </div>
 
-            <button type="submit" class="btn mt-3" style="background-color: #236da3; color: #fff;">Salvar</button>
+            <div class="mb-3">
+                <label for="formFileMultiple" class="form-label">Arquivos do processo:</label>
+                <input class="form-control" type="file" id="formFileMultiple" multiple>
+              </div>
+
+            <button type="submit" class="btn mt-3" style="background-color: #236da3; color: #fff; width: 150px;">Criar processo</button>
         </form>
     </div>
 
