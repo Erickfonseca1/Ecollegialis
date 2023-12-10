@@ -1,13 +1,27 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
   <head th:replace="~{layouts :: head('Home')}"></head>
-  <header th:replace="~{layouts :: header('Home')}"></header>
+  <!-- <header th:replace="~{layouts :: header('Home')}"></header> -->
+  <style>
+    body {
+      display: flex;
+      flex-direction: row;
+    }
 
+    .container {
+      width: 100%;
+      margin: 0;
+      padding: 30px;
+    }
+  </style>  
+  
   <body>
+    <div th:replace="~{sidebar :: aside('Home')}"></div>
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <h1 th:text="${title}">Home</h1>
+          <!-- <h1 th:text="${title}">Home</h1> -->
+          <h1>Home</h1>
           <p>Seja bem-vindo ao Ecollegialis!</p>
         </div>
       </div>

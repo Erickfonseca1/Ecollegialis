@@ -52,7 +52,7 @@ public class AssuntoController {
     public ModelAndView deletarAssunto(@PathVariable(value = "id") Long id, ModelAndView mv, RedirectAttributes attr) {
         assuntoService.deleteById(id);
         attr.addFlashAttribute("mensagem", "Assunto removido com sucesso!");
-        mv.setViewName("redirect:/assunto/lista-assuntos");
+        mv.setViewName("redirect:/assunto/list");
         return mv;
     }
 }
