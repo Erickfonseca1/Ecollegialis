@@ -90,6 +90,11 @@ public class ReuniaoService {
         }
     }
 
+    public List<Reuniao> listarReunioes(){
+        return this.reuniaoRepository.findAll();
+    };
+
+
     public List<Reuniao> listarReuniaoPorStatusOuColegiado(List<StatusReuniao> status, Long idColegiado){
         Optional<Colegiado> colegiadoOptional = colegiadoRepository.findById(idColegiado);
         if (colegiadoOptional.isPresent()){

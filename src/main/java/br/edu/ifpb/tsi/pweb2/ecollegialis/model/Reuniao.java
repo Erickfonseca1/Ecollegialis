@@ -36,6 +36,9 @@ public class Reuniao {
     @ManyToOne
     private Colegiado colegiado;
 
+    public Reuniao(Colegiado colegiado, List<Processo> processos, StatusReuniao statusReuniao) {
+    }
+
     public void addProcesso(Processo processo) {
         this.processos.add(processo);
 
