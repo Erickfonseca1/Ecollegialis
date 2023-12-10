@@ -21,6 +21,10 @@ public class AssuntoService {
         return assuntoRepository.findAll();
     }
 
+    public Assunto findById(Long id) {
+        return assuntoRepository.findById(id).get();
+    }
+
     public void deleteById(Long id) {
         assuntoRepository.deleteById(id);
     }
