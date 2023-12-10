@@ -1,74 +1,78 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
-import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusEnum;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.TipoDecisao;
-import jakarta.persistence.*;
+import java.util.List;
+import java.util.Date;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @Entity
 public class Processo {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
 
     private String numero;
-    private Date dataRecepcao;
+    private Date dataCriacao;
     private Date dataDistribuicao;
     private Date dataParecer;
     private byte[] parecer;
     private byte[] documento;
 
     @ManyToOne
-    private Professor professorRelator;
+    private Professor relator;
 
     @ManyToOne
-    private Aluno alunoProcesso;
+    private Aluno aluno;
 
     @ManyToOne
-    private Colegiado processosColegiado;
+    private Colegiado colegiado;
 
     @ManyToOne
-    @JoinColumn(name = "assuntoProcesso")
+    @JoinColumn(name = "assunto")
     private Assunto assunto;
 
     @Enumerated(EnumType.STRING)
-    private TipoDecisao decisaoRelator;
+    private TipoDecisao tipoDecisao;
 
-    @OneToMany(mappedBy = "votosProcesso")
+    @OneToMany(mappedBy = "processo")
     private List<Voto> listaDeVotos;
 
     @NotBlank(message="Campo obrigatório!")
     private String textoRequerimento;
 
     @Enumerated(EnumType.STRING)
-    private StatusEnum status;
+    private EstadoProcesso estadoProcesso;
 
     @ManyToOne
-    private Reuniao reuniaoProcesso;
+    private Reuniao reuniao;
 
-    public Processo(Aluno aluno, Assunto assunto, String textoRequerimento, Colegiado colegiado){
-        this.alunoProcesso = aluno;
-        this.numero = Long.toString(this.id);
-        this.status = StatusEnum.CRIADO;
-        this.dataRecepcao = new Date();
+    public Processo( Aluno aluno, Assunto assunto, String textoRequerimento, Colegiado colegiado) {
+        this.aluno = aluno;
+        this.numero = Integer.toString(this.id);
+        this.estadoProcesso = EstadoProcesso.CRIADO;
+        this.dataCriacao = new Date();
         this.assunto = assunto;
         this.textoRequerimento = textoRequerimento;
-        this.processosColegiado = colegiado;
+        this.colegiado = colegiado;
     }
 
     public Processo(Aluno aluno,Assunto assunto){
-        this.alunoProcesso = aluno;
+        this.aluno = aluno;
         this.assunto = assunto;
     }
+
 }

@@ -4,14 +4,13 @@ import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Reuniao;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ReuniaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
 public class ReuniaoService {
     @Autowired
     private ReuniaoRepository reuniaoRepository;
-
+    
     public List<Reuniao> getReunioes(){
         return this.reuniaoRepository.findAll();
     }
@@ -28,5 +27,5 @@ public class ReuniaoService {
         this.reuniaoRepository.deleteById(id);
     }
 
-
+    
 }

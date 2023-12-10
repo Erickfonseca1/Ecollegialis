@@ -1,22 +1,26 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+
 @NoArgsConstructor
 @Data
 @Entity
 public class Assunto {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    @NotBlank(message = "O campo 'nome' é obrigatório.")
-    @Size(min=5, max = 40, message = "O nome deve ter entre 5 e 40 caracteres!")
+    @NotBlank(message="Campo obrigatório!")
     private String nome;
-    public Assunto(String nome){
+
+    public Assunto(String nome) {
         this.nome = nome;
     }
+
 }

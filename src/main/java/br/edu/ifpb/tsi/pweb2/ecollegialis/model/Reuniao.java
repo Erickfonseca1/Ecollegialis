@@ -1,16 +1,18 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
-import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusReuniao;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.FutureOrPresent;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
@@ -18,16 +20,15 @@ import java.util.List;
 public class Reuniao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    @FutureOrPresent(message = "A data da reunião deve ser no presente ou no futuro")
+    @NotBlank(message="Campo obrigatório!")
     private Date dataReuniao;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private StatusReuniao status;
 
-    @OneToMany(mappedBy = "reuniaoProcesso")
+    @OneToMany(mappedBy = "reuniao")
     private ArrayList<Processo> processos;
 
     public void adicionarProcesso(Processo processo) {

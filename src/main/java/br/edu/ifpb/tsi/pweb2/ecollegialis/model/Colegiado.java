@@ -1,45 +1,40 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
+import java.util.Date;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import jakarta.validation.constraints.NotBlank;
 
 @Data
 @NoArgsConstructor
 @Entity
-public class Colegiado{
+public class Colegiado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private int id;
     private Date dataInicio;
-
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    @Future(message = "Data deve ser futura")
     private Date dataFim;
 
-    @NotBlank(message = "Campo obrigatório")
+    @NotBlank(message="Campo obrigatório!")
     private String descricao;
 
-    @NotBlank(message = "Campo obrigatório")
     private String portaria;
 
-    @NotBlank(message = "Campo obrigatório")
+    @NotBlank(message="Campo obrigatório!")
     private String curso;
 
     @ManyToMany
-    private List<Professor> membrosColegiado;
+    private List<Professor> membros;
 
-    @OneToMany(mappedBy = "processosColegiado")
+    @OneToMany(mappedBy = "colegiado")
     private List<Processo> processos;
 
     public Colegiado(Date dataInicio, Date dataFim, String descricao, String portaria, String curso) {
@@ -49,12 +44,15 @@ public class Colegiado{
         this.portaria = portaria;
         this.curso = curso;
     }
-    public Colegiado(List<Professor> professores) {
-        this.membrosColegiado = professores;
+
+    public Colegiado(List<Professor> professores){
+        this.membros = professores;
     }
 
     @Override
     public String toString(){
         return "Colegiado de " + this.curso;
-    }
+    } 
+
+
 }

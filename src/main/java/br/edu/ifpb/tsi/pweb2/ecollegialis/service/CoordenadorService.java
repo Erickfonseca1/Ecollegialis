@@ -1,11 +1,11 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.service;
 
+import java.util.List;
+
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Coordenador;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.CoordenadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class CoordenadorService {
@@ -27,4 +27,5 @@ public class CoordenadorService {
     public void deletarCoordenador(Long id){
         this.coordenadorRepository.deleteById(id);
     }
+
 }

@@ -10,7 +10,6 @@ import java.util.List;
 
 @Service
 public class ProfessorService {
-
     @Autowired
     private ProfessorRepository professorRepository;
 
@@ -49,4 +48,6 @@ public class ProfessorService {
     public void deletarProfessor(Long id){
         this.professorRepository.deleteById(id);
     }
+
+    
 }

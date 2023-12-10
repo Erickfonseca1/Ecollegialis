@@ -4,20 +4,18 @@ import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Assunto;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.AssuntoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AssuntoService {
     @Autowired
     private AssuntoRepository assuntoRepository;
 
-    public List<Assunto> getAssuntos() {
+    public List<Assunto> getAssuntos(){
         return this.assuntoRepository.findAll();
     }
 
-    public Assunto getAssuntoPorId(Long id) {
+    public Assunto getAssuntoPorId(Long id){
         return this.assuntoRepository.findById(id).orElse(null);
     }
 
@@ -28,5 +26,4 @@ public class AssuntoService {
     public void deletarAssunto(Long id){
         this.assuntoRepository.deleteById(id);
     }
-
 }

@@ -1,9 +1,7 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.service;
 
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Colegiado;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Professor;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.*;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ColegiadoRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +10,6 @@ import java.util.List;
 
 @Service
 public class ColegiadoService {
-
     @Autowired
     private ColegiadoRepository colegiadoRepository;
 
@@ -25,7 +22,7 @@ public class ColegiadoService {
     }
 
     public Colegiado salvarColegiado(Colegiado colegiado){
-        for(Professor professor : colegiado.getMembrosColegiado() ){
+        for(Professor professor : colegiado.getMembros() ){
             professor.adicionarColegiado(colegiado);
         }
         colegiado.setDataInicio(new Date());

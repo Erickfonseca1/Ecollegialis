@@ -1,6 +1,11 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,24 +15,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Coordenador {
+public class Coordenador{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @NotBlank(message="Campo obrigatório!")
     private String curso;
-
+    
     @OneToOne
-    @JoinColumn(name="professorCoordenador")
+    @JoinColumn(name="professor")
     private Professor professor;
 
-    public Coordenador(String curso, Professor professor) {
-        this.curso = curso;
+    public Coordenador(Professor professor, String curso){
         this.professor = professor;
+        this.curso = curso;
     }
 
-    public void distruibuirProcesso(Processo processo, Professor professor){
+    public void delegarProcesso(Processo processo, Professor professor){
         professor.adicionarProcesso(processo);
     }
+
 }

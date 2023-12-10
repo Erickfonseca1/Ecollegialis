@@ -1,10 +1,16 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
-import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.TipoVoto;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 @NoArgsConstructor
 @Data
@@ -12,18 +18,18 @@ import lombok.NoArgsConstructor;
 public class Voto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
+    private boolean ausente;
 
     @OneToOne
     private Professor professor;
 
     @ManyToOne
-    private Processo votosProcesso;
+    private Processo processo;
 
     @Enumerated(EnumType.STRING)
     private TipoVoto tipoVoto;
 
-    private boolean ausente;
     public Voto(boolean ausente) {
         this.ausente = ausente;
     }
