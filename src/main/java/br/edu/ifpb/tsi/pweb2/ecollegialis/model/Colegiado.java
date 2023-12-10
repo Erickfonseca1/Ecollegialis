@@ -14,7 +14,6 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Colegiado{
     @Id
@@ -37,21 +36,25 @@ public class Colegiado{
     @NotBlank(message = "Campo obrigatório")
     private String curso;
 
-    @OneToMany(mappedBy = "colegiado")
-    private List<Professor> professoresColegiado = new ArrayList<>();
+    @ManyToMany
+    private List<Professor> membrosColegiado;
 
-    @OneToMany(mappedBy = "colegiado")
-    private List<Reuniao> reunioesColegiado = new ArrayList<>();
+    @OneToMany(mappedBy = "processosColegiado")
+    private List<Processo> processos;
 
-    @OneToOne
-    private Aluno aluno;
-
-    public void addReuniao(Reuniao reuniao) {
-        this.reunioesColegiado.add(reuniao);
+    public Colegiado(Date dataInicio, Date dataFim, String descricao, String portaria, String curso) {
+        this.dataInicio = dataInicio;
+        this.dataFim = dataFim;
+        this.descricao = descricao;
+        this.portaria = portaria;
+        this.curso = curso;
+    }
+    public Colegiado(List<Professor> professores) {
+        this.membrosColegiado = professores;
     }
 
-    //criar um metodo para buscar todos os professores
-    public List<Professor> getProfessores() {
-        return professoresColegiado;
+    @Override
+    public String toString(){
+        return "Colegiado de " + this.curso;
     }
 }

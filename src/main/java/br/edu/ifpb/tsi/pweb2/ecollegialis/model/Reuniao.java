@@ -14,7 +14,6 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Reuniao {
     @Id
@@ -28,16 +27,10 @@ public class Reuniao {
     @Enumerated(EnumType.ORDINAL)
     private StatusReuniao status;
 
-    private byte[] ata;
+    @OneToMany(mappedBy = "reuniaoProcesso")
+    private ArrayList<Processo> processos;
 
-    @ManyToOne
-    private Colegiado colegiado;
-
-    @OneToMany
-    private List<Processo> processos = new ArrayList<>();
-
-    public void addProcesso(Processo processo) {
+    public void adicionarProcesso(Processo processo) {
         this.processos.add(processo);
-
     }
 }

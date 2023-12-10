@@ -13,35 +13,20 @@ public class AssuntoService {
     @Autowired
     private AssuntoRepository assuntoRepository;
 
-    public List<Assunto> findAllAssuntos() {
-        return assuntoRepository.findAll();
+    public List<Assunto> getAssuntos() {
+        return this.assuntoRepository.findAll();
     }
 
-    //CRUD de Assunto
-    public Assunto save(Assunto assunto) {
-        return assuntoRepository.save(assunto);
+    public Assunto getAssuntoPorId(Long id) {
+        return this.assuntoRepository.findById(id).orElse(null);
     }
 
-    public List<Assunto> findAll() {
-        return assuntoRepository.findAll();
+    public Assunto salvarAssunto(Assunto assunto){
+        return this.assuntoRepository.save(assunto);
     }
 
-    public Assunto findById(Long id) {
-        return assuntoRepository.findById(id).orElse(null);
-    }
-
-    public void update(Assunto assunto) {
-        assuntoRepository.save(assunto);
-    }
-
-    public void deleteById(Long id) {
-        assuntoRepository.deleteById(id);
-    }
-
-    public void editarAssunto(Long id, String novoNome) {
-        Assunto assunto = findById(id);
-        assunto.setNome(novoNome);
-        assuntoRepository.save(assunto);
+    public void deletarAssunto(Long id){
+        this.assuntoRepository.deleteById(id);
     }
 
 }

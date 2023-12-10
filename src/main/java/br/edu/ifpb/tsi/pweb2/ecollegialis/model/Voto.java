@@ -6,22 +6,26 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
-@AllArgsConstructor
+@Data
 @Entity
 public class Voto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Enumerated(EnumType.ORDINAL)
-    private TipoVoto voto;
-    private boolean ausente;
-
-    @ManyToOne
-    private Professor professor;
+    private Long id;
 
     @OneToOne
-    private Processo processo;
+    private Professor professor;
+
+    @ManyToOne
+    private Processo votosProcesso;
+
+    @Enumerated(EnumType.STRING)
+    private TipoVoto tipoVoto;
+
+    private boolean ausente;
+    public Voto(boolean ausente) {
+        this.ausente = ausente;
+    }
+
 }

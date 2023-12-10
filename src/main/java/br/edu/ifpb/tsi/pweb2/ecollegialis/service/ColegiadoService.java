@@ -7,50 +7,32 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class ColegiadoService {
-
-    @Autowired
-    private ProfessorService professorService;
 
     @Autowired
     private ColegiadoRepository colegiadoRepository;
 
-    private Colegiado createColegiado() {
-        return this.colegiadoRepository.save(new Colegiado());
+    public List<Colegiado> getColegiados(){
+        return this.colegiadoRepository.findAll();
     }
 
-    public List<Colegiado> findAll() {
-        return colegiadoRepository.findAll();
+    public Colegiado getColegiadoPorId(Long id){
+        return this.colegiadoRepository.findById(id).orElse(null);
     }
 
-    public Colegiado findById(Long id) {
-        return colegiadoRepository.findById(id).orElse(null);
-    }
-
-    public void deleteById(Long id) {
-        colegiadoRepository.deleteById(id);
-    }
-
-    public Colegiado removeProfessor(Long idColegiado, Long IdProfessor){
-        Professor professor = professorService.findById(IdProfessor);
-        Colegiado colegiado = this.findById(idColegiado);
-        if(colegiado.getProfessores().contains(professor)){
-            colegiado.getProfessores().remove(professor);
-        } else {
-            throw new RuntimeException("O professor não está associado a este colegiado");
+    public Colegiado salvarColegiado(Colegiado colegiado){
+        for(Professor professor : colegiado.getMembrosColegiado() ){
+            professor.adicionarColegiado(colegiado);
         }
+        colegiado.setDataInicio(new Date());
         return this.colegiadoRepository.save(colegiado);
     }
 
-    public Colegiado atualizarColegiado(Long idColegiado){
-        Colegiado colegiado = findById(idColegiado);
-        colegiado.setDescricao(colegiado.getDescricao());
-        colegiado.setPortaria(colegiado.getPortaria());
-        colegiado.setCurso(colegiado.getCurso());
-        return this.colegiadoRepository.save(colegiado);
+    public void deletarColegiado(Long id){
+        this.colegiadoRepository.deleteById(id);
     }
 }

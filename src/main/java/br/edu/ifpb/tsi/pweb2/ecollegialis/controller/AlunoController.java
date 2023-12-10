@@ -15,60 +15,76 @@ import java.util.List;
 @RequestMapping("/aluno")
 public class AlunoController {
 
-    private final AlunoService alunoService;
-
-
     @Autowired
-    public AlunoController(AlunoService alunoService) {
-        this.alunoService = alunoService;
+    private AlunoService alunoService;
+
+    @GetMapping
+    public ModelAndView listAlunos(ModelAndView model){
+        model.addObject("alunos", alunoService.getAlunos());
+        model.setViewName("Aluno/listaAlunos");
+        return model;
+    }
+    @GetMapping("criar")
+    public ModelAndView createAluno(ModelAndView model, RedirectAttributes redirectAttributes ){
+        model.addObject("aluno", new Aluno());
+        model.addObject("acao", "salvar");
+        model.setViewName("Aluno/formAluno");
+        return model;
     }
 
-    @RequestMapping("/form-aluno")
-    public ModelAndView showForm() {
-        ModelAndView mv = new ModelAndView("formAluno");
-        mv.addObject("aluno", new Aluno());
-        return mv;
-    }
-
-    @PostMapping("/salvar-aluno")
-    public String salvarAluno(@Valid Aluno aluno, BindingResult result) {
-        if (result.hasErrors()) {
-            return "formAluno";
+    @PostMapping("criar")
+    public ModelAndView saveAluno(
+            @Valid Aluno aluno,
+            BindingResult validation,
+            ModelAndView model,
+            RedirectAttributes redirectAttributes
+    ){
+        if (validation.hasErrors()) {
+            model.setViewName("Aluno/formAluno");
+            return model;
         }
+        alunoService.salvarAluno(aluno);
+        model.addObject("alunos", alunoService.getAlunos());
+        model.setViewName("redirect:/aluno");
+        redirectAttributes.addFlashAttribute("mensagem", "Aluno Criado com Sucesso");
+        return model;
+    }
 
-        System.out.println(aluno.getId());
+    @GetMapping("{id}")
+    public ModelAndView editAluno(@PathVariable("id") Long id, ModelAndView model, RedirectAttributes redirectAttributes){
+        Aluno aluno = alunoService.getAlunoPorId(id);
+        model.addObject("aluno", aluno);
+        model.addObject("acao", "editar");
+        model.setViewName("Aluno/formAluno");
+        return model;
+    }
 
-        if (aluno.getId() != null) {
-            alunoService.update(aluno);
-        } else {
-            alunoService.save(aluno);
+    @PostMapping("{id}")
+    public ModelAndView updateAluno(
+            @PathVariable("id") Long id,
+            @Valid Aluno aluno,
+            BindingResult validation,
+            ModelAndView model,
+            RedirectAttributes redirectAttributes
+    ){
+        if (validation.hasErrors()) {
+            model.setViewName("Aluno/formAluno");
+            return model;
         }
-
-        return "redirect:/aluno/lista-alunos";
+        alunoService.salvarAluno(aluno);
+        model.addObject("alunos", alunoService.getAlunos());
+        model.setViewName("redirect:/aluno");
+        redirectAttributes.addFlashAttribute("mensagem", "Aluno Atualizado com Sucesso");
+        return model;
     }
 
-    @GetMapping("/{id}/editar")
-    public ModelAndView exibirFormularioEdicao(@PathVariable(value = "id") Long id) {
-        Aluno aluno = alunoService.findById(id);
-        ModelAndView modelAndView = new ModelAndView("formAluno");
-        modelAndView.addObject("aluno", aluno);
-        return modelAndView;
-    }
-
-    @GetMapping("/lista-alunos")
-    public ModelAndView listaAlunos() {
-        List<Aluno> alunos = alunoService.findAll();
-        ModelAndView modelAndView = new ModelAndView("listaAlunos");
-        modelAndView.addObject("alunos", alunos);
-        return modelAndView;
-    }
-
-    @RequestMapping("/{id}/delete")
-    public ModelAndView deletarAluno(@PathVariable(value = "id") Long id, ModelAndView mv, RedirectAttributes attr) {
-        alunoService.deleteById(id);
-        attr.addFlashAttribute("mensagem", "Aluno removido com sucesso!");
-        mv.setViewName("redirect:/aluno/lista-alunos");
-        return mv;
+    @GetMapping("{id}/delete")
+    public ModelAndView deleteAluno(@PathVariable("id") Long id, ModelAndView model, RedirectAttributes redirectAttributes){
+        alunoService.apagarAluno(id);
+        model.addObject("alunos", alunoService.getAlunos());
+        model.setViewName("redirect:/aluno");
+        redirectAttributes.addFlashAttribute("mensagem", "Aluno Deletado com Sucesso");
+        return model;
     }
 
 }

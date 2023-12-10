@@ -11,7 +11,4 @@ import java.util.List;
 
 @Repository
 public interface ColegiadoRepository extends JpaRepository<Colegiado, Long> {
-    Colegiado findColegiadoByProfessorId(Professor professor);
-    List<Processo> findProcessosByColegiadoId(Aluno aluno, boolean status);
-    List<Processo> findAlunoById(Aluno aluno);
 }

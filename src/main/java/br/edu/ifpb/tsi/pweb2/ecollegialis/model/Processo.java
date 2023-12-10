@@ -15,63 +15,60 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Processo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String numero;
     private Date dataRecepcao;
     private Date dataDistribuicao;
     private Date dataParecer;
     private byte[] parecer;
+    private byte[] documento;
 
+    @ManyToOne
+    private Professor professorRelator;
 
-    @Size(min = 0, max = 300, message = "O texto deve ter no máximo 300 caracteres")
-    private String textoRelator;
+    @ManyToOne
+    private Aluno alunoProcesso;
 
-    @NotBlank(message = "O texto não pode ser vazio")
-    @Size(min = 0, max = 300, message = "O texto deve ter entre 6 e 300 caracteres")
-    private String textoAluno;
+    @ManyToOne
+    private Colegiado processosColegiado;
+
+    @ManyToOne
+    @JoinColumn(name = "assuntoProcesso")
+    private Assunto assunto;
+
+    @Enumerated(EnumType.STRING)
+    private TipoDecisao decisaoRelator;
+
+    @OneToMany(mappedBy = "votosProcesso")
+    private List<Voto> listaDeVotos;
+
+    @NotBlank(message="Campo obrigatório!")
+    private String textoRequerimento;
 
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
 
-    @Enumerated(EnumType.ORDINAL)
-    private TipoDecisao decisaoRelator;
-
     @ManyToOne
-    private Assunto assunto;
+    private Reuniao reuniaoProcesso;
 
-    @OneToMany
-    private List<Voto> votos;
-
-    @ManyToOne
-    private Aluno aluno;
-
-    private boolean emPauta = false;
-
-    @ManyToOne
-    private Professor professor;
-
-    @ElementCollection
-    private List<byte[]> anexos;
-
-    public void addAnexos(byte[] anexo) {
-        this.anexos.add(anexo);
+    public Processo(Aluno aluno, Assunto assunto, String textoRequerimento, Colegiado colegiado){
+        this.alunoProcesso = aluno;
+        this.numero = Long.toString(this.id);
+        this.status = StatusEnum.CRIADO;
+        this.dataRecepcao = new Date();
+        this.assunto = assunto;
+        this.textoRequerimento = textoRequerimento;
+        this.processosColegiado = colegiado;
     }
 
-    public void addVoto(Voto voto) {
-        this.votos.add(voto);
-    }
-
-    public void setTipoDecisao(TipoDecisao decisaoRelator) {
-        this.decisaoRelator = decisaoRelator;
-    }
-
-    public TipoDecisao getTipoDecisao() {
-        return this.decisaoRelator;
+    public Processo(Aluno aluno,Assunto assunto){
+        this.alunoProcesso = aluno;
+        this.assunto = assunto;
     }
 }
