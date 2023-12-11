@@ -3,6 +3,8 @@ package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 import java.util.List;
 import java.util.Date;
 
+import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusEnum;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.TipoDecisao;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -55,7 +57,7 @@ public class Processo {
     private String textoRequerimento;
 
     @Enumerated(EnumType.STRING)
-    private EstadoProcesso estadoProcesso;
+    private StatusEnum status;
 
     @ManyToOne
     private Reuniao reuniao;
@@ -63,7 +65,7 @@ public class Processo {
     public Processo( Aluno aluno, Assunto assunto, String textoRequerimento, Colegiado colegiado) {
         this.aluno = aluno;
         this.numero = Integer.toString(this.id);
-        this.estadoProcesso = EstadoProcesso.CRIADO;
+        this.status = StatusEnum.CRIADO;
         this.dataCriacao = new Date();
         this.assunto = assunto;
         this.textoRequerimento = textoRequerimento;

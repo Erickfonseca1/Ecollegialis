@@ -3,6 +3,7 @@ package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 import java.util.ArrayList;
 import java.util.Date;
 
+import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusEnum;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -26,7 +27,7 @@ public class Reuniao {
     private Date dataReuniao;
 
     @Enumerated(EnumType.STRING)
-    private StatusReuniao status;
+    private StatusEnum status;
 
     @OneToMany(mappedBy = "reuniao")
     private ArrayList<Processo> processos;

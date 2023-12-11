@@ -1,5 +1,6 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.service;
 
+import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusEnum;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.*;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ProcessoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class ProcessoService {
 
     public Processo salvarProcesso(Processo processo){
         processo.getAluno().adicionarProcesso(processo);
-        processo.setEstadoProcesso(EstadoProcesso.CRIADO);
+        processo.setStatus(StatusEnum.CRIADO);
         processo.setDataCriacao(new Date());
         processo.setNumero(""+new Date().getTime());
         return this.processoRepository.save(processo);
@@ -40,7 +41,7 @@ public class ProcessoService {
     public Processo atribuirProcesso(Processo processo,Long id){
         Processo processoAtualizado = this.processoRepository.findById(id).orElse(new Processo());
         processoAtualizado.setRelator(processo.getRelator());
-        processoAtualizado.setEstadoProcesso(EstadoProcesso.DISTRIBUIDO);
+        processoAtualizado.setStatus(StatusEnum.DISTRIBUIDO);
         processoAtualizado.setDataDistribuicao(new Date());
         return this.processoRepository.save(processoAtualizado);
     }

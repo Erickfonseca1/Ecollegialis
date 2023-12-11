@@ -1,5 +1,6 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
+import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.TipoVoto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
