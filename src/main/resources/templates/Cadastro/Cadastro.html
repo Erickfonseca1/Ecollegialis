@@ -35,12 +35,13 @@
                 margin-bottom: 20px;
                 font-family: "Roboto Light", sans-serif;
                 font-size: 2rem;
+                font-weight: Lighter;
             }
 
             & h2 {
                 margin-bottom: 20px;
                 font-family: "Roboto Light", sans-serif;
-                font-size: 1.5rem;
+                font-size: 1rem;
             }
 
             .header {
@@ -50,10 +51,27 @@
                 flex-direction: column;
             }
 
+            .inputs-group {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-direction: row;
+                width: 100%;
+            }
+
+            .checkboxesWrapper {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-direction: row;
+                width: 100%;
+            }
+
             .btn {
                 width: 100%;
             }
         }
+
 
     </style>
 <body>
@@ -65,18 +83,52 @@
         </div>
         <form action="">
             <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                <label for="nome" class="form-label">Nome</label>
+                <input type="text" class="form-control" id="nome" placeholder="Nome" required>
+            </div>
+            <div class="mb-3 inputs-group">
+                <div>
+                    <label for="telefone" class="form-label">Telefone</label>
+                    <input type="number"  class="form-control" id="telefone" placeholder="Telefone" required>
+                </div>
+
+                <div>
+                    <label for="matricula" class="form-label">Matricula</label>
+                    <input type="number" class="form-control" id="matricula" placeholder="Matricula" required>
+                </div>
             </div>
             <div class="mb-3">
                 <label for="senha" class="form-label">Senha</label>
-                <input type="password" class="form-control" id="senha" placeholder="Senha" aria-describedby="help">
-                <div id="help" class="form-text">
+                <input type="password" class="form-control" id="senha" placeholder="Senha" aria-describedby="help" required>
+                <div id="help-senha" class="form-text">
                     Sua senha deve possuir ao menos 6 caracteres, com letras e números.
                 </div>
             </div>
             <div class="mb-3">
-                <button type="submit" class="btn btn-primary">Entrar</button>
+                <label for="confirmar-senha" class="form-label">Confirmar senha</label>
+                <input type="password" class="form-control" id="confirmar-senha" placeholder="Confirmar senha" required>
+                <div id="help-confirm-senha" class="form-text">
+                    Deve ser igual ao campo senha.
+                </div>
+            </div>
+
+            <div class="checkboxesWrapper">
+                <div class="form-check form-check-inline mb-3">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="aluno" value="aluno">
+                    <label class="form-check-label" for="aluno">Aluno</label>
+                </div>
+                <div class="form-check form-check-inline mb-3">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="professor" value="professor">
+                    <label class="form-check-label" for="professor">Professor</label>
+                </div>
+                <div class="form-check form-check-inline mb-3">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="admin" value="admin">
+                    <label class="form-check-label" for="admin">Administrador</label>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn-primary btn">Criar conta</button>
             </div>
         </form>
     </div>
