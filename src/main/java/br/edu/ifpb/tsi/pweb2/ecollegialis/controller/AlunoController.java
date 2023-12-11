@@ -20,7 +20,7 @@ public class AlunoController {
 
     @GetMapping
     public ModelAndView listAlunos(ModelAndView model){
-        model.addObject("alunos", alunoService.getAlunos());
+        model.addObject("aluno", alunoService.getAlunos());
         model.setViewName("Aluno/listaAlunos");
         return model;
     }
@@ -44,7 +44,7 @@ public class AlunoController {
             return model;
         }
         alunoService.salvarAluno(aluno);
-        model.addObject("alunos", alunoService.getAlunos());
+        model.addObject("aluno", alunoService.getAlunos());
         model.setViewName("redirect:/aluno");
         redirectAttributes.addFlashAttribute("mensagem", "Aluno Criado com Sucesso");
         return model;
@@ -72,7 +72,7 @@ public class AlunoController {
             return model;
         }
         alunoService.salvarAluno(aluno);
-        model.addObject("alunos", alunoService.getAlunos());
+        model.addObject("aluno", alunoService.getAlunos());
         model.setViewName("redirect:/aluno");
         redirectAttributes.addFlashAttribute("mensagem", "Aluno Atualizado com Sucesso");
         return model;
@@ -81,7 +81,7 @@ public class AlunoController {
     @GetMapping("{id}/delete")
     public ModelAndView deleteAluno(@PathVariable("id") Long id, ModelAndView model, RedirectAttributes redirectAttributes){
         alunoService.apagarAluno(id);
-        model.addObject("alunos", alunoService.getAlunos());
+        model.addObject("aluno", alunoService.getAlunos());
         model.setViewName("redirect:/aluno");
         redirectAttributes.addFlashAttribute("mensagem", "Aluno Deletado com Sucesso");
         return model;

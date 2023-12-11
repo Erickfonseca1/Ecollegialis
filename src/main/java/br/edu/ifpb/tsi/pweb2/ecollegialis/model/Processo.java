@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class Processo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
 
     private String numero;
@@ -64,7 +64,7 @@ public class Processo {
 
     public Processo( Aluno aluno, Assunto assunto, String textoRequerimento, Colegiado colegiado) {
         this.aluno = aluno;
-        this.numero = Integer.toString(this.id);
+        this.numero = Long.toString(this.id);
         this.status = StatusEnum.CRIADO;
         this.dataCriacao = new Date();
         this.assunto = assunto;

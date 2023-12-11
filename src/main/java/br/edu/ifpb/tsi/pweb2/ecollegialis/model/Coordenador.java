@@ -18,16 +18,17 @@ import lombok.NoArgsConstructor;
 public class Coordenador{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    @NotBlank(message="Campo obrigatório!")
-    private String curso;
+    @OneToOne
+    @JoinColumn(name = "curso")
+    private Curso curso;
     
     @OneToOne
     @JoinColumn(name="professor")
     private Professor professor;
 
-    public Coordenador(Professor professor, String curso){
+    public Coordenador(Professor professor, Curso curso){
         this.professor = professor;
         this.curso = curso;
     }

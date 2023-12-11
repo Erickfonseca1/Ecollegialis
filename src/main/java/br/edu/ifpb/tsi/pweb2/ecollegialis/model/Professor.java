@@ -2,12 +2,7 @@ package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.NotBlank;
@@ -20,23 +15,28 @@ import jakarta.validation.constraints.Size;
 public class Professor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    @NotBlank(message="Campo obrigatório!")
-    protected String nome;
-    
-    @NotBlank(message="Campo obrigatório!")
-    protected String fone;
+    @NotBlank(message="Campo obrigatório")
+    @Size(min = 3, max = 40)
+    @Pattern(regexp = "[a-zA-ZÀ-ÖØ-öø-ÿ\s]+", message = "Nome inválido")
+    private String nome;
 
-    @NotBlank(message="Campo obrigatório!")
-    @Pattern(regexp= "[0-9]{6}", message="Matrícula deve conter exatamente 6 números!")
-    protected String matricula;
-    
-    @NotBlank(message="Campo obrigatório!")
-    protected String login;
+    @NotBlank(message="Campo obrigatório")
+    @Pattern(regexp = "[0-9]{11}" , message = "Telefone inválido")
+    private String fone;
 
-    @Size(min=3, max=42 ,message="A senha deverá ter pelo menos 3 caracteres e no máximo 42")
-    protected String senha;
+    @NotBlank(message="Campo obrigatório")
+    @Pattern(regexp = "[0-9]{11}" , message = "Matrícula inválida")
+    private String matricula;
+
+    @NotBlank(message="Campo obrigatório")
+    @Size(min = 3, max = 60, message = "Senha deve ter entre 3 e 60 caracteres")
+    private String senha;
+
+    @ManyToOne
+    @JoinColumn(name = "curso")
+    protected Curso curso;
 
     @OneToMany(mappedBy = "relator")
     protected List<Processo> listaDeProcessos;
@@ -45,12 +45,11 @@ public class Professor {
     protected List<Colegiado> listaColegiados;
 
 
-    public Professor(int id, String nome, String fone, String matricula, String login, String senha){
+    public Professor(Long id, String nome, String fone, String matricula, String senha){
         this.id = id;
         this.nome = nome;
         this.fone = fone;
         this.matricula = matricula;
-        this.login = login;
         this.senha = senha;
     }
 

@@ -2,12 +2,7 @@ package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
 import java.util.Date;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.List;
@@ -19,7 +14,7 @@ import jakarta.validation.constraints.NotBlank;
 public class Colegiado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private Date dataInicio;
     private Date dataFim;
 
@@ -28,8 +23,16 @@ public class Colegiado {
 
     private String portaria;
 
-    @NotBlank(message="Campo obrigatório!")
-    private String curso;
+    @OneToOne
+    @JoinColumn(name = "curso")
+    private Curso curso;
+
+    @OneToOne
+    @JoinColumn(name="coordenador")
+    private Coordenador coordenador;
+
+    @OneToMany(mappedBy = "colegiado")
+    private List<Reuniao> reunioes;
 
     @ManyToMany
     private List<Professor> membros;
@@ -37,7 +40,7 @@ public class Colegiado {
     @OneToMany(mappedBy = "colegiado")
     private List<Processo> processos;
 
-    public Colegiado(Date dataInicio, Date dataFim, String descricao, String portaria, String curso) {
+    public Colegiado(Date dataInicio, Date dataFim, String descricao, String portaria, Curso curso) {
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
         this.descricao = descricao;
@@ -47,6 +50,14 @@ public class Colegiado {
 
     public Colegiado(List<Professor> professores){
         this.membros = professores;
+    }
+
+    public void adicionarReuniao(Reuniao reuniao){
+        this.reunioes.add(reuniao);
+    }
+
+    public void adicionarProcesso(Processo processo){
+        this.processos.add(processo);
     }
 
     @Override

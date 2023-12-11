@@ -4,14 +4,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import jakarta.validation.constraints.NotBlank;
 
 @NoArgsConstructor
 @Data
 @Entity
-public class Assunto {
+public class Curso {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,8 +19,12 @@ public class Assunto {
     @NotBlank(message="Campo obrigatório!")
     private String nome;
 
-    public Assunto(String nome) {
+    public Curso(String nome) {
         this.nome = nome;
     }
 
+    @Override
+    public String toString(){
+        return this.nome;
+    }
 }

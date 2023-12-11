@@ -2,16 +2,12 @@ package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 
 @Data
 @NoArgsConstructor
@@ -19,33 +15,36 @@ import jakarta.persistence.GenerationType;
 public class Aluno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    @NotBlank(message="Campo obrigatório!")
+    @NotBlank(message="Campo obrigatório")
+    @Size(min = 3, max = 40)
+    @Pattern(regexp = "[a-zA-ZÀ-ÖØ-öø-ÿ\s]+", message = "Nome inválido")
     private String nome;
-    
-    @NotBlank(message="Campo obrigatório!")
+
+    @NotBlank(message="Campo obrigatório")
+    @Pattern(regexp = "[0-9]{11}" , message = "Telefone inválido")
     private String fone;
 
-    @NotBlank(message="Campo obrigatório!")
-    @Pattern(regexp= "[0-9]{11}", message="Matrícula deve conter exatamente 11 números!")
+    @NotBlank(message="Campo obrigatório")
+    @Pattern(regexp = "[0-9]{11}" , message = "Matrícula inválida")
     private String matricula;
 
-    @NotBlank(message="Campo obrigatório!")
-    private String login;
-
-    @NotBlank(message="Campo obrigatório!")
-    @Size(min=3, max=42 ,message="A senha deverá ter pelo menos 3 caracteres e no máximo 42")
+    @NotBlank(message="Campo obrigatório")
+    @Size(min = 3, max = 60, message = "Senha deve ter entre 3 e 60 caracteres")
     private String senha;
 
     @OneToMany(mappedBy = "aluno")
     private List<Processo> listaProcessos;
 
-    public Aluno(String nome, String fone, String matricula, String login, String senha) {
+    @ManyToOne
+    @JoinColumn(name="curso")
+    private Curso curso;
+
+    public Aluno(String nome, String fone, String matricula, String senha) {
         this.nome = nome;
         this.fone = fone;
         this.matricula = matricula;
-        this.login = login;
         this.senha = senha;
     }
 
