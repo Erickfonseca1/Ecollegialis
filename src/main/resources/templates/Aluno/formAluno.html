@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="www.thymeleaf.org">
 <style>
     body {
         display: flex;
@@ -17,6 +17,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            padding: 30px 30px;
 
             .info {
             display: flex;
@@ -33,6 +34,14 @@
             }
         }
 
+        .content {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            padding: 30px 30px;
+            background-color: #fff;
+            border-radius: 10px;
+        }
         
     }
 </style>  
@@ -50,7 +59,7 @@
             <a href="/aluno/list" class="btn" style="background-color: #236da3; color: #fff;">Lista de alunos</a>
         </div>
 
-        
+
     <!-- <form th:action="@{/aluno/salvar-aluno}" method="post" th:object="${aluno}">
         <div>
             <input type="hidden" th:field="*{id}">
@@ -81,7 +90,7 @@
         </div>
     </form> -->
     </div>
-    <form th:action="@{/aluno/salvar-aluno}" method="post" th:object="${aluno}" style="max-width: 500px;">
+    <form class="content" th:action="${acao} == 'salvar' ? @{/alunos/criar} : @{/alunos/{id}(id=${aluno.id})}" method="post" th:object="${aluno}" style="max-width: 500px;">
         <div>
             <input type="hidden" th:field="*{id}">
         </div>
