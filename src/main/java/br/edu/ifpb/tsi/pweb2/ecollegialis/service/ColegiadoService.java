@@ -21,6 +21,10 @@ public class ColegiadoService {
         return this.colegiadoRepository.findById(id).orElse(null);
     }
 
+    public Colegiado getColegiadoPorCoordenador(Coordenador coordenador){
+        return this.colegiadoRepository.findByCoordenador(coordenador).get(0);
+    }
+
     public Colegiado salvarColegiado(Colegiado colegiado){
         for(Professor professor : colegiado.getMembros() ){
             professor.adicionarColegiado(colegiado);
