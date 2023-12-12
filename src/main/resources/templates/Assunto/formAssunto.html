@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="www.thymeleaf.org">
     <style>
         body {
             display: flex;
@@ -51,7 +51,8 @@
                 </div>
             </div>
 
-            <form th:action="@{/assunto/salvar-assunto}" method="post">
+            <form th:action="${acao} == 'salvar' ? @{/assuntos/criar} : @{/assuntos/{id}(id=${assunto.id})}" method="post" th:object="${assunto}">
+                <input type="hidden" th:field="*{id}"><br>
                 <div>
                     <label for="assunto">Assunto :</label>
                     <input type="text" class="form-control" id="assunto"  name="assunto" th:field="*{assunto.nome}" required style="width: 700px;">
