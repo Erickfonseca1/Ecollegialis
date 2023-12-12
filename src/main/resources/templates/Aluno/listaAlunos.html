@@ -34,6 +34,7 @@
                 <th>ID</th>
                 <th>Nome</th>
                 <th>Matrícula</th>
+                <th>Cursos</th>
                 <th>Telefone</th>
                 <th>Ações</th>
             </tr>
@@ -46,7 +47,7 @@
                 <td th:text="${aluno.curso}"></td>
                 <td th:text="${aluno.fone}"></td>
                 <td>
-                    <div class="btn-group">
+                    <div class="btn-group" style="max-width: 75px">
                         <form th:action="@{alunos/{id}(id=${aluno.id})}">
                             <button type="submit" class="btn btn-primary">Editar</button>
                         </form>
