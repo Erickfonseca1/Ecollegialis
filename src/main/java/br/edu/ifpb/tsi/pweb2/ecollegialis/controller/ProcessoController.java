@@ -42,6 +42,7 @@ public class ProcessoController {
     public ModelAndView createProcesso(ModelAndView model,@PathVariable("id")Long id, RedirectAttributes redirectAttributes ){
         Aluno aluno = this.alunoService.getAlunoPorId(id);
         model.addObject("aluno", aluno);
+        model.addObject("assuntos", assuntoService.getAssuntos());
         model.addObject("processo", new Processo(aluno,new Assunto()));
         model.setViewName("Processo/formProcesso");
         return model;
@@ -65,7 +66,7 @@ public class ProcessoController {
         processoService.salvarProcesso(processo);
         model.addObject("aluno", aluno);
         model.addObject("processos", processoService.getProcessosPorAluno(aluno));
-        model.setViewName("redirect:/aluno/"+id+"/processos");
+        model.setViewName("/aluno/"+id+"/processos");
         redirectAttributes.addFlashAttribute("mensagem", "Processo criado com Sucesso");
         return model;
     }

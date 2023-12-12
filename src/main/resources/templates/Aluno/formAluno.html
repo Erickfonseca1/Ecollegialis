@@ -47,7 +47,7 @@
             <p>Aqui você pode cadastrar um novo aluno</p>
         </div>
         <div class="btn-minimal btn-lista-alunos">
-            <a href="/aluno/list" class="btn" style="background-color: #236da3; color: #fff;">Lista de alunos</a>
+            <a href="/alunos" class="btn" style="background-color: #236da3; color: #fff;">Lista de alunos</a>
         </div>
     </div>
     <form th:action="${acao} == 'salvar' ? @{/alunos/criar} : @{/alunos/{id}(id=${aluno.id})}" method="POST" th:object="${aluno}" style="max-width: 500px;">
