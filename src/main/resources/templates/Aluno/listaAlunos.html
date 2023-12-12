@@ -1,4 +1,4 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <style>
     body {
@@ -24,7 +24,7 @@
 <div class="container">
     <h1>Lista de Alunos</h1>
     <div class="btn-novo-aluno">
-        <a th:href="@{/aluno/criar}" class="btn" style="background-color: #236da3; color: #fff;">Adicionar aluno</a>
+        <a th:href="@{/alunos/criar}" class="btn" style="background-color: #236da3; color: #fff;">Adicionar aluno</a>
     </div>
 
     <th:block th:if="${not #lists.isEmpty(alunos)}">
