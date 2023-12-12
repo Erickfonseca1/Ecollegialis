@@ -34,6 +34,7 @@ public class ProcessoController {
         Aluno aluno = this.alunoService.getAlunoPorId(id);
         model.addObject("aluno", aluno);
         model.addObject("processos", processoService.getProcessosPorAluno(aluno));
+        model.addObject("assuntos", assuntoService.getAssuntos());
         model.setViewName("Processo/listaProcessos");
         return model;
     }
