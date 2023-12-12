@@ -39,18 +39,21 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="aluno : ${alunos}">
+            <tr th:each="aluno:${alunos}">
                 <td th:text="${aluno.id}"></td>
                 <td th:text="${aluno.nome}"></td>
                 <td th:text="${aluno.matricula}"></td>
+                <td th:text="${aluno.curso}"></td>
                 <td th:text="${aluno.fone}"></td>
                 <td>
                     <div class="btn-group">
-                        <a th:href="@{/aluno/{id}/edit(id=${aluno.id})}" class="btn btn-warning mx-1">Editar</a>
-                        <form th:action="@{/aluno/{id}/delete(id=${aluno.id})}" method="post">
-                            <button type="submit" class="btn btn-danger">Deletar</button>
+                        <form th:action="@{alunos/{id}(id=${aluno.id})}">
+                            <button type="submit" class="btn btn-primary">Editar</button>
                         </form>
-                    </div>
+                        <form style="margin-right: 10px;" th:action="@{alunos/{id}/delete(id=${aluno.id})}">
+                            <button type="submit" class="btn btn-danger">Excluir</button>
+                        </form>
+                    </div>                    
                 </td>
             </tr>
             </tbody>

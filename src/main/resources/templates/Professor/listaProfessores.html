@@ -1,37 +1,34 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Professores</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #333;
-            color: #fff;
-        }
-        .container {
-            background-color: #444;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            margin-top: 20px;
-        }
-        .btn-novo-aluno {
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<style>
+    body {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .container {
+        width: 100%;
+        margin: 0;
+        padding: 30px;
+
+        .btn-novo-professor {
             display: flex;
-            justify-content: center;
-            margin-top: 20px;
+            justify-content: flex-end;
             margin-bottom: 20px;
         }
-    </style>
-</head>
+    }
+</style>  
+<head th:replace="~{layouts :: head('Lista de professores')}"></head>
 <body>
+<div th:replace="~{sidebar :: aside('Lista de professores')}"></div>
 <div class="container">
-    <h1 class="text-center">Lista de Professores</h1>
-    <div class="btn-novo-aluno">
-        <a th:href="@{/professor/form-professor}" class="btn btn-primary">Adicionar professor</a>
-    </div>
-    <table class="table table-dark table-striped">
+<h1>Lista de professores</h1>
+<div class="btn-novo-professor">
+    <a th:href="@{/professores/criar}" class="btn" style="background-color: #236da3; color: #fff;">Adicionar professor</a>
+</div>
+
+<th:block th:if="${not #lists.isEmpty(professores)}">
+    <table class="table table-light table-striped mt-2">
         <thead>
         <tr>
             <th>ID</th>
@@ -49,15 +46,26 @@
             <td th:text="${professor.fone}"></td>
             <td>
                 <div class="btn-group">
-                    <a th:href="@{/professor/{id}/editar(id=${professor.id})}" class="btn btn-warning mx-1">Editar</a>
-                    <form th:action="@{/professor/{id}/delete(id=${professor.id})}" method="post">
-                        <button type="submit" class="btn btn-danger">Deletar</button>
-                    </form>
+                    <td>
+                        <div class="btn-group">
+                            <form th:action="@{professores/{id}(id=${professor.id})}">
+                                <button type="submit" class="btn btn-primary">Editar</button>
+                            </form>
+                            <form style="margin-right: 10px;" th:action="@{professores/{id}/delete(id=${professor.id})}">
+                                <button type="submit" class="btn btn-danger">Excluir</button>
+                            </form>
+                        </div>                    
+                    </td>
                 </div>
             </td>
         </tr>
         </tbody>
     </table>
+</th:block>
+
+<th:block th:if="${#lists.isEmpty(professores)}">
+    <p>Não há professores disponíveis.</p>
+</th:block>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
