@@ -29,7 +29,7 @@ public class ProcessoController {
     @Autowired
     private AssuntoService assuntoService;
 
-    @GetMapping("/{id}/aluno")
+    @GetMapping("/aluno/{id}")
     public ModelAndView listProcessos(ModelAndView model, @PathVariable("id")Long id){
         Aluno aluno = this.alunoService.getAlunoPorId(id);
         model.addObject("aluno", aluno);
