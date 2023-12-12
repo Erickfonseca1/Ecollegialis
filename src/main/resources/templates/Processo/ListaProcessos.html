@@ -1,162 +1,69 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="www.thymeleaf.org">
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<style>
+    body {
+        display: flex;
+        flex-direction: row;
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Colegiado - Página do Aluno</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-</head>
+    .container {
+        width: 100%;
+        margin: 0;
+        padding: 30px;
 
+        .btn-novo-processo {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+    }
+</style>  
+<head th:replace="~{layouts :: head('Lista dos Processos')}"></head>
 <body>
-<!--NAV BAR-->
-<nav class="navbar navbar-expand-lg bg-success p-2 text-white">
-    <div class="container-fluid justify-content-center" id="navbarSupportedContent">
-        <div>
-            <a class="navbar-brand" href="#">
-                <img th:src="@{/imagens/sisyphus.png}" width="50" height="50">
-            </a>
-            <a class="navbar-brand text-white" href="#">SISYPHUS</a>
-        </div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse nav justify-content-center" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active text-white" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled text-white" aria-current="page" href="#">Processos</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-<!-- LISTAGEM DE PROCESSOS-->
-<div style="margin: 30px;">
-    <h1 style="margin-top: 20px">Processos [[${aluno.nome}]]</h1>
-    <hr>
-    <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 20px;">
-        <a type="button" th:href="@{'/aluno/' + ${aluno.id} + '/processos/criar'}" class="btn btn-success"
-        >Cadastrar processo</a>
-        <div class="btn-group">
-            <div class="input-group mb-3" style="margin-right: 10px;">
-                <label class="input-group-text" for="filterAssunto">Assunto</label>
-                <select class="form-select" id="filterAssunto" name="filtro">
-                    <option value="">Todos</option>
-                    <option th:each = "assunto : ${assuntos}" th:value="${assunto.nome}" th:text = "${assunto.nome}"> </option>
+<!-- <header th:replace="~{layouts :: header('Listagem de Assuntos')}"></header> -->
 
-                </select>
-            </div>
-            <div class="input-group mb-3">
-                <label class="input-group-text" for="filterStatus">Status</label>
-                <select class="form-select" id="filterStatus">
-                    <option value="">Todos</option>
-                    <option value="Criado">Criado</option>
-                    <option value="DISTRIBUIDO">Distribuído</option>
-                    <option value="Em pauta">Em pauta</option>
-                    <option value="Em julgamento">Em julgamento</option>
-                    <option value="Julgado">Julgado</option>
-                </select>
-            </div>
-        </div>
-    </div>
-
-    <!--TABELA DE PROCESSOS-->
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Estado</th>
-            <th scope="col">Assunto</th>
-            <th scope="col">Data de Criação</th>
-            <th scope="col">Opções</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="processo:${processos}">
-            <td th:text="${processo.numero}"></th>
-            <td th:text="${processo.estadoProcesso}"></th>
-            <td th:text="${processo.assunto.nome}"></td>
-            <td th:text="${processo.dataCriacao}"></td>
-            <td>
-                <button type="button" class="btn btn-primary">Consultar</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-<script th:src="@{/js/bootstrap.buddle.min.js}"></script>
-<script th:src="@{/js/bootstrap.min.js}"></script>
-<script th:src="@{/js/popper.min.js}"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-
-
-<!-- FILTRO POR STATUS-->
-<script>
-    $(document).ready(function () {
-        $('#filterStatus, #filterAssunto').on('change', function () {
-            var status = $('#filterStatus').val();
-            var assunto = $('#filterAssunto').val();
-            filterTable(status, assunto);
-        });
-
-        function filterTable(status, assunto) {
-            var rows = $('table tbody tr');
-            rows.show();
-
-            if (status) {
-                rows.filter(':not(:contains("' + status + '"))').hide();
-            }
-
-            if (assunto) {
-                rows.filter(':not(:contains("' + assunto + '"))').hide();
-            }
-        }
-
-        $.expr[":"].contains = $.expr.createPseudo(function (text) {
-            return function (element) {
-                return $(element).text().toUpperCase().indexOf(text.toUpperCase()) >= 0;
-            };
-        });
-    });
-</script>
-
-
-<!--FILTRO POR PESQUISA -->
-
-<script>
-    $(document).ready(function () {
-        $('#filterAssunto').on('input', function () {
-            var assunto = $('#filterAssunto').val().toLowerCase();
-            filterTable(assunto);
-        });
-
-        function filterTable(assunto) {
-            var rows = $('table tbody tr');
-            rows.show();
-
-            rows.filter(function () {
-                var text = $(this).text().toLowerCase();
-                return (assunto && text.indexOf(assunto) === -1)
-            }).hide();
-        }
-    });
-</script>
-
-<!-- FOOTER -->
+<div th:replace="~{sidebar :: aside('Lista dos Processos')}"></div>
 <div class="container">
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-        <div class="col-md-4 d-flex align-items-center">
-            <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
-                <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"/></svg>
-            </a>
-            <span class="mb-3 mb-md-0 text-muted">&copy; 2023 Sisyphus - IFPB </span>
-        </div>
-    </footer>
+    <h1>Lista de Processos</h1>
+    <div class="btn-novo-processo">
+        <a th:href="@{'/aluno/' + ${aluno.id} + '/processos/criar'}" class="btn" style="background-color: #236da3; color: #fff;">Adicionar Processo</a>
+    </div>
+
+    <!-- Adição do ternário para verificar se há assuntos -->
+    <th:block th:if="${not #lists.isEmpty(processos)}">
+        <table class="table table-light table-striped mt-2">
+            <thead>
+            <tr>
+                <th>Nº</th>
+                <th>Status</th>
+                <th>Assunto</th>
+                <th>Aluno</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="processo : ${processos}">
+                <td th:text="${processo.numero}"></td>
+                <td th:text="${processo.status}"></td>
+                <td th:text="${processo.assunto.nome}"></td>
+                <td th:text="${processo.aluno.nome}"></td>
+                <td>
+                    <form>
+                        <button type="submit" class="btn btn-danger">Deletar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </th:block>
+
+    <!-- Mensagem quando não há assuntos -->
+    <th:block th:if="${#lists.isEmpty(processos)}">
+        <p>Não há processos disponíveis.</p>
+    </th:block>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
