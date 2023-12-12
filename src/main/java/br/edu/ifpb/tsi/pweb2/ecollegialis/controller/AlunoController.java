@@ -48,12 +48,14 @@ public class AlunoController {
     ) {
         if (validation.hasErrors()) {
             model.setViewName("Aluno/formAluno");
+            model.addObject("acao", "salvar");
             return model;
         }
         alunoService.salvarAluno(aluno);
         model.addObject("alunos", alunoService.getAlunos());
         model.setViewName("redirect:/alunos");
         redirectAttributes.addFlashAttribute("mensagem", "O Aluno foi criado!");
+        redirectAttributes.addFlashAttribute("O Aluno foi salvo", true);
         return model;
     }
 
