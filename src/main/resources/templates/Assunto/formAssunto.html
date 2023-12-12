@@ -39,30 +39,28 @@
     <head th:replace="~{layouts :: head('Novo Assunto')}"></head>
     <body>
         <div th:replace="~{sidebar :: aside('Novo Assunto')}"></div>
-        <div class="container">
-            <div class="header">
-                <div class="info">
-                    <h1>Novo Assunto</h1>
-                    <p>Aqui você pode cadastrar um novo assunto</p>
-                </div>
-
-                <div class="btn-minimal btn-lista-assuntos">
-                    <a href="/assunto/list" class="btn" style="background-color: #236da3; color: #fff;">Lista de Assuntos</a>
-                </div>
-            </div>
-
+        <div class="container" >
+            <h1 style="margin-bottom: 20px;margin-top: 20px;">Editar Assunto</h1>
+            <!-- INICIO DO FORM -->
             <form th:action="${acao} == 'salvar' ? @{/assuntos/criar} : @{/assuntos/{id}(id=${assunto.id})}" method="post" th:object="${assunto}">
-                <input type="hidden" th:field="*{id}"><br>
-                <div>
-                    <label for="assunto">Assunto :</label>
-                    <input type="text" class="form-control" id="assunto"  name="assunto" th:field="*{assunto.nome}" required style="width: 700px;">
+
+                <div class="modal-body">
+                    <div class="row">
+                        <input type="hidden" th:field="*{id}"><br>
+                        <!--NOME-->
+                        <div class="mb-3">
+                            <label for="nome" class="form-label">Nome:</label>
+                            <input type="text" id="nome" th:field="*{nome}" class="form-control">
+                            <p th:if="${#fields.hasErrors('nome')}" th:errorclass="error" th:errors="*{nome}" class="alert alert-danger"></p>
+                        </div>
+                    </div>
                 </div>
-                <div class="btn-save">
-                    <button type="submit" class="btn btn-primary mt-3" style="background-color: #236da3; color: #fff;">Salvar</button>
+                <div class="modal-footer">
+                    <a th:href="@{/assuntos}"  class="btn btn-secondary" style="margin-right: 10px;">Fechar</a>
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal"
+                            style="padding-left: 25px; padding-right:25px">Salvar</button>
                 </div>
             </form>
-
-            
         </div>
     </body>
 <!-- 
