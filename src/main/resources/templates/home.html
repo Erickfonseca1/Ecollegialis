@@ -17,8 +17,38 @@
   <body>
     <div th:replace="~{sidebar :: aside('Home')}"></div>
     <div class="container">
-      <h1>Home</h1>
-      <p>Seja bem-vindo ao Ecollegialis!</p>
+      <!-- Cabeçalho Informativo -->
+      <header class="jumbotron text-center mt-4">
+        <h1 class="display-4">Bem-vindo ao Ecollegialis</h1>
+        <p class="lead">O sistema de colegiado para alunos, professores e coordenadores</p>
+      </header>
+
+      <!-- Seção de Alunos -->
+      <section class="container mt-4">
+        <h2>Alunos</h2>
+        <p>
+          No Ecollegialis, os alunos podem acessar informações sobre o colegiado, visualizar comunicados e participar de
+          discussões relevantes para a comunidade acadêmica.
+        </p>
+      </section>
+
+      <!-- Seção de Professores -->
+      <section class="container mt-4">
+        <h2>Professores</h2>
+        <p>
+          Professores têm a capacidade de propor tópicos de discussão, compartilhar documentos importantes e colaborar com
+          outros membros do colegiado.
+        </p>
+      </section>
+
+      <!-- Seção de Coordenadores -->
+      <section class="container mt-4">
+        <h2>Coordenadores</h2>
+        <p>
+          Coordenadores desempenham um papel central no Ecollegialis, gerenciando reuniões, definindo pautas e garantindo
+          uma comunicação eficaz entre todos os envolvidos.
+        </p>
+      </section>
     </div>
     <!-- <footer th:replace="~{layouts :: footer}"></footer> -->
   </body>

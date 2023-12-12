@@ -18,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/aluno/{id}/processos")
+@RequestMapping("/processos")
 public class ProcessoController {
     @Autowired
     private AlunoService alunoService;
@@ -29,7 +29,7 @@ public class ProcessoController {
     @Autowired
     private AssuntoService assuntoService;
 
-    @GetMapping
+    @GetMapping("/{id}/aluno")
     public ModelAndView listProcessos(ModelAndView model, @PathVariable("id")Long id){
         Aluno aluno = this.alunoService.getAlunoPorId(id);
         model.addObject("aluno", aluno);
@@ -66,7 +66,7 @@ public class ProcessoController {
         processoService.salvarProcesso(processo);
         model.addObject("aluno", aluno);
         model.addObject("processos", processoService.getProcessosPorAluno(aluno));
-        model.setViewName("/aluno/"+id+"/processos");
+        model.setViewName("/processos/"+id+"/aluno");
         redirectAttributes.addFlashAttribute("mensagem", "Processo criado com Sucesso");
         return model;
     }

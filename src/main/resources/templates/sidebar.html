@@ -45,40 +45,13 @@
   </style>
 </head>
 
-<!-- <div th:fragment="aside(title)">
-    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px; height: 100vh;">
-      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-        <img class="me-2" th:src="@{/img/ecollegialis_logoSvg.svg}" alt="Logo" width="40" height="40">
-        <span class="fs-4">Ecollegialis</span>
-      </a>
-      <hr>
-      <ul class="nav-nav-pills flex-column mb-auto list-unstyled">
-        <li class="nav-item mb-2">
-          <a href="/" class="nav-link link-dark" aria-current="page">
-            Home
-          </a>
-        </li>
-        <li class="nav-item mb-2">
-          <a href="/aluno/list" class="nav-link link-dark">
-            Alunos
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="/assunto/list" class="nav-link link-dark">
-            Assuntos
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div> -->
-
 <div
   class="d-flex flex-column flex-shrink-0 p-3 bg-light"
   style="width: 280px; min-height: 100vh"
   th:fragment="aside(title)"
 >
   <a
-    href="/"
+    href="/home"
     class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
   >
     <img
@@ -93,7 +66,7 @@
   <hr />
   <ul class="nav nav-pills flex-column mb-auto">
     <li class="nav-item">
-      <a href="#" class="nav-link link-dark" aria-current="page">
+      <a href="/home" class="nav-link link-dark" aria-current="page">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="16"
@@ -146,7 +119,7 @@
       </a>
     </li>
     <li>
-      <a href="/aluno/3/processos" class="nav-link link-dark">
+      <a th:href="@{/processos/{id}/aluno(id=${id})}" class="nav-link link-dark">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="16"
@@ -187,19 +160,6 @@
         Professores
       </a>
     </li>
-
-    <!-- <li>
-        <a href="#" class="nav-link link-dark">
-          <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
-          Products
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link link-dark">
-          <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
-          Customers
-        </a>
-      </li> -->
   </ul>
   <hr />
 </div>
