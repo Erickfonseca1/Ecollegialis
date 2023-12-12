@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<style>
+    body {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .container {
+        width: 100%;
+        margin: 0;
+        padding: 30px;
+
+        .header {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+
+            .info {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: start;
+                margin-bottom: 20px;
+            }
+
+            .btn-salvar-curso {
+                display: flex;
+
+                justify-content: flex-end;
+                margin-bottom: 20px;
+            }
+        }
+    }
+</style>
+<head th:replace="~{layouts :: head('Novo curso')}"></head>
+<body>
+<div th:replace="~{sidebar :: aside('Novo curso')}"></div>
+<div class="container">
+  <h1 style="margin-bottom: 20px;margin-top: 20px;">Novo curso</h1>
+  <!-- INICIO DO FORM -->
+  <form th:action="${acao} == 'salvar' ? @{/cursos/criar} : @{/curso/{id}(id=${curso.id})}" method="post" th:object="${curso}">
+
+    <div class="modal-body" style="max-width: 500px">
+      <div class="row">
+        <input type="hidden" th:field="*{id}"><br>
+        <!--NOME-->
+        <div class="mb-3">
+          <label for="nome" class="form-label">Nome:</label>
+          <input type="text" id="nome" th:field="*{nome}" class="form-control" style="max-width: 500px">
+          <p th:if="${#fields.hasErrors('nome')}" th:errorclass="error" th:errors="*{nome}" class="alert alert-danger"></p>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end">
+        <button type="submit" class="btn btn-salvar-curso" style="background-color: #236da3; color: #fff;">
+          Salvar
+        </button>
+      </div>
+
+    </div>
+
+  </form>
+</div>
+</body>
+<!--
+<div class="container">
+    <h1 class="text-center">Formulário de Assunto</h1>
+    <form th:action="@{/assunto/salvar-assunto}" method="post">
+        <div class="form-group">
+            <label for="assunto">Assunto :</label>
+            <input type="text" class="form-control" id="assunto"  name="assunto" th:field="*{assunto.nome}" required>
+        </div>
+        <div class="btn-save">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
+    </form>
+
+    <div class="btn-minimal">
+        <a href="/assunto/lista-assuntos" class="btn btn-secondary">Lista de Assuntos</a>
+    </div>
+
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script> -->
+</html>
