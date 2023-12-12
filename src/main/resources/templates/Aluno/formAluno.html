@@ -39,56 +39,52 @@
 <head th:replace="~{layouts :: head('Novo Processo')}"></head>
 
 <body>
-
-<main>
-    <div th:replace="~{sidebar :: aside('Novo Processo')}"></div>
-    <div class="container">
-        <div class="header">
-            <div class="info">
-                <h1>Novo Aluno</h1>
-                <p>Aqui você pode cadastrar um novo aluno</p>
-            </div>
-            <div class="btn-minimal btn-lista-alunos">
-                <a href="/aluno/list" class="btn" style="background-color: #236da3; color: #fff;">Lista de alunos</a>
-            </div>
+<div th:replace="~{sidebar :: aside('Novo Processo')}"></div>
+<div class="container">
+    <div class="header">
+        <div class="info">
+            <h1>Novo Aluno</h1>
+            <p>Aqui você pode cadastrar um novo aluno</p>
         </div>
-        <form th:action="${acao} == 'salvar' ? @{/alunos/criar} : @{/alunos/{id}(id=${aluno.id})}" method="POST" th:object="${aluno}" style="max-width: 500px;">
-            <div>
-                <input type="hidden" th:field="*{id}">
-            </div>
-            <div class="form-group mb-3">
-                <label for="nome">Nome:</label>
-                <input type="text" class="form-control" id="nome" name="nome" th:field="*{nome}">
-                <p th:if="${#fields.hasErrors('nome')}" th:errorclass="error" th:errors="*{nome}" class="alert alert-danger"></p>
-            </div>
-            <div class="form-group mb-3" >
-                <label for="matricula">Matrícula:</label>
-                <input type="text" class="form-control" id="matricula" name="matricula" th:field="*{matricula}">
-                <p th:if="${#fields.hasErrors('matricula')}" th:errorclass="error" th:errors="*{matricula}" class="alert alert-danger"></p>
-            </div>
-            <div class="form-group mb-3">
-                <label for="curso">Curso:</label>
-                <select class="form-select" required id="curso" th:field="*{curso}">
-                    <option th:each="curso: ${cursos}" th:value="${curso.id}" th:text="${curso.nome}"></option>
-                </select>
-            </div>
-            <div class="form-group mb-3">
-                <label for="matricula">Telefone:</label>
-                <input type="text" class="form-control" id="fone" name="fone" th:field="*{fone}">
-            </div>
-            <div class="form-group mb-3">
-                <label for="senha">Senha:</label>
-                <input type="password" class="form-control" id="senha" name="senha" th:field="*{senha}">
-                <p th:if="${#fields.hasErrors('senha')}" th:errorclass="error" th:errors="*{senha}" class="alert alert-danger"></p>
-            </div>
-
-            <div class="btn-save">
-                <button type="submit" class="btn mt-3"  style="background-color: #236da3; color: #fff;">Salvar</button>
-            </div>
-        </form>
+        <div class="btn-minimal btn-lista-alunos">
+            <a href="/aluno/list" class="btn" style="background-color: #236da3; color: #fff;">Lista de alunos</a>
+        </div>
     </div>
+    <form th:action="${acao} == 'salvar' ? @{/alunos/criar} : @{/alunos/{id}(id=${aluno.id})}" method="POST" th:object="${aluno}" style="max-width: 500px;">
+        <div>
+            <input type="hidden" th:field="*{id}">
+        </div>
+        <div class="form-group mb-3">
+            <label for="nome">Nome:</label>
+            <input type="text" class="form-control" id="nome" name="nome" th:field="*{nome}">
+            <p th:if="${#fields.hasErrors('nome')}" th:errorclass="error" th:errors="*{nome}" class="alert alert-danger"></p>
+        </div>
+        <div class="form-group mb-3" >
+            <label for="matricula">Matrícula:</label>
+            <input type="text" class="form-control" id="matricula" name="matricula" th:field="*{matricula}">
+            <p th:if="${#fields.hasErrors('matricula')}" th:errorclass="error" th:errors="*{matricula}" class="alert alert-danger"></p>
+        </div>
+        <div class="form-group mb-3">
+            <label for="curso">Curso:</label>
+            <select class="form-select" required id="curso" th:field="*{curso}">
+                <option th:each="curso: ${cursos}" th:value="${curso.id}" th:text="${curso.nome}"></option>
+            </select>
+        </div>
+        <div class="form-group mb-3">
+            <label for="matricula">Telefone:</label>
+            <input type="text" class="form-control" id="fone" name="fone" th:field="*{fone}">
+        </div>
+        <div class="form-group mb-3">
+            <label for="senha">Senha:</label>
+            <input type="password" class="form-control" id="senha" name="senha" th:field="*{senha}">
+            <p th:if="${#fields.hasErrors('senha')}" th:errorclass="error" th:errors="*{senha}" class="alert alert-danger"></p>
+        </div>
 
-</main>
+        <div class="btn-save">
+            <button type="submit" class="btn mt-3"  style="background-color: #236da3; color: #fff;">Salvar</button>
+        </div>
+    </form>
+</div>
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
