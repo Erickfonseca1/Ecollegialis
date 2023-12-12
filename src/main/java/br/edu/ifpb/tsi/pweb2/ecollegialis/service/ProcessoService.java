@@ -1,61 +1,49 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.service;
 
 import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusEnum;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Aluno;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Processo;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Professor;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.*;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ProcessoRepository;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.VotoRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class ProcessoService {
-
     @Autowired
     private ProcessoRepository processoRepository;
 
-    @Autowired
-    private ProfessorService professorService;
-
-    @Autowired
-    private AlunoService alunoService;
-
-    @Autowired
-    private AssuntoService assuntoService;
-
-    public Processo criarProcesso(Processo processo){
-        var assunto = assuntoService.findById(processo.getAssunto().getId());
-        var aluno = alunoService.findById(processo.getAluno().getId());
-        processo.setStatus(StatusEnum.CRIADO);
-        return processoRepository.save(new Processo());
+    public List<Processo> getProcessos(){
+        return this.processoRepository.findAll();
     }
 
-    public Processo atribuirProcesso(Processo processo, Long idProfessor){
-        var professor = professorService.findById(idProfessor);
-        processo.setProfessor(professor);
-        processo.setStatus(StatusEnum.DISTRIBUIDO);
-        return processoRepository.save(processo);
+    public List<Processo> getProcessosPorAluno(Aluno aluno){
+        return this.processoRepository.findByAluno(aluno);
     }
 
-    public List<Processo> findAllProcessos() {
-        return processoRepository.findAll();
+    public List<Processo> getProcessosPorProfessor(Professor professor){
+        return this.processoRepository.findByRelator(professor);
     }
 
-    public List<Processo> findAllProcessoWithAluno(Aluno aluno) {
-        return processoRepository.findAllByAluno(aluno);
-    }
-
-    public Processo findAllProcessoById(Long id){
+    public Processo getProcessoPorId(Long id){
         return this.processoRepository.findById(id).orElse(null);
     }
 
-    public List<Processo> findAllProcessoWithProfessor(Professor professor) {
-        return processoRepository.findByProfessorRelator(professor);
+    public Processo salvarProcesso(Processo processo){
+        processo.getAluno().adicionarProcesso(processo);
+        processo.setStatus(StatusEnum.CRIADO);
+        processo.setDataCriacao(new Date());
+        processo.setNumero(""+new Date().getTime());
+        return this.processoRepository.save(processo);
+    }
+
+    public Processo atribuirProcesso(Processo processo,Long id){
+        Processo processoAtualizado = this.processoRepository.findById(id).orElse(new Processo());
+        processoAtualizado.setRelator(processo.getRelator());
+        processoAtualizado.setStatus(StatusEnum.DISTRIBUIDO);
+        processoAtualizado.setDataDistribuicao(new Date());
+        return this.processoRepository.save(processoAtualizado);
     }
 
 }

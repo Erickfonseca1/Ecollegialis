@@ -1,32 +1,69 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-@AllArgsConstructor
-@Entity
-public class Professor extends Usuario{
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
-    private boolean coordenador;
+@Data
+@NoArgsConstructor
+@Entity
+public class Professor {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank(message="Campo obrigatório")
+    @Size(min = 3, max = 40)
+    @Pattern(regexp = "[a-zA-ZÀ-ÖØ-öø-ÿ\s]+", message = "Nome inválido")
+    private String nome;
+
+    @NotBlank(message="Campo obrigatório")
+    @Pattern(regexp = "[0-9]{11}" , message = "Telefone inválido")
+    private String fone;
+
+    @NotBlank(message="Campo obrigatório")
+    @Pattern(regexp = "[0-9]{11}" , message = "Matrícula inválida")
+    private String matricula;
+
+    @NotBlank(message="Campo obrigatório")
+    @Size(min = 3, max = 60, message = "Senha deve ter entre 3 e 60 caracteres")
+    private String senha;
 
     @ManyToOne
-    private Colegiado colegiado;
-    @OneToMany
-    private List<Processo> processos;
+    @JoinColumn(name = "curso")
+    protected Curso curso;
 
-    public Professor(Long id, String nome, String fone, String matricula, String senha, boolean coordenador, boolean admin) {
-        super(id, nome, fone, matricula, senha, admin);
-        this.coordenador = coordenador;
-    }
-    public Professor() {
+    @OneToMany(mappedBy = "relator")
+    protected List<Processo> listaDeProcessos;
 
+    @ManyToMany(mappedBy = "membros")
+    protected List<Colegiado> listaColegiados;
+
+
+    public Professor(Long id, String nome, String fone, String matricula, String senha){
+        this.id = id;
+        this.nome = nome;
+        this.fone = fone;
+        this.matricula = matricula;
+        this.senha = senha;
     }
+
+    public void adicionarProcesso(Processo processo){
+        this.listaDeProcessos.add(processo);
+    }
+
+    public void adicionarColegiado(Colegiado colegiado){
+        this.listaColegiados.add(colegiado);
+    }
+
+    @Override
+    public String toString(){
+        return "Professor " + this.nome;
+    }
+
 }

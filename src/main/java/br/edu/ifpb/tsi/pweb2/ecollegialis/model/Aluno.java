@@ -1,35 +1,59 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-public class Aluno extends Usuario {
+public class Aluno {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank(message="Campo obrigatório")
+    @Size(min = 3, max = 40)
+    @Pattern(regexp = "[a-zA-ZÀ-ÖØ-öø-ÿ\s]+", message = "Nome inválido")
+    private String nome;
+
+    @NotBlank(message="Campo obrigatório")
+    @Pattern(regexp = "[0-9]{11}" , message = "Telefone inválido")
+    private String fone;
+
+    @NotBlank(message="Campo obrigatório")
+    @Pattern(regexp = "[0-9]{11}" , message = "Matrícula inválida")
+    private String matricula;
+
+    @NotBlank(message="Campo obrigatório")
+    @Size(min = 3, max = 60, message = "Senha deve ter entre 3 e 60 caracteres")
+    private String senha;
 
     @OneToMany(mappedBy = "aluno")
-    private List<Processo> processos = new ArrayList<>();
+    private List<Processo> listaProcessos;
 
-    @OneToOne
-    private Colegiado colegiado;
+    @ManyToOne
+    @JoinColumn(name="curso")
+    private Curso curso;
 
-    public Aluno(Long id, String nome, String fone, String matricula, String senha, boolean admin) {
-        super(id, nome, fone, matricula, senha, admin);
+    public Aluno(String nome, String fone, String matricula, String senha) {
+        this.nome = nome;
+        this.fone = fone;
+        this.matricula = matricula;
+        this.senha = senha;
     }
 
-    public Aluno() {}
+    public void adicionarProcesso(Processo processo){
+        this.listaProcessos.add(processo);
+    }
 
-    public void addProcesso(Processo processo) {
-        this.processos.add(processo);
+    @Override
+    public String toString(){
+        return "Aluno "+this.nome;
     }
 }

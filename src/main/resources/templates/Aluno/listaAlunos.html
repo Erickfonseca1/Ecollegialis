@@ -1,63 +1,65 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Alunos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #333;
-            color: #fff;
-        }
-        .container {
-            background-color: #444;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            margin-top: 20px;
-        }
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<style>
+    body {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .container {
+        width: 100%;
+        margin: 0;
+        padding: 30px;
+
         .btn-novo-aluno {
             display: flex;
-            justify-content: center;
-            margin-top: 20px;
+            justify-content: flex-end;
             margin-bottom: 20px;
         }
-    </style>
-</head>
+    }
+</style>  
+<head th:replace="~{layouts :: head('Lista de Alunos')}"></head>
 <body>
+<div th:replace="~{sidebar :: aside('Lista de Alunos')}"></div>
 <div class="container">
-    <h1 class="text-center">Lista de Alunos</h1>
+    <h1>Lista de Alunos</h1>
     <div class="btn-novo-aluno">
-        <a th:href="@{/aluno/form-aluno}" class="btn btn-primary">Adicionar aluno</a>
+        <a th:href="@{/alunos/criar}" class="btn" style="background-color: #236da3; color: #fff;">Adicionar aluno</a>
     </div>
-    <table class="table table-dark table-striped">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Matrícula</th>
-            <th>Telefone</th>
-            <th>Ações</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="aluno : ${alunos}">
-            <td th:text="${aluno.id}"></td>
-            <td th:text="${aluno.nome}"></td>
-            <td th:text="${aluno.matricula}"></td>
-            <td th:text="${aluno.fone}"></td>
-            <td>
-                <div class="btn-group">
-                    <a th:href="@{/aluno/{id}/editar(id=${aluno.id})}" class="btn btn-warning mx-1">Editar</a>
-                    <form th:action="@{/aluno/{id}/delete(id=${aluno.id})}" method="post">
-                        <button type="submit" class="btn btn-danger">Deletar</button>
-                    </form>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+
+    <th:block th:if="${not #lists.isEmpty(alunos)}">
+        <table class="table table-light table-striped mt-2">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Matrícula</th>
+                <th>Telefone</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="aluno : ${alunos}">
+                <td th:text="${aluno.id}"></td>
+                <td th:text="${aluno.nome}"></td>
+                <td th:text="${aluno.matricula}"></td>
+                <td th:text="${aluno.fone}"></td>
+                <td>
+                    <div class="btn-group">
+                        <a th:href="@{/aluno/{id}/edit(id=${aluno.id})}" class="btn btn-warning mx-1">Editar</a>
+                        <form th:action="@{/aluno/{id}/delete(id=${aluno.id})}" method="post">
+                            <button type="submit" class="btn btn-danger">Deletar</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </th:block>
+
+    <th:block th:if="${#lists.isEmpty(alunos)}">
+        <p>Não há alunos disponíveis.</p>
+    </th:block>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

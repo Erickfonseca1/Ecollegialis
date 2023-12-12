@@ -1,77 +1,80 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
+import java.util.List;
+import java.util.Date;
+
 import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusEnum;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.TipoDecisao;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Processo {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+
     private String numero;
-    private Date dataRecepcao;
+    private Date dataCriacao;
     private Date dataDistribuicao;
     private Date dataParecer;
     private byte[] parecer;
-
-
-    @Size(min = 0, max = 300, message = "O texto deve ter no máximo 300 caracteres")
-    private String textoRelator;
-
-    @NotBlank(message = "O texto não pode ser vazio")
-    @Size(min = 0, max = 300, message = "O texto deve ter entre 6 e 300 caracteres")
-    private String textoAluno;
-
-    @Enumerated(EnumType.STRING)
-    private StatusEnum status;
-
-    @Enumerated(EnumType.ORDINAL)
-    private TipoDecisao decisaoRelator;
+    private byte[] documento;
 
     @ManyToOne
-    private Assunto assunto;
-
-    @OneToMany
-    private List<Voto> votos;
+    private Professor relator;
 
     @ManyToOne
     private Aluno aluno;
 
-    private boolean emPauta = false;
+    @ManyToOne
+    private Colegiado colegiado;
 
     @ManyToOne
-    private Professor professor;
+    @JoinColumn(name = "assunto")
+    private Assunto assunto;
 
-    @ElementCollection
-    private List<byte[]> anexos;
+    @Enumerated(EnumType.STRING)
+    private TipoDecisao tipoDecisao;
 
-    public void addAnexos(byte[] anexo) {
-        this.anexos.add(anexo);
+    @OneToMany(mappedBy = "processo")
+    private List<Voto> listaDeVotos;
+
+    @NotBlank(message="Campo obrigatório!")
+    private String textoRequerimento;
+
+    @Enumerated(EnumType.STRING)
+    private StatusEnum status;
+
+    @ManyToOne
+    private Reuniao reuniao;
+
+    public Processo( Aluno aluno, Assunto assunto, String textoRequerimento, Colegiado colegiado) {
+        this.aluno = aluno;
+        this.numero = Long.toString(this.id);
+        this.status = StatusEnum.CRIADO;
+        this.dataCriacao = new Date();
+        this.assunto = assunto;
+        this.textoRequerimento = textoRequerimento;
+        this.colegiado = colegiado;
     }
 
-    public void addVoto(Voto voto) {
-        this.votos.add(voto);
+    public Processo(Aluno aluno,Assunto assunto){
+        this.aluno = aluno;
+        this.assunto = assunto;
     }
 
-    public void setTipoDecisao(TipoDecisao decisaoRelator) {
-        this.decisaoRelator = decisaoRelator;
-    }
-
-    public TipoDecisao getTipoDecisao() {
-        return this.decisaoRelator;
-    }
 }

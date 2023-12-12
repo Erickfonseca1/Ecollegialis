@@ -10,51 +10,44 @@ import java.util.List;
 
 @Service
 public class ProfessorService {
-
     @Autowired
     private ProfessorRepository professorRepository;
 
-    public List<Professor> findAllProfessores() {
-        return professorRepository.findAll();
+    public List<Professor> getProfessores(){
+        return this.professorRepository.findAll();
     }
 
-    public List<Professor> findProfessoresWithProcesso() {
+    public List<Professor> getProfessoresComColegiado(){
         List<Professor> professores = new ArrayList<Professor>();
-        for (Professor professor : professorRepository.findAll()) {
-            if (!professor.getProcessos().isEmpty()) {
+        for (Professor professor : this.professorRepository.findAll()){
+            if(professor.getListaColegiados() != null){
                 professores.add(professor);
             }
         }
         return professores;
     }
 
-    public List<Professor> findProfessorWithColegiado(){
+    public List<Professor> getProfessoresComProcessos(){
         List<Professor> professores = new ArrayList<Professor>();
-        for (Professor professor : professorRepository.findAll()) {
-            if (professor.getColegiado() != null) {
+        for (Professor professor : this.professorRepository.findAll()){
+            if(professor.getListaDeProcessos().size() > 0){
                 professores.add(professor);
             }
         }
         return professores;
     }
 
-    public Professor save(Professor professor) {
-        return professorRepository.save(professor);
+    public Professor getProfessorPorId(Long id){
+        return this.professorRepository.findById(id).orElse(null);
     }
 
-    public Professor findById(Long id) {
-        return professorRepository.findById(id).orElse(null);
+    public Professor salvarProfessor(Professor professor){
+        return this.professorRepository.save(professor);
     }
 
-    public List<Professor> findAll() {
-        return professorRepository.findAll();
+    public void deletarProfessor(Long id){
+        this.professorRepository.deleteById(id);
     }
 
-    public void deleteById(Long id) {
-        professorRepository.deleteById(id);
-    }
-
-    public void update(Professor professor) {
-        professorRepository.save(professor);
-    }
+    
 }
