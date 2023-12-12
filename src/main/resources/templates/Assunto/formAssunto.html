@@ -40,7 +40,7 @@
     <body>
         <div th:replace="~{sidebar :: aside('Novo Assunto')}"></div>
         <div class="container" >
-            <h1 style="margin-bottom: 20px;margin-top: 20px;">Editar Assunto</h1>
+            <h1 style="margin-bottom: 20px;margin-top: 20px;">Novo Assunto</h1>
             <!-- INICIO DO FORM -->
             <form th:action="${acao} == 'salvar' ? @{/assuntos/criar} : @{/assuntos/{id}(id=${assunto.id})}" method="post" th:object="${assunto}">
 
@@ -57,7 +57,7 @@
                 </div>
                 <div class="modal-footer">
                     <a th:href="@{/assuntos}"  class="btn btn-secondary" style="margin-right: 10px;">Fechar</a>
-                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal"
+                    <button type="submit" class="btn" data-bs-dismiss="modal"
                             style="padding-left: 25px; padding-right:25px">Salvar</button>
                 </div>
             </form>

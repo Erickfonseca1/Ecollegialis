@@ -20,7 +20,7 @@ public class CursosController {
     public ModelAndView listCursos(ModelAndView model) {
         model.addObject("cursos", cursoService.getCursos());
         model.addObject("curso", new Curso());
-        model.setViewName("Curso/listaCursos");
+        model.setViewName("Cursos/listaCursos");
         return model;
     }
 
@@ -28,19 +28,7 @@ public class CursosController {
     public ModelAndView createCurso(ModelAndView model, RedirectAttributes redirectAttributes) {
         model.addObject("curso", new Curso());
         model.addObject("acao", "salvar");
-        model.setViewName("Curso/formCurso");
-        return model;
-    }
-
-    @GetMapping("{id}")
-    public ModelAndView editCurso(@PathVariable("id") long id, ModelAndView model, RedirectAttributes redirectAttributes) {
-        model.addObject("curso", cursoService.getCursoPorId(id));
-        model.addObject("acao", "editar");
-        model.setViewName("Curso/formCurso");
-
-        redirectAttributes.addFlashAttribute("mensagem", "O Curso foi editado!");
-        redirectAttributes.addFlashAttribute("cursosEditado", true);
-
+        model.setViewName("Cursos/formCurso");
         return model;
     }
 
@@ -52,7 +40,7 @@ public class CursosController {
             RedirectAttributes redirectAttributes
     ){
         if (validation.hasErrors()) {
-            model.setViewName("Curso/formCurso");
+            model.setViewName("Cursos/formCurso");
             model.addObject("acao", "salvar");
             return model;
         }
@@ -85,7 +73,7 @@ public class CursosController {
         return model;
     }
 
-    @DeleteMapping("{id}/delete")
+    @RequestMapping("{id}/delete")
     public ModelAndView deleteCurso(@PathVariable("id") Long id, ModelAndView model, RedirectAttributes redirectAttributes) {
         cursoService.deletarCurso(id);
         model.addObject("cursos", cursoService.getCursos());
