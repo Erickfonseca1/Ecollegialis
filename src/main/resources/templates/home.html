@@ -22,13 +22,18 @@
         <p class="lead">O sistema de colegiado para alunos, professores e coordenadores</p>
       </header>
 
-      <!-- Seção de Alunos -->
-      <section class="container mt-4" th:if="${professor == null && coordenador == null}">
-        <h2>Alunos</h2>
+      <!-- Seção do Administrador -->
+      <section class="container mt-4" th:if="${professor == null && coordenador == null && aluno == null}">
+        <h2>Administrador</h2>
         <p>
-          No Ecollegialis, os alunos podem acessar informações sobre o colegiado, visualizar comunicados e participar de
-          discussões relevantes para a comunidade acadêmica.
+          O administrador é responsável por gerenciar diversos itens do sistema, como cursos, professores e coordenadores, dentre outros atributos essenciais.
         </p>
+      </section>
+
+      <!-- Seção de Alunos -->
+      <section class="container mt-4" th:if="${professor == null && coordenador == null && aluno != null}">
+        <h2>Alunos</h2>
+        <p th:text="${aluno.nome + ', no Ecollegialis você pode criar processo, além de acessar informações sobre os seus processos e participar de sessões do colegiado.'}"></p>
       </section>
 
       <!-- Seção de Professores -->

@@ -4,9 +4,12 @@ import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusEnum;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Aluno;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Assunto;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Processo;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Professor;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.AlunoService;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.AssuntoService;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.ProcessoService;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.service.ProfessorService;
+
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +32,9 @@ public class ProcessoController {
     @Autowired
     private AssuntoService assuntoService;
 
+    @Autowired
+    private ProfessorService professorService;
+
     @GetMapping("/aluno/{id}")
     public ModelAndView listProcessos(ModelAndView model, @PathVariable("id")Long id){
         Aluno aluno = this.alunoService.getAlunoPorId(id);
@@ -39,12 +45,21 @@ public class ProcessoController {
         return model;
     }
 
+    @GetMapping("/professor/{id}")
+    public ModelAndView listProcessos(@PathVariable("id")Long id, ModelAndView model){
+        Professor professor = this.professorService.getProfessorPorId(id);
+        model.addObject("professor", id);
+        model.addObject("processos", processoService.getProcessosPorProfessor(professor));
+        model.setViewName("Processo/listaProcessos");
+        return model;
+    }
+
     @ModelAttribute("statusItens")
     public List<StatusEnum> getStatus() {
         return List.of(StatusEnum.values());
     }
 
-    @GetMapping("criar")
+    @GetMapping("criar/{id}")
     public ModelAndView createProcesso(ModelAndView model,@PathVariable("id")Long id, RedirectAttributes redirectAttributes ){
         Aluno aluno = this.alunoService.getAlunoPorId(id);
         model.addObject("aluno", aluno);

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="www.thymeleaf.org">
-<head th:replace="~{layouts :: head('Lista dos Processos')}"></head>
 <style>
     body {
         display: flex;
@@ -11,40 +10,33 @@
         width: 100%;
         margin: 0;
         padding: 30px;
-    }
 
-    .btn-novo-processo {
-        display: flex;
-        justify-content: flex-end;
-        margin-bottom: 20px;
-    }
+        .btn-novo-processo {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
 
-    .filter-and-sort {
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-        margin-bottom: 20px;
-    }
-
-    table {
-        width: 100%;
-    }
-
-    th, td {
-        text-align: left;
-        padding: 8px;
+        .filter-and-sort {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 20px;
+        }
     }
 </style>
+<head th:replace="~{layouts :: head('Lista dos Processos')}"></head>
 <body>
-    <div th:replace="~{sidebar :: aside('Lista dos Processos')}"></div>
+<div th:replace="~{sidebar :: aside('Lista dos Processos')}"></div>
+<div class="container">
     <div class="container">
-    <h1>Lista de Processos</h1>
-        <div class="container">
-            <h1>Lista de Processos</h1>
-            <div class="btn-novo-processo">
-                <a th:href="@{'/aluno/' + ${aluno.id} + '/processos/criar'}" class="btn" style="background-color: #236da3; color: #fff;">Adicionar Processo</a>
-            </div>
+        <h1>Lista de Processos</h1>
+        só exibir o botão para aluno
+        <div class="btn-novo-processo" >
+            <a th:href="@{'/processos/criar/' + ${aluno.id}}" class="btn" style="background-color: #236da3; color: #fff;">Adicionar Processo</a>
+        </div>
 
+        <th:block th:if="${not #lists.isEmpty(processos)}">
             <div class="filter-and-sort">
                 <div class="input-group mb-3" style="width: 300px;">
                     <label class="input-group-text" for="filterStatus">Status</label>
@@ -57,7 +49,7 @@
                         <option value="Julgado">Julgado</option>
                     </select>
                 </div>
-
+    
                 <div class="input-group mb-3" style="width: 300px;">
                     <label class="input-group-text" for="filterAssunto">Assunto</label>
                     <select class="form-select" id="filterAssunto" name="filtro">
@@ -66,92 +58,94 @@
                     </select>
                 </div>
             </div>
+            <table class="table table-light table-striped mt-2">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Assunto</th>
+                        <th scope="col">Data de Criação</th>
+                        <th scope="col">Opções</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="processo:${processos}">
+                        <td th:text="${processo.numero}"></td>
+                        <td th:text="${processo.status}"></td>
+                        <td th:text="${processo.assunto.nome}"></td>
+                        <td th:text="${processo.dataCriacao}"></td>
+                        <td>
+                            <button type="button" class="btn btn-primary">Consultar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </th:block>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Estado</th>
-                <th scope="col">Assunto</th>
-                <th scope="col">Data de Criação</th>
-                <th scope="col">Opções</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="processo:${processos}">
-                <td th:text="${processo.numero}"></td>
-                <td th:text="${processo.status}"></td>
-                <td th:text="${processo.assunto.nome}"></td>
-                <td th:text="${processo.dataCriacao}"></td>
-                <td>
-                    <button type="button" class="btn btn-primary">Consultar</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 
-    <script th:src="@{/js/bootstrap.buddle.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
-    <script th:src="@{/js/popper.min.js}"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 
-    <!-- Mensagem quando não há processos -->
-    <th:block th:if="${#lists.isEmpty(processos)}">
-        <p>Não há processos disponíveis.</p>
-    </th:block>
-    </div>
-        <!-- FILTRO POR STATUS-->
-        <script>
-            $(document).ready(function () {
-                $('#filterStatus, #filterAssunto').on('change', function () {
-                    var status = $('#filterStatus').val();
-                    var assunto = $('#filterAssunto').val();
-                    filterTable(status, assunto);
-                });
+<script th:src="@{/js/bootstrap.buddle.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 
-                function filterTable(status, assunto) {
-                    var rows = $('table tbody tr');
-                    rows.show();
+<!-- Mensagem quando não há processos -->
+<th:block th:if="${#lists.isEmpty(processos)}">
+    <p>Não há processos disponíveis.</p>
+</th:block>
+</div>
+    <!-- FILTRO POR STATUS-->
+    <script>
+        $(document).ready(function () {
+            $('#filterStatus, #filterAssunto').on('change', function () {
+                var status = $('#filterStatus').val();
+                var assunto = $('#filterAssunto').val();
+                filterTable(status, assunto);
+            });
 
-                    if (status) {
-                        rows.filter(':not(:contains("' + status + '"))').hide();
-                    }
+            function filterTable(status, assunto) {
+                var rows = $('table tbody tr');
+                rows.show();
 
-                    if (assunto) {
-                        rows.filter(':not(:contains("' + assunto + '"))').hide();
-                    }
+                if (status) {
+                    rows.filter(':not(:contains("' + status + '"))').hide();
                 }
 
-                $.expr[":"].contains = $.expr.createPseudo(function (text) {
-                    return function (element) {
-                        return $(element).text().toUpperCase().indexOf(text.toUpperCase()) >= 0;
-                    };
-                });
-            });
-        </script>
-
-
-        <!--FILTRO POR PESQUISA -->
-
-        <script>
-            $(document).ready(function () {
-                $('#filterAssunto').on('input', function () {
-                    var assunto = $('#filterAssunto').val().toLowerCase();
-                    filterTable(assunto);
-                });
-
-                function filterTable(assunto) {
-                    var rows = $('table tbody tr');
-                    rows.show();
-
-                    rows.filter(function () {
-                        var text = $(this).text().toLowerCase();
-                        return (assunto && text.indexOf(assunto) === -1)
-                    }).hide();
+                if (assunto) {
+                    rows.filter(':not(:contains("' + assunto + '"))').hide();
                 }
+            }
+
+            $.expr[":"].contains = $.expr.createPseudo(function (text) {
+                return function (element) {
+                    return $(element).text().toUpperCase().indexOf(text.toUpperCase()) >= 0;
+                };
             });
-        </script>
-        </script>
-    </div>
+        });
+    </script>
+
+
+    <!--FILTRO POR PESQUISA -->
+
+    <script>
+        $(document).ready(function () {
+            $('#filterAssunto').on('input', function () {
+                var assunto = $('#filterAssunto').val().toLowerCase();
+                filterTable(assunto);
+            });
+
+            function filterTable(assunto) {
+                var rows = $('table tbody tr');
+                rows.show();
+
+                rows.filter(function () {
+                    var text = $(this).text().toLowerCase();
+                    return (assunto && text.indexOf(assunto) === -1)
+                }).hide();
+            }
+        });
+    </script>
+    </script>
+</div>
 </body>
 </html>

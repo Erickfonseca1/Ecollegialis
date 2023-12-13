@@ -91,6 +91,7 @@ public class HomeController {
     if (coordenadores != null && !coordenadores.isEmpty()) {
       for (Coordenador coordenador : coordenadores) {
         if (coordenador.getProfessor().getId() == professor.getId()) {
+          model.addObject("professor", professor);
           model.addObject("coordenador", coordenador);
           model.setViewName("home");
           return model;
