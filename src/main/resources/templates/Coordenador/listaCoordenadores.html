@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<style>
+    body {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .container {
+        width: 100%;
+        margin: 0;
+        padding: 30px;
+
+        .btn-novo-coordenador {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+    }
+</style>  
+<head th:replace="~{layouts :: head('Lista de coordenadores')}"></head>
+<body>
+    <div th:replace="~{sidebar :: aside('Lista de coordenadores')}"></div>
+    <div class="container">
+        <h1>Lista de coordenadores</h1>
+        <div class="btn-novo-coordenador">
+            <a th:href="@{/coordenadores/criar}" class="btn" style="background-color: #236da3; color: #fff;">Adicionar coordenador</a>
+        </div>
+
+        <th:block th:if="${not #lists.isEmpty(coordenadores)}">
+            <table class="table table-light table-striped mt-2">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Curso</th>
+                        <th>Coordenador</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="coordenador : ${coordenadores}">
+                        <td th:text="${coordenador.id}"></td>
+                        <td th:text="${coordenador.curso.nome}"></td>
+                        <td th:text="${coordenador.professor.nome}"></td>
+                        <td>
+                            <div class="btn-group" style="max-width: 75px">
+                                <form th:action="@{/coordenadores/{id}(id=${coordenador.id})}">
+                                    <button type="submit" class="btn btn-primary">Editar</button>
+                                </form>
+                                <form style="margin-right: 10px;" th:action="@{/coordenadores/{id}/delete(id=${coordenador.id})}">
+                                    <button type="submit" class="btn btn-danger">Excluir</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </th:block>
+
+        <th:block th:if="${#lists.isEmpty(coordenadores)}">
+            <p>Não há coordenadores disponíveis.</p>
+        </th:block>
+    </div>
+</body>
+</html>

@@ -21,16 +21,33 @@ public class CoordenadorController {
     @Autowired
     private ProfessorService professorService;
 
+    @Autowired
+    private CursoService cursoService;
+
+    
+
+    @ModelAttribute("cursos")
+    public List<Curso> getCursos() {
+        return this.cursoService.getCursos();
+    }
+
     @ModelAttribute("professores")
     public List<Professor> getProfessores(){
         return this.professorService.getProfessores();
     }
-
+    
     @GetMapping
     public ModelAndView listCoordenadores(ModelAndView model){
         model.addObject("coordenadores", coordenadorService.getCoordenadores());
         model.setViewName("Coordenador/listaCoordenadores");
         return model;
+    }
+
+    @GetMapping("professores/{cursoId}")
+    @ResponseBody
+    public List<Professor> getProfessorPorCurso(@PathVariable Long cursoId) {
+        List<Professor> professores = professorService.getProfessoresPorCurso(cursoId);
+        return professores;
     }
 
     @GetMapping("criar")

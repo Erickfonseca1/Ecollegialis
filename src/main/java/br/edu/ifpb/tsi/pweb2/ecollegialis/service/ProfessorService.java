@@ -1,5 +1,6 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.service;
 
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Curso;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Professor;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,16 @@ public class ProfessorService {
 
     public List<Professor> getProfessores(){
         return this.professorRepository.findAll();
+    }
+
+    public List<Professor> getProfessoresPorCurso(Long cursoId) {
+        List<Professor> professores = new ArrayList<Professor>();
+        for (Professor professor : this.professorRepository.findAll()){
+            if(professor.getCurso().getId() == cursoId){
+                professores.add(professor);
+            }
+        }
+        return professores;
     }
 
     public List<Professor> getProfessoresComColegiado(){
