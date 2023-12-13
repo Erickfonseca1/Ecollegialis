@@ -31,6 +31,16 @@ public class AlunoService {
         return alunos;
     }
 
+    public List<Aluno> getAlunosDeUmCurso(Long id){
+        List<Aluno> alunos = new ArrayList<>();
+        for (Aluno aluno : this.alunoRepository.findAll()){
+            if(aluno.getCurso().getId() == id){
+                alunos.add(aluno);
+            }
+        }
+        return alunos;
+    }
+
     public Aluno salvarAluno(Aluno aluno){
         return this.alunoRepository.save(aluno);
     }

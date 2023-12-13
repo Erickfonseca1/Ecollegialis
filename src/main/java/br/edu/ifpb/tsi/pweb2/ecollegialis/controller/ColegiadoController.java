@@ -29,6 +29,9 @@ public class ColegiadoController {
     @Autowired
     private CoordenadorService coordenadorService;
 
+    @Autowired
+    private AlunoService alunoService;
+
     @ModelAttribute("professores")
     public List<Professor> getProfessores(){
         return this.professorService.getProfessores();
@@ -51,12 +54,16 @@ public class ColegiadoController {
         List<Professor> professores = professorService.getProfessoresPorCurso(coordenador.getCurso().getId());
         professores.remove(coordenador.getProfessor());
 
+        //listar alunos que são do mesmo curso do coordenador
+        List<Aluno> alunos = alunoService.getAlunosDeUmCurso(coordenador.getCurso().getId());
+
         //curso do coordenador
         Curso curso = coordenador.getCurso();
 
         model.addObject("curso", curso);
         model.addObject("coordenador", coordenador);
         model.addObject("professores", professores);
+        model.addObject("alunos", alunos);
         model.addObject("colegiado", new Colegiado(professores));
         model.addObject("acao", "salvar");
         model.setViewName("Colegiado/formColegiado");

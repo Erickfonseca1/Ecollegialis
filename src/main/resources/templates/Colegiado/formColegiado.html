@@ -87,6 +87,10 @@
                           <option th:value="${professor.id}" th:text="${professor.nome}"></option>
                       </th:block>
                   </optgroup>
+                  <optgroup label="Alunos">
+                      <th:block th:each="aluno : ${alunos}">
+                          <option th:value="${aluno.id}" th:text="${aluno.nome}"></option>
+                      </th:block>
               </select>
           </div>
             <div class="btn-save">
