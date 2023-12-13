@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Aluno;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Coordenador;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Professor;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.AlunoService;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.CoordenadorService;
@@ -26,12 +27,25 @@ public class HomeController {
   @Autowired
   private ProfessorService professorService;
 
+  @Autowired 
+  private CoordenadorService coordenadorService;
+
   //redirecionar para o login
   @GetMapping
   public String login() {
     return "seletorTemporario";
   }
 
+  //a partir daqui, funciona da seguinte forma:
+  // é apenas uma forma de preceder o login, para que o usuário não tenha que digitar o /id
+  // então, se o usuário for admin, ele é redirecionado para o /admin
+  // se for aluno, ele é redirecionado para o /aluno e é associado à ele o id de um aluno aleatório, para assim poder realizar os trâmites de aluno
+  // se for professor ou coordenador, ele é redirecionado para o /professor e é associado à ele o id de um professor aleatório.
+
+  @GetMapping("/admin")
+  public ModelAndView homeAdmin() {
+    return new ModelAndView("home");
+  }
 
   //método para redirecionar a view home para chamar o /id
   @GetMapping("/aluno")
@@ -69,6 +83,21 @@ public class HomeController {
   @GetMapping("/professor/{id}")
   public ModelAndView homeProfessor(ModelAndView model, @PathVariable Long id) {
     Professor professor = professorService.getProfessorPorId(id);
+
+    //Realiza uma verificação para saber se aquele professor é coordenador de algum curso
+    //para assim poder mostrar as opções de coordenador
+    List<Coordenador> coordenadores = coordenadorService.getCoordenadores();
+
+    if (coordenadores != null && !coordenadores.isEmpty()) {
+      for (Coordenador coordenador : coordenadores) {
+        if (coordenador.getProfessor().getId() == professor.getId()) {
+          model.addObject("coordenador", coordenador);
+          model.setViewName("home");
+          return model;
+        }
+      }
+    }
+    
     model.addObject("professor", professor);
     model.setViewName("home");
     return model;
