@@ -94,7 +94,6 @@
     <p>Não há processos disponíveis.</p>
 </th:block>
 </div>
-    <!-- FILTRO POR STATUS-->
     <script>
         $(document).ready(function () {
             $('#filterStatus, #filterAssunto').on('change', function () {
@@ -122,29 +121,6 @@
                 };
             });
         });
-    </script>
-
-
-    <!--FILTRO POR PESQUISA -->
-
-    <script>
-        $(document).ready(function () {
-            $('#filterAssunto').on('input', function () {
-                var assunto = $('#filterAssunto').val().toLowerCase();
-                filterTable(assunto);
-            });
-
-            function filterTable(assunto) {
-                var rows = $('table tbody tr');
-                rows.show();
-
-                rows.filter(function () {
-                    var text = $(this).text().toLowerCase();
-                    return (assunto && text.indexOf(assunto) === -1)
-                }).hide();
-            }
-        });
-    </script>
     </script>
 </div>
 </body>
