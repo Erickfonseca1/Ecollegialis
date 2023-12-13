@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<style>
+    body {
+        display: flex;
+        flex-direction: row;
+    }
+    .container {
+        width: 100%;
+        margin: 0;
+        padding: 30px;
+
+        .header {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+
+            .info {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: start;
+                margin-bottom: 20px;
+            }
+
+            .btn-minimal.btn-lista-colegiados {
+                display: flex;
+                justify-content: flex-end;
+                margin-bottom: 20px;
+            }
+        }
+    }
+</style>
+<head th:replace="~{layouts :: head('Novo Colegiado')}"></head>
+<body>
+    <div th:replace="~{sidebar :: aside('Novo Colegiado')}"></div>
+    <div class="container">
+        <div class="header">
+            <div class="info">
+                <h1>Novo colegiado</h1>
+                <p>Aqui você pode definir um novo colegiado</p>
+            </div>
+            <div class="btn-minimal btn-lista-colegiados">
+                <a th:href="@{/colegiados/professor/{id}}" class="btn" style="background-color: #236da3; color: #fff;">Lista de colegiados</a>
+            </div>
+        </div>
+        <form th:action="${acao} == 'salvar' ? @{/colegiados/criar} : @{/colegiados/{id}(id=${colegiado.id})}" 
+            method="POST" th:object="${colegiado}" id="colegiadoForm">
+            <!-- Seu código existente aqui -->
+
+            <div class="form-group mb-3">
+                <label for="descricao">Descrição:</label>
+                <input type="text" class="form-control" id="descricao" name="descricao" th:field="*{descricao}" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="portaria">Portaria:</label>
+                <input type="text" class="form-control" id="portaria" name="portaria" th:field="*{portaria}" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="dataInicio">Data de Início:</label>
+                <input type="date" class="form-control" id="dataInicio" name="dataInicio" th:field="*{dataInicio}" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="dataFim">Data de Fim:</label>
+                <input type="date" class="form-control" id="dataFim" name="dataFim" th:field="*{dataFim}" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="coordenador">Coordenador:</label>
+                <input th:if="${coordenador.id}" type="text" class="form-control" id="coordenador" name="coordenador" th:value="${coordenador.professor.nome}" readonly required>
+                <select th:if="${coordenadores}" class="form-control" id="coordenador" name="coordenador" th:field="*{coordenador.id}" required>
+                    <!-- Preenchido via controller -->
+                    <option th:each="coordenador : ${coordenadores}" th:value="${coordenador.id}" th:text="${coordenador.professor.nome}"></option>
+                </select>
+            </div>
+            <div class="form-group mb-3">
+                <label for="curso">Curso:</label>
+                <input type="text" class="form-control" id="curso" name="curso" th:value="${curso.nome}" readonly required>
+            </div>
+            <div class="form-group mb-3">
+              <label for="membros">Membros:</label>
+              <select class="form-select" id="multiple-select-custom-field" name="membros" data-placeholder="Escolha os membros" multiple>
+                  <optgroup label="Professores">
+                      <th:block th:each="professor : ${professores}">
+                          <option th:value="${professor.id}" th:text="${professor.nome}"></option>
+                      </th:block>
+                  </optgroup>
+              </select>
+          </div>
+            <div class="btn-save">
+                <button type="submit" class="btn mt-3" style="background-color: #236da3; color: #fff;">Salvar</button>
+            </div>
+        </form>
+    </div>
+  </body>
+</html>

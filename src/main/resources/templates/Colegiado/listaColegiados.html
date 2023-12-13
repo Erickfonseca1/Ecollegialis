@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<style>
+    body {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .container {
+        width: 100%;
+        margin: 0;
+        padding: 30px;
+
+        .btn-novo-colegiado {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+    }
+</style>
+<head th:replace="~{layouts :: head('Lista de colegiados')}"></head>
+<body>
+<div th:replace="~{sidebar :: aside('Lista de colegiados')}"></div>
+<div class="container">
+    <h1>Lista de Colegiados</h1>
+    <div class="btn-novo-colegiado">
+        <!-- Adicione o link para criar um novo colegiado -->
+        <a th:href="@{'/colegiados/criar/' + ${id}}" class="btn" style="background-color: #236da3; color: #fff;">Criar Colegiado</a>
+    </div>
+
+    <th:block th:if="${not #lists.isEmpty(colegiados)}">
+        <table class="table table-light table-striped mt-2">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Curso</th>
+                <th>Número de Membros</th>
+                <th>Data de Início</th>
+                <th>Data de Fim</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="colegiado : ${colegiados}">
+                <td th:text="${colegiado.id}"></td>
+                <td th:text="${colegiado.curso.nome}"></td>
+                <td th:text="${#lists.size(colegiado.membros)}"></td>
+                <td th:text="${#dates.format(colegiado.dataInicio, 'dd/MM/yyyy')}"></td>
+                <td th:text="${#dates.format(colegiado.dataFim, 'dd/MM/yyyy')}"></td>
+                <td>
+                    <div class="btn-group" style="max-width: 75px">
+                        <!-- Adicione os links para editar e excluir conforme necessário -->
+                        <form th:action="@{/colegiados/{id}/editar(id=${colegiado.id})}">
+                            <button type="submit" class="btn btn-primary" disabled>Editar</button>
+                        </form>
+                        <form style="margin-right: 10px;" th:action="@{/colegiados/{id}/excluir(id=${colegiado.id})}">
+                            <button type="submit" class="btn btn-danger" disabled>Excluir</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </th:block>
+
+    <th:block th:if="${#lists.isEmpty(colegiados)}">
+        <p>Não há colegiados disponíveis.</p>
+    </th:block>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
