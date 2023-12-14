@@ -50,9 +50,6 @@ public class ColegiadoController {
     @GetMapping("criar")
     public ModelAndView createColegiado(ModelAndView model, RedirectAttributes redirectAttributes ){
         List<Professor> membros = new ArrayList<Professor>();
-        for(int i=0 ; i<4;i++){
-            membros.add(new Professor());
-        }
         model.addObject("colegiado", new Colegiado(membros));
         model.addObject("membros", membros);
         model.addObject("acao", "salvar");
@@ -69,9 +66,6 @@ public class ColegiadoController {
     ){
         if (validation.hasErrors()) {
             List<Professor> membros = new ArrayList<Professor>();
-            for(int i=0 ; i<4;i++){
-                membros.add(new Professor());
-            }
             model.addObject("membros", membros);
             model.setViewName("Colegiado/formColegiado");
             model.addObject("acao", "salvar");

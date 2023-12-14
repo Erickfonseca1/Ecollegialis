@@ -63,13 +63,12 @@
 
                     <!--MEMBROS-->
 
-                    <div class="col-md-6" th:each="membro, itemStat : ${membros}">
-                        <div class="mb-3">
-                            <label for="membro" class="form-label"></label>
-                            <select class="form-select" required id="membro" th:field="*{membros[__${itemStat.index}__]}">
-                                <option th:each="professor: ${professores}" th:value="${professor.id}" th:text="${professor.nome}"></option>
-                            </select>
-                        </div>
+                    <div class="mb-3">
+                        <label for="membros" class="form-label">Membros:</label>
+                        <select class="form-select" required id="membros" th:field="*{membros}" multiple>
+                            <option th:each="professor: ${professores}" th:value="${professor.id}" th:text="${professor.nome}"></option>
+                        </select>
+                        <p th:if="${#fields.hasErrors('membros')}" th:errorclass="error" th:errors="*{membros}" class="alert alert-danger"></p>
                     </div>
                 </div>
             </div>
