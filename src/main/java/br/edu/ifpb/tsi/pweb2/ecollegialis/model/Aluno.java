@@ -41,6 +41,10 @@ public class Aluno {
     @JoinColumn(name="curso")
     private Curso curso;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "username")
+    private User user;
+
     public Aluno(String nome, String fone, String matricula, String senha) {
         this.nome = nome;
         this.fone = fone;
