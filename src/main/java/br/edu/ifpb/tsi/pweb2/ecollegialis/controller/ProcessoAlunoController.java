@@ -22,7 +22,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/aluno/{id}/processos")
-public class ProcessoController {
+public class ProcessoAlunoController {
 
     @RequestMapping("/aluno")
     public String showHomePage(){

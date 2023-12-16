@@ -50,7 +50,7 @@
             <a href="/alunos" class="btn" style="background-color: #236da3; color: #fff;">Lista de alunos</a>
         </div>
     </div>
-    <form class="container" th:action="@{'/aluno/' + ${aluno.id} + '/processos/criar'}" method="post" th:object="${processo}">
+    <form th:action="${acao} == 'salvar' ? @{/alunos/criar} : @{/alunos/{id}(id=${aluno.id})}" method="post" th:object="${aluno}">
         <div>
             <input type="hidden" th:field="*{id}">
         </div>
