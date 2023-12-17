@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+// Será deletado pois esse crud está sendo feito no AdminController
 @Controller
 @RequestMapping("/cursos")
 public class CursosController {

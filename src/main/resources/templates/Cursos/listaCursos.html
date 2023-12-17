@@ -25,7 +25,7 @@
 <div class="container">
   <h1>Lista de Cursos</h1>
   <div class="btn-novo-curso">
-    <a th:href="@{/cursos/criar}" class="btn" style="background-color: #236da3; color: #fff;">Adicionar curso</a>
+    <a th:href="@{cursos/criar}" class="btn" style="background-color: #236da3; color: #fff;">Adicionar curso</a>
   </div>
 
   <th:block th:if="${not #lists.isEmpty(cursos)}">
@@ -43,7 +43,7 @@
         <td th:text="${curso.nome}"></td>
         <td>
           <div class="btn-group">
-            <form th:action="@{/cursos/{id}/delete(id=${curso.id})}" method="post">
+            <form th:action="@{cursos/deletar/{id}(id=${curso.id})}" method="post">
               <button type="submit" class="btn btn-danger">Deletar</button>
             </form>
           </div>
@@ -53,9 +53,9 @@
     </table>
   </th:block>
 
-  <th:block th:if="${#lists.isEmpty(curso)}">
+  <th:block th:if="${#lists.isEmpty(cursos)}">
     <div class="alert alert-info" role="alert">
-      Nenhum curso <cadastrado class=""></cadastrado>
+      Nenhum curso cadastrado
     </div>
   </th:block>
 </div>
