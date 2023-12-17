@@ -77,4 +77,9 @@ public class Processo {
         this.assunto = assunto;
     }
 
+    @Override
+    public String toString(){
+        return ""+this.numero+","+this.aluno;
+    }
+
 }

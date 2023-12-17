@@ -25,6 +25,9 @@ public class ColegiadoController {
     private ColegiadoService colegiadoService;
 
     @Autowired
+    private CoordenadorService coordenadorService;
+
+    @Autowired
     private ProfessorService professorService;
 
     @Autowired
@@ -38,6 +41,11 @@ public class ColegiadoController {
     @ModelAttribute("cursos")
     public List<Curso> getCursos(){
         return this.cursoService.getCursos();
+    }
+
+    @ModelAttribute("coordenadores")
+    public List<Coordenador> getCoordenadores(){
+        return this.coordenadorService.getCoordenadores();
     }
 
     @GetMapping

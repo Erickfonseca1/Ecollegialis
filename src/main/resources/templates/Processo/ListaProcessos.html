@@ -33,7 +33,7 @@
         <h1>Lista de Processos</h1>
         só exibir o botão para aluno
         <div class="btn-novo-processo" >
-            <a th:href="@{'/processos/criar/' + ${aluno.id}}" class="btn" style="background-color: #236da3; color: #fff;">Adicionar Processo</a>
+            <a type="button" th:href="@{'/aluno/' + ${aluno.id} + '/processos/criar'}" class="btn" style="background-color: #236da3; color: #fff;">Adicionar Processo</a>
         </div>
 
         <th:block th:if="${not #lists.isEmpty(processos)}">
@@ -44,7 +44,7 @@
                         <option value="">Todos</option>
                     </select>
                 </div>
-    
+
                 <div class="input-group mb-3" style="width: 300px;">
                     <label class="input-group-text" for="filterAssunto">Assunto</label>
                     <select class="form-select" id="filterAssunto" name="filtro">
@@ -55,40 +55,40 @@
             </div>
             <table class="table table-light table-striped mt-2">
                 <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Estado</th>
-                        <th scope="col">Assunto</th>
-                        <th scope="col">Data de Criação</th>
-                        <th scope="col">Opções</th>
-                    </tr>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Assunto</th>
+                    <th scope="col">Data de Criação</th>
+                    <th scope="col">Opções</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="processo:${processos}">
-                        <td th:text="${processo.numero}"></td>
-                        <td th:text="${processo.status}"></td>
-                        <td th:text="${processo.assunto.nome}"></td>
-                        <td th:text="${processo.dataCriacao}"></td>
-                        <td>
-                            <button type="button" class="btn btn-primary">Consultar</button>
-                        </td>
-                    </tr>
+                <tr th:each="processo:${processos}">
+                    <td th:text="${processo.numero}"></td>
+                    <td th:text="${processo.status}"></td>
+                    <td th:text="${processo.assunto.nome}"></td>
+                    <td th:text="${processo.dataCriacao}"></td>
+                    <td>
+                        <button type="button" class="btn btn-primary">Consultar</button>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </th:block>
 
 
 
-<script th:src="@{/js/bootstrap.buddle.min.js}"></script>
-<script th:src="@{/js/bootstrap.min.js}"></script>
-<script th:src="@{/js/popper.min.js}"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script th:src="@{/js/bootstrap.buddle.min.js}"></script>
+        <script th:src="@{/js/bootstrap.min.js}"></script>
+        <script th:src="@{/js/popper.min.js}"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 
-<!-- Mensagem quando não há processos -->
-<th:block th:if="${#lists.isEmpty(processos)}">
-    <p>Não há processos disponíveis.</p>
-</th:block>
-</div>
+        <!-- Mensagem quando não há processos -->
+        <th:block th:if="${#lists.isEmpty(processos)}">
+            <p>Não há processos disponíveis.</p>
+        </th:block>
+    </div>
     <script>
         $(document).ready(function () {
             var statusArray = ["Criado", "Distribuído", "Em pauta", "Em julgamento", "Julgado"];

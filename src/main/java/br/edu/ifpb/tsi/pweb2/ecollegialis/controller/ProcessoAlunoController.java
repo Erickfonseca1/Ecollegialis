@@ -1,14 +1,11 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.controller;
 
-import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusEnum;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Aluno;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Assunto;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Processo;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Professor;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.AlunoService;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.AssuntoService;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.ProcessoService;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.service.ProfessorService;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +18,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping("/processos")
-public class ProcessoController {
+@RequestMapping("/aluno/{id}/processos")
+public class ProcessoAlunoController {
+
+    @RequestMapping("/aluno")
+    public String showHomePage(){
+        return "aluno/home";
+    }
+
     @Autowired
     private AlunoService alunoService;
 
@@ -32,50 +35,38 @@ public class ProcessoController {
     @Autowired
     private AssuntoService assuntoService;
 
-    @Autowired
-    private ProfessorService professorService;
+    @ModelAttribute("assuntos")
+    public List<Assunto> getAssuntos(){
+        return this.assuntoService.getAssuntos();
+    }
 
-    @GetMapping("/aluno/{id}")
+
+    @GetMapping
     public ModelAndView listProcessos(ModelAndView model, @PathVariable("id")Long id){
         Aluno aluno = this.alunoService.getAlunoPorId(id);
         model.addObject("aluno", aluno);
         model.addObject("processos", processoService.getProcessosPorAluno(aluno));
-        model.addObject("assuntos", assuntoService.getAssuntos());
-        model.setViewName("Processo/listaProcessos");
+        model.setViewName("Processo/ListaProcessos");
         return model;
     }
 
-    @GetMapping("/professor/{id}")
-    public ModelAndView listProcessos(@PathVariable("id")Long id, ModelAndView model){
-        Professor professor = this.professorService.getProfessorPorId(id);
-        model.addObject("professor", id);
-        model.addObject("processos", processoService.getProcessosPorProfessor(professor));
-        model.setViewName("Processo/listaProcessos");
-        return model;
-    }
-
-    @ModelAttribute("statusItens")
-    public List<StatusEnum> getStatus() {
-        return List.of(StatusEnum.values());
-    }
-
-    @GetMapping("criar/{id}")
+    @GetMapping("criar")
     public ModelAndView createProcesso(ModelAndView model,@PathVariable("id")Long id, RedirectAttributes redirectAttributes ){
         Aluno aluno = this.alunoService.getAlunoPorId(id);
         model.addObject("aluno", aluno);
-        model.addObject("assuntos", assuntoService.getAssuntos());
         model.addObject("processo", new Processo(aluno,new Assunto()));
         model.setViewName("Processo/formProcesso");
         return model;
     }
 
-    @PostMapping ("criar")
+    @PostMapping("criar")
     public ModelAndView saveProcesso(
             @Valid Processo processo,
             BindingResult validation,
             @PathVariable("id")Long id,
             ModelAndView model,
-            RedirectAttributes redirectAttributes){
+            RedirectAttributes redirectAttributes
+    ){
         Aluno aluno = this.alunoService.getAlunoPorId(id);
         if (validation.hasErrors()) {
             model.addObject("aluno", aluno);
@@ -87,7 +78,7 @@ public class ProcessoController {
         processoService.salvarProcesso(processo);
         model.addObject("aluno", aluno);
         model.addObject("processos", processoService.getProcessosPorAluno(aluno));
-        model.setViewName("/processos/"+id+"/aluno");
+        model.setViewName("redirect:/aluno/"+id+"/processos");
         redirectAttributes.addFlashAttribute("mensagem", "Processo criado com Sucesso");
         return model;
     }

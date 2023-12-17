@@ -1,6 +1,5 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.service;
 
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Curso;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Professor;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,10 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 
-import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusEnum;
+import java.util.List;
+
+import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusReuniao;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -21,15 +22,26 @@ public class Reuniao {
     private Date dataReuniao;
 
     @Enumerated(EnumType.STRING)
-    private StatusEnum status;
+    private StatusReuniao status;
 
     @OneToMany(mappedBy = "reuniao")
-    private ArrayList<Processo> processos;
+    private List<Processo> processos;
 
     @ManyToOne
     private Colegiado colegiado;
 
+    public Reuniao(Colegiado colegiado,List<Processo> processos){
+        this.colegiado = colegiado;
+        this.processos = processos;
+        this.status = StatusReuniao.PROGRAMADA;
+    }
+
     public void adicionarProcesso(Processo processo) {
         this.processos.add(processo);
+    }
+
+    @Override
+    public String toString(){
+        return "Reunião de "+ this.colegiado+" - "+ this.dataReuniao;
     }
 }
