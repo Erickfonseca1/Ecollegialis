@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Assunto;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Curso;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.AdminService;
 import jakarta.validation.Valid;
@@ -27,6 +28,8 @@ public class AdminController {
         model.addObject("texto", "O administrador é responsável por gerenciar diversos itens do sistema, como cursos, professores e coordenadores, dentre outros atributos essenciais.");
         return model;
     }
+
+    // Cursos
 
     @GetMapping("/cursos")
     public ModelAndView listCursos(ModelAndView model) {
@@ -68,5 +71,41 @@ public class AdminController {
         return model;
     }
 
+    // Assuntos
 
+    @GetMapping("/assuntos")
+    public ModelAndView listAssuntos(ModelAndView model) {
+        model.addObject("assuntos", adminService.getAssuntos());
+        model.setViewName("Assuntos/listaAssuntos");
+        return model;
+    }
+
+    @GetMapping("/assuntos/criar")
+    public ModelAndView createAssunto(ModelAndView model, RedirectAttributes redirectAttributes) {
+        model.addObject("assunto", new Assunto());
+        model.setViewName("Assuntos/formAssunto");
+        return model;
+    }
+
+    @PostMapping("/assuntos/criar")
+    public ModelAndView saveAssunto(@Valid Assunto assunto, BindingResult validation,
+        ModelAndView model,
+        RedirectAttributes redirectAttributes) {
+        if (validation.hasErrors()) {
+            model.setViewName("Assuntos/formAssunto");
+            model.addObject("acao", "salvar");
+            return model;
+        }
+        adminService.criarAssunto(assunto);
+        model.addObject("assuntos", adminService.getAssuntos());
+        model.setViewName("redirect:/admin/assuntos");
+        return model;
+    }
+
+    @PostMapping("/assuntos/deletar/{id}")
+    public ModelAndView deletarAssunto(@PathVariable(value = "id") Long id, ModelAndView model) {
+        adminService.removerAssunto(id);
+        model.setViewName("redirect:/admin/assuntos");
+        return model;
+    }
 }

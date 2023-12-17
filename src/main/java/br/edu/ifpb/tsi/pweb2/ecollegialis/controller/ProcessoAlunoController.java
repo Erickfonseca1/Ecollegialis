@@ -5,8 +5,8 @@ import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Aluno;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Assunto;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Processo;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Professor;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.service.AdminService;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.AlunoService;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.service.AssuntoService;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.ProcessoService;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.ProfessorService;
 
@@ -36,11 +36,11 @@ public class ProcessoAlunoController {
     private ProcessoService processoService;
 
     @Autowired
-    private AssuntoService assuntoService;
+    private AdminService adminService;
 
     @ModelAttribute("assuntos")
     public List<Assunto> getAssuntos(){
-        return this.assuntoService.getAssuntos();
+        return this.adminService.getAssuntos();
     }
 
 

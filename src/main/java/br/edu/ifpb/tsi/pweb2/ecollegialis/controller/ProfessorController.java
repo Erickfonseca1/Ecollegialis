@@ -21,7 +21,7 @@ public class ProfessorController {
     private ProfessorService professorService;
 
     @Autowired
-    private CursoService cursoService;
+    private AdminService adminService;
 
     @GetMapping
     public ModelAndView listProfessores(ModelAndView model){
@@ -34,7 +34,7 @@ public class ProfessorController {
     @GetMapping("criar")
     public ModelAndView createProfessor(ModelAndView model, RedirectAttributes redirectAttributes ){
         model.addObject("professor", new Professor());
-        model.addObject("cursos", this.cursoService.getCursos());
+        model.addObject("cursos", this.adminService.getCursos());
         model.addObject("acao", "salvar");
         model.setViewName("Professor/formProfessor");
         return model;
@@ -64,7 +64,7 @@ public class ProfessorController {
     public ModelAndView editProfessor(@PathVariable("id") long id, ModelAndView model, RedirectAttributes redirectAttributes){
         model.addObject("professor", professorService.getProfessorPorId(id));
         model.addObject("acao", "editar");
-        model.addObject("cursos", this.cursoService.getCursos());
+        model.addObject("cursos", this.adminService.getCursos());
         model.setViewName("Professor/formProfessor");
         redirectAttributes.addFlashAttribute("mensagem","Professor Editado com Sucesso");
         redirectAttributes.addFlashAttribute("professoresEditado", true);

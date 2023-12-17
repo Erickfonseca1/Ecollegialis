@@ -22,13 +22,13 @@ public class CoordenadorController {
     private ProfessorService professorService;
 
     @Autowired
-    private CursoService cursoService;
+    private AdminService adminService;
 
     
 
     @ModelAttribute("cursos")
     public List<Curso> getCursos() {
-        return this.cursoService.getCursos();
+        return this.adminService.getCursos();
     }
 
     @ModelAttribute("professores")

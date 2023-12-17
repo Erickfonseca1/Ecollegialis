@@ -28,7 +28,7 @@ public class ColegiadoController {
     private ProfessorService professorService;
 
     @Autowired
-    private CursoService cursoService;
+    private AdminService adminService;
 
     @ModelAttribute("professores")
     public List<Professor> getProfessores(){
@@ -37,7 +37,7 @@ public class ColegiadoController {
 
     @ModelAttribute("cursos")
     public List<Curso> getCursos(){
-        return this.cursoService.getCursos();
+        return this.adminService.getCursos();
     }
 
     @GetMapping

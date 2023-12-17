@@ -1,8 +1,8 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.controller;
 
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Aluno;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.service.AdminService;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.AlunoService;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.service.CursoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +21,7 @@ public class AlunoController {
     private AlunoService alunoService;
 
     @Autowired
-    private CursoService cursoService;
+    private AdminService adminService;
 
     @GetMapping
     public ModelAndView listAlunos(ModelAndView model) {
@@ -33,7 +33,7 @@ public class AlunoController {
     @GetMapping("criar")
     public ModelAndView createAluno(ModelAndView model, RedirectAttributes redirectAttributes) {
         model.addObject("aluno", new Aluno());
-        model.addObject("cursos", cursoService.getCursos());
+        model.addObject("cursos", adminService.getCursos());
         model.addObject("acao", "salvar");
         model.setViewName("Aluno/formAluno");
         return model;
@@ -66,7 +66,7 @@ public class AlunoController {
     @GetMapping("{id}")
     public ModelAndView editAluno(@PathVariable("id") Long id, ModelAndView model, RedirectAttributes redirectAttributes) {
         model.addObject("aluno", alunoService.getAlunoPorId(id));
-        model.addObject("cursos", this.cursoService.getCursos());
+        model.addObject("cursos", this.adminService.getCursos());
         model.addObject("acao", "editar");
         model.setViewName("Aluno/formAluno");
         redirectAttributes.addFlashAttribute("mensagem", "O Aluno foi Editado!");
