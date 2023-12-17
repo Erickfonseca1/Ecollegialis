@@ -1,18 +1,23 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.*;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.*;
 import jakarta.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Controller
 @RequestMapping("/coordenador/{id}")
@@ -56,46 +61,59 @@ public class ProcessoCoordenadorController {
         return this.alunoService.getAlunosComProcessos();
     }
 
+
+    //------ HOME -------
+    @GetMapping
+    public ModelAndView home(ModelAndView model){
+        model.setViewName("/coordenador/home");
+        return model;
+    }
+
+
+    //------ PROCESSOS ---------
+
     @GetMapping("processos")
-    public ModelAndView showPainelProcessos(ModelAndView model){
+    public ModelAndView listarProcessosCoordenador(ModelAndView model){
         model.addObject("processos", processoService.getProcessos());
-        model.setViewName("/coordenador/painel");
+        model.setViewName("Coordenador/listaCoordenadorProcesso");
         return model;
     }
 
     @GetMapping("processos/{idProcesso}")
-    public ModelAndView showProcesso(ModelAndView model, @PathVariable("idProcesso") Long id){
+    public ModelAndView exibirProcesso(ModelAndView model, @PathVariable("idProcesso") Long id){
         model.addObject("processo", processoService.getProcessoPorId(id));
-        model.setViewName("/coordenador/processo");
+        model.setViewName("Coordenador/processo");
         return model;
     }
 
-    @PostMapping("{idProcesso}")
+    @PostMapping("processos/{idProcesso}")
     public ModelAndView salvarProcesso(
-            ModelAndView model,
-            Processo processo,
-            @PathVariable("id")Long id,
-            RedirectAttributes redirectAttributes
-    ){
-        processoService.atribuirProcesso(processo,id);
-        model.addObject("processos", processoService.getProcessos());
-        model.setViewName("redirect:/coordenador/processos");
-        redirectAttributes.addFlashAttribute("mensagem", "Processo designado com Sucesso");
-        return model;
+        ModelAndView model,
+        Processo processo,
+        @PathVariable("id")Long id,
+        @PathVariable("idProcesso")Long idProcesso,
+        RedirectAttributes redirectAttributes
+    ){ 
+            processoService.atribuirProcesso(processo,idProcesso);
+            model.addObject("processos", processoService.getProcessos());
+            model.setViewName("redirect:/coordenador/"+id+"/processos");
+            redirectAttributes.addFlashAttribute("mensagem", "Processo designado com Sucesso");
+            return model;
     }
 
+    //------ REUNIÕES ---------
 
     @GetMapping("reunioes")
-    public ModelAndView showPainelReuniaos(ModelAndView model, @PathVariable("id") Long id){
+    public ModelAndView listarReunioes(ModelAndView model, @PathVariable("id") Long id){
         Coordenador coordenador = coordenadorService.getCoordenadorPorId(id);
         Colegiado colegiado = colegiadoService.getColegiadoPorCoordenador(coordenador);
         model.addObject("reunioes", colegiado.getReunioes());
-        model.setViewName("/coordenador/reunioes");
+        model.setViewName("Coordenador/listaCoordenadorReuniao");
         return model;
     }
 
     @GetMapping("reunioes/criar")
-    public ModelAndView createReuniao(ModelAndView model,@PathVariable("id")Long id){
+    public ModelAndView criarReuniao(ModelAndView model,@PathVariable("id")Long id){
         List<Processo> processosDisponiveis = new ArrayList<Processo>();
         Coordenador coordenador = coordenadorService.getCoordenadorPorId(id);
         Colegiado colegiado = colegiadoService.getColegiadoPorCoordenador(coordenador);
@@ -116,12 +134,12 @@ public class ProcessoCoordenadorController {
         model.addObject("processosEscolhidos", processosEscolhidos);
         model.addObject("processosDisponiveis", processosDisponiveis);
         model.addObject("reuniao", reuniao);
-        model.setViewName("/coordenador/criar-reuniao");
+        model.setViewName("Coordenador/formReuniao");
         return model;
     }
 
     @PostMapping("reunioes/criar")
-    public ModelAndView saveReuniao(
+    public ModelAndView salvarReuniao(
         @Valid Reuniao reuniao,
         BindingResult validation, 
         ModelAndView model,
@@ -147,7 +165,7 @@ public class ProcessoCoordenadorController {
             model.addObject("processosEscolhidos", processosEscolhidos);
             model.addObject("processosDisponiveis", processosDisponiveis);
             model.addObject("reuniao", reuniao);
-            model.setViewName("/coordenador/criar-reuniao");
+            model.setViewName("Coordenador/formReuniao");
             return model;
         }
         Coordenador coordenador = coordenadorService.getCoordenadorPorId(id);
@@ -161,4 +179,5 @@ public class ProcessoCoordenadorController {
         redirectAttributes.addFlashAttribute("reuniaoSalvos", true);
         return model;
     }
+    
 }

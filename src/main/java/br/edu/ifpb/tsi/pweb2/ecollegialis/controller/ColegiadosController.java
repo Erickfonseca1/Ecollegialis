@@ -3,9 +3,6 @@ package br.edu.ifpb.tsi.pweb2.ecollegialis.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.*;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.service.*;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -17,10 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.*;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.service.*;
+import jakarta.validation.Valid;
+
 @Controller
 @RequestMapping("/colegiados")
-public class ColegiadoController {
-
+public class ColegiadosController {
+    
     @Autowired
     private ColegiadoService colegiadoService;
 
@@ -32,7 +33,7 @@ public class ColegiadoController {
 
     @Autowired
     private CursoService cursoService;
-
+    
     @ModelAttribute("professores")
     public List<Professor> getProfessores(){
         return this.professorService.getProfessores();
@@ -49,15 +50,18 @@ public class ColegiadoController {
     }
 
     @GetMapping
-    public ModelAndView listColegiados(ModelAndView model){
+    public ModelAndView listarColegiados(ModelAndView model){
         model.addObject("colegiados", colegiadoService.getColegiados());
         model.setViewName("Colegiado/listaColegiados");
         return model;
     }
 
     @GetMapping("criar")
-    public ModelAndView createColegiado(ModelAndView model, RedirectAttributes redirectAttributes ){
+    public ModelAndView criarColegiados(ModelAndView model, RedirectAttributes redirectAttributes ){
         List<Professor> membros = new ArrayList<Professor>();
+        for(int i=0 ; i<4;i++){
+            membros.add(new Professor());
+        }
         model.addObject("colegiado", new Colegiado(membros));
         model.addObject("membros", membros);
         model.addObject("acao", "salvar");
@@ -66,19 +70,22 @@ public class ColegiadoController {
     }
 
     @PostMapping("criar")
-    public ModelAndView saveColegiado(
-            @Valid Colegiado colegiado,
-            BindingResult validation,
-            ModelAndView model,
-            RedirectAttributes redirectAttributes
-    ){
+    public ModelAndView salvarColegiados(
+        @Valid Colegiado colegiado,
+        BindingResult validation, 
+        ModelAndView model, 
+        RedirectAttributes redirectAttributes
+        ){
         if (validation.hasErrors()) {
             List<Professor> membros = new ArrayList<Professor>();
+            for(int i=0 ; i<4;i++){
+                membros.add(new Professor());
+            }
             model.addObject("membros", membros);
             model.setViewName("Colegiado/formColegiado");
             model.addObject("acao", "salvar");
             return model;
-        }
+        }    
         colegiadoService.salvarColegiado(colegiado);
         model.addObject("colegiados", colegiadoService.getColegiados());
         model.setViewName("redirect:/colegiados");
@@ -88,7 +95,7 @@ public class ColegiadoController {
     }
 
     @GetMapping("{id}")
-    public ModelAndView editColegiado(@PathVariable("id") long id, ModelAndView model, RedirectAttributes redirectAttributes){
+    public ModelAndView editarColegiados(@PathVariable("id") long id, ModelAndView model, RedirectAttributes redirectAttributes){
         List<Professor> membros = new ArrayList<Professor>();
         for(int i=0 ; i<4;i++){
             membros.add(new Professor());
@@ -103,13 +110,13 @@ public class ColegiadoController {
     }
 
     @PostMapping("{id}")
-    public ModelAndView updateColegiado(
-            @Valid Colegiado colegiado,
-            BindingResult validation,
-            @PathVariable("id") Long id,
-            ModelAndView model,
-            RedirectAttributes redirectAttributes
-    ){
+    public ModelAndView atualizarColegiados(
+        @Valid Colegiado colegiado, 
+        BindingResult validation,
+        @PathVariable("id") Long id,
+        ModelAndView model, 
+        RedirectAttributes redirectAttributes
+        ){
         if (validation.hasErrors()) {
             List<Professor> membros = new ArrayList<Professor>();
             for(int i=0 ; i<4;i++){
@@ -130,7 +137,7 @@ public class ColegiadoController {
 
 
     @RequestMapping("{id}/delete")
-    public ModelAndView deleteColegiado(@PathVariable("id") Long id, ModelAndView model, RedirectAttributes redirectAttributes){
+    public ModelAndView deletarColegiados(@PathVariable("id") Long id, ModelAndView model, RedirectAttributes redirectAttributes){
         colegiadoService.deletarColegiado(id);
         model.addObject("colegiados", colegiadoService.getColegiados());
         model.addObject("colegiado", new Colegiado(new ArrayList<Professor>()));

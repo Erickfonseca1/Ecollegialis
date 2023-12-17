@@ -26,7 +26,7 @@ public class Processo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
+    private String parecerRelator;
     private String numero;
     private Date dataCriacao;
     private Date dataDistribuicao;
