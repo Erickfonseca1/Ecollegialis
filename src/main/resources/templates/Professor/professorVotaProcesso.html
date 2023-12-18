@@ -30,53 +30,43 @@
 <div th:replace="~{sidebar :: aside('Lista dos Processos')}"></div>
     <main>
         <div style="margin: 30px;">
-            <h1 style="margin-top: 20px">Processo de [[${processo.aluno.nome}]] - #[[${processo.numero}]]</h1>
+            <h1 style="margin-top: 20px">Processo a ser votado</h1>
             <hr>
         </div>
-        <!--PROCESSO-->
         <form th:action="@{/processos/{idProcesso}(idProcesso=${processo.id})}" class="container" method="post" th:object="${processo}">
             <div class="row">
-                <!--Número-->
                 <div class="mb-3">
                     <label for="data" class="form-label">Número do Processo:</label>
                     <input disabled class="form-control" type="number" id="data" th:value="${processo.numero}"></input>
                 </div>
-                <!--Data Criação-->
                 <div class="mb-3">
                     <label for="data" class="form-label">Data da Criação:</label>
                     <input disabled class="form-control" type="text" id="data" th:value="${processo.dataCriacao}"></input>
                 </div>
-                <!--Data Distribuição-->
                 <div class="mb-3">
                     <label for="data" class="form-label">Data da Distribuição:</label>
                     <input disabled class="form-control" type="text" id="data" th:value="${processo.dataDistribuicao}"></input>
                 </div>
-                <!--Data do Parecer-->
                 <div class="mb-3">
                     <label for="data" class="form-label">Data do Parecer:</label>
                     <input disabled class="form-control" type="text" id="data" th:value="${processo.dataParecer}"></input>
                 </div>
-                <!--Nome do Relator-->
                 <div class="mb-3">
                     <label for="data" class="form-label">Relator:</label>
                     <input disabled class="form-control" type="text" id="data" th:value="${processo.relator.nome}"></input>
                 </div>
-                <!--Nome do Aluno-->
                 <div class="mb-3">
                     <label for="data" class="form-label">Aluno:</label>
                     <input disabled class="form-control" type="text" id="data" th:value="${processo.aluno.nome}"></input>
                 </div>
-                <!--Assunto-->
                 <div class="mb-3">
                     <label for="data" class="form-label">Assunto:</label>
                     <input disabled class="form-control" type="text" id="data" th:value="${processo.assunto.nome}"></input>
                 </div>
-                <!--Texto de Requerimento-->
                 <div class="mb-3">
                     <label for="data" class="form-label">Motivo do Requerimento:</label>
                     <textarea disabled class="form-control" type="text" id="data" th:text="${processo.textoRequerimento}" rows="4"></textarea>
                 </div>
-                <!--Tipo de Decisão-->
                 <div class="mb-3">
                     <label for="data" class="form-label">Decisão do Processo:</label>
                     <select th:if="${processo.tipoDecisao} == null" class="form-select" id="processo" th:field="*{tipoDecisao}">
@@ -85,7 +75,6 @@
                     </select>
                     <input th:unless="${processo.tipoDecisao} == null" disabled class="form-control" type="text" id="data" th:value="${processo.tipoDecisao}"></input>
                 </div>
-                <!--Justificativa da Decisão -->
                 <div class="mb-3">
                     <label for="data" class="form-label">Justificativa do Relator:</label>
                     <textarea th:if="${processo.parecerRelator} == null" class="form-control" type="text" id="data" th:field="*{parecerRelator}" rows="4"></textarea>

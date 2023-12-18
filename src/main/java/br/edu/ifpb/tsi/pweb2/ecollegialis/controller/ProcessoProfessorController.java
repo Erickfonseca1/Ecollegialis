@@ -48,14 +48,14 @@ public class ProcessoProfessorController {
     public ModelAndView listarProcessoProfessores(ModelAndView model,@PathVariable("id") Long id){
         Professor professor = this.professorService.getProfessorPorId(id);
         model.addObject("processos", processoService.getProcessosPorProfessor(professor));
-        model.setViewName("Professor/painel-processos");
+        model.setViewName("Professor/listarProcessosProfessor");
         return model;
     }
 
     @GetMapping("/processos/{idProcesso}")
     public ModelAndView listarProcessos(ModelAndView model, @PathVariable("idProcesso") Long idProcesso){
         model.addObject("processo", processoService.getProcessoPorId(idProcesso));
-        model.setViewName("Professor/processo");
+        model.setViewName("Professor/professorVotaProcesso");
         return model;
     }
 

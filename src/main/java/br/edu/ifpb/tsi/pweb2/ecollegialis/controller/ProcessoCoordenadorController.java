@@ -76,14 +76,14 @@ public class ProcessoCoordenadorController {
     public ModelAndView listarProcessosCoordenador(ModelAndView model){
         model.addObject("professores", professorService.getProfessores());
         model.addObject("processos", processoService.getProcessos());
-        model.setViewName("Coordenador/painel");
+        model.setViewName("Coordenador/listarProcessoCoordenador");
         return model;
     }
 
     @GetMapping("processos/{idProcesso}")
     public ModelAndView exibirProcesso(ModelAndView model, @PathVariable("idProcesso") Long id){
         model.addObject("processo", processoService.getProcessoPorId(id));
-        model.setViewName("Coordenador/processo");
+        model.setViewName("Coordenador/atribuirProcesso");
         return model;
     }
 
