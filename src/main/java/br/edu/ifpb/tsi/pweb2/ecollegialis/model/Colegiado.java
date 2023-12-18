@@ -62,10 +62,4 @@ public class Colegiado {
         this.processos.add(processo);
     }
 
-    @Override
-    public String toString(){
-        return "Colegiado do " + this.curso;
-    } 
-
-
 }

@@ -33,7 +33,7 @@
             <h1 style="margin-top: 20px">Processo a ser votado</h1>
             <hr>
         </div>
-        <form th:action="@{/processos/{idProcesso}(idProcesso=${processo.id})}" class="container" method="post" th:object="${processo}">
+        <form th:action="@{/professor/{id}/processos/{idProcesso}(id=${professor.id},idProcesso=${processo.id})}" class="container" method="post" th:object="${processo}">
             <div class="row">
                 <div class="mb-3">
                     <label for="data" class="form-label">Número do Processo:</label>
@@ -81,8 +81,7 @@
                     <textarea th:unless="${processo.parecerRelator} == null" disabled class="form-control" type="text" id="data" th:text="${processo.parecerRelator}" rows="4"></textarea>
                 </div>
                 <div th:if="${processo.tipoDecisao} == null"  class="mb-3">
-                    <button type="submit" class="btn btn-primary">Atribuir Decisão</button>
-                    <a th:ref="@{/professor/{id}/processos(id=${professor.id})}" class="btn btn-danger">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Votar</button>
                 </div>
                 <div th:unless="${processo.tipoDecisao} == null"  class="mb-3">
                     <a th:href="@{/professor/{id}/processos(id=${professor.id})}" class="btn btn-secondary">Voltar</a>

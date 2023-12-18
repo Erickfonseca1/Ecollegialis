@@ -41,19 +41,7 @@ public class Aluno {
     @JoinColumn(name="curso")
     private Curso curso;
 
-    public Aluno(String nome, String fone, String matricula, String senha) {
-        this.nome = nome;
-        this.fone = fone;
-        this.matricula = matricula;
-        this.senha = senha;
-    }
-
     public void adicionarProcesso(Processo processo){
         this.listaProcessos.add(processo);
-    }
-
-    @Override
-    public String toString(){
-        return "Aluno "+this.nome;
     }
 }

@@ -36,7 +36,7 @@
     </header>
     <main>
         <div style="margin: 30px;">
-            <h1 style="margin-top: 20px">Reuniao de [[${reuniao.colegiado.descricao}]] - [[${reuniao.dataReuniao}]]</h1>
+            <h1 style="margin-top: 20px">Reuniao de</h1>
             <hr>
         </div>
         <!--FORM DE PROCESSO-->
@@ -45,10 +45,6 @@
                 <div class="mb-3">
                     <label for="data" class="form-label">Data da Reunião:</label>
                     <input disabled class="form-control" type="date" id="data" th:field="*{dataReuniao}"></input>
-                </div>
-                <div class="mb-3">
-                    <label for="colegiado" class="form-label">Colegiado:</label>
-                    <input class="form-control" disabled type="text" id="colegiado" th:value="${reuniao.colegiado.descricao}"></input>
                 </div>
             </div>
             <div>

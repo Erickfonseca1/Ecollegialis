@@ -128,9 +128,6 @@ public class ProcessoCoordenadorController {
         }
 
         List<Processo> processosEscolhidos = new ArrayList<Processo>();
-        for(int i=0;i<5;i++){
-            processosEscolhidos.add(new Processo());
-        }
         Reuniao reuniao = new Reuniao(colegiado,processosEscolhidos);
         System.out.println(reuniao.getColegiado());
         model.addObject("colegiado", colegiado);
@@ -143,12 +140,12 @@ public class ProcessoCoordenadorController {
 
     @PostMapping("reunioes/criar")
     public ModelAndView salvarReuniao(
-        @Valid Reuniao reuniao,
-        BindingResult validation, 
-        ModelAndView model,
-        @PathVariable("id")Long id, 
-        RedirectAttributes redirectAttributes
-        ){
+            @Valid Reuniao reuniao,
+            BindingResult validation,
+            ModelAndView model,
+            @PathVariable("id")Long id,
+            RedirectAttributes redirectAttributes
+    ){
         if (validation.hasErrors()) {
             List<Processo> processosDisponiveis = new ArrayList<Processo>();
             Coordenador coordenador = coordenadorService.getCoordenadorPorId(id);
@@ -168,14 +165,14 @@ public class ProcessoCoordenadorController {
             model.addObject("processosEscolhidos", processosEscolhidos);
             model.addObject("processosDisponiveis", processosDisponiveis);
             model.addObject("reuniao", reuniao);
-            model.setViewName("Coordenador/formReuniao");
+            model.setViewName("Coordenador/criar-reuniao");
             return model;
         }
         Coordenador coordenador = coordenadorService.getCoordenadorPorId(id);
         Colegiado colegiado = colegiadoService.getColegiadoPorCoordenador(coordenador);
         reuniao.setColegiado(colegiado);
         reuniaoService.salvarReuniao(reuniao);
-        System.out.println(reuniao.getColegiado()); 
+        System.out.println(reuniao.getColegiado());
         model.addObject("reunioes", colegiado.getReunioes());
         model.setViewName("redirect:/coordenador/"+id+"/reunioes");
         redirectAttributes.addFlashAttribute("mensagem", "Reunião Criada com Sucesso");

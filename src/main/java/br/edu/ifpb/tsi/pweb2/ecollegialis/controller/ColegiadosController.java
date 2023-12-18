@@ -59,10 +59,8 @@ public class ColegiadosController {
     @GetMapping("criar")
     public ModelAndView criarColegiados(ModelAndView model, RedirectAttributes redirectAttributes ){
         List<Professor> membros = new ArrayList<Professor>();
-        for(int i=0 ; i<4;i++){
-            membros.add(new Professor());
-        }
         model.addObject("colegiado", new Colegiado(membros));
+        model.addObject("coordenador", this.coordenadorService.getCoordenadorPorId(1L));
         model.addObject("membros", membros);
         model.addObject("acao", "salvar");
         model.setViewName("Colegiado/formColegiado");
@@ -72,20 +70,17 @@ public class ColegiadosController {
     @PostMapping("criar")
     public ModelAndView salvarColegiados(
         @Valid Colegiado colegiado,
-        BindingResult validation, 
-        ModelAndView model, 
+        BindingResult validation,
+        ModelAndView model,
         RedirectAttributes redirectAttributes
         ){
         if (validation.hasErrors()) {
             List<Professor> membros = new ArrayList<Professor>();
-            for(int i=0 ; i<4;i++){
-                membros.add(new Professor());
-            }
             model.addObject("membros", membros);
             model.setViewName("Colegiado/formColegiado");
             model.addObject("acao", "salvar");
             return model;
-        }    
+        }
         colegiadoService.salvarColegiado(colegiado);
         model.addObject("colegiados", colegiadoService.getColegiados());
         model.setViewName("redirect:/colegiados");
@@ -97,9 +92,6 @@ public class ColegiadosController {
     @GetMapping("{id}")
     public ModelAndView editarColegiados(@PathVariable("id") long id, ModelAndView model, RedirectAttributes redirectAttributes){
         List<Professor> membros = new ArrayList<Professor>();
-        for(int i=0 ; i<4;i++){
-            membros.add(new Professor());
-        }
         model.addObject("membros", membros);
         model.addObject("colegiado", colegiadoService.getColegiadoPorId(id));
         model.addObject("acao", "editar");
@@ -119,9 +111,6 @@ public class ColegiadosController {
         ){
         if (validation.hasErrors()) {
             List<Professor> membros = new ArrayList<Professor>();
-            for(int i=0 ; i<4;i++){
-                membros.add(new Professor());
-            }
             model.addObject("membros", membros);
             model.addObject("colegiado", colegiadoService.getColegiadoPorId(id));
             model.setViewName("redirect:/colegiados/"+id);

@@ -61,9 +61,4 @@ public class Professor {
         this.listaColegiados.add(colegiado);
     }
 
-    @Override
-    public String toString(){
-        return "Professor " + this.nome;
-    }
-
 }
