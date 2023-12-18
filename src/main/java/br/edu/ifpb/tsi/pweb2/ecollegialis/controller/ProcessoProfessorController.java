@@ -72,10 +72,12 @@ public class ProcessoProfessorController {
     @GetMapping("/reunioes")
     public ModelAndView listarReunioesProfessor(ModelAndView model,@PathVariable("id") Long id){
         Professor professor = professorService.getProfessorPorId(id);
-        Colegiado colegiado = professor.getListaColegiados().get(0);
-        List<Reuniao> reunioes = colegiado.getReunioes();
-        model.addObject("reunioes", reunioes);
-        model.setViewName("Professor/painel-reunioes");
+        if (professor.getListaColegiados() != null && !professor.getListaColegiados().isEmpty()) {
+            Colegiado colegiado = professor.getListaColegiados().get(0);
+            List<Reuniao> reunioes = colegiado.getReunioes();
+            model.addObject("reuniao", reunioes);
+        }
+        model.setViewName("Professor/reuniao");
         return model;
     }
 

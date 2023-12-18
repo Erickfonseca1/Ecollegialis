@@ -42,13 +42,12 @@ public class Colegiado {
     @OneToMany(mappedBy = "colegiado")
     private List<Processo> processos;
 
-    public Colegiado(Date dataInicio, Date dataFim, String descricao, String portaria, Curso curso, Coordenador coordenador) {
+    public Colegiado(Date dataInicio, Date dataFim, String descricao, String portaria, Curso curso) {
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
         this.descricao = descricao;
         this.portaria = portaria;
         this.curso = curso;
-        this.coordenador = coordenador;
     }
 
     public Colegiado(List<Professor> professores){

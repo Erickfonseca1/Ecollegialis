@@ -108,8 +108,10 @@ public class ProcessoCoordenadorController {
     public ModelAndView listarReunioes(ModelAndView model, @PathVariable("id") Long id){
         Coordenador coordenador = coordenadorService.getCoordenadorPorId(id);
         Colegiado colegiado = colegiadoService.getColegiadoPorCoordenador(coordenador);
-        model.addObject("reunioes", colegiado.getReunioes());
-        model.setViewName("Coordenador/listaCoordenadorReuniao");
+        if (colegiado.getReunioes() != null && !colegiado.getReunioes().isEmpty()) {
+            model.addObject("reunioes", colegiado.getReunioes());
+        }
+        model.setViewName("Coordenador/reunioes");
         return model;
     }
 

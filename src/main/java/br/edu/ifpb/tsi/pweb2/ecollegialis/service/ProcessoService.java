@@ -48,6 +48,12 @@ public class ProcessoService {
     public Processo atribuirProcesso(Processo processo,Long id){
         Processo processoAtualizado = this.processoRepository.findById(id).orElse(new Processo());
         processoAtualizado.setRelator(processo.getRelator());
+        for (Colegiado colegiado : processo.getRelator().getListaColegiados()){
+            if(colegiado.getCurso() == processo.getRelator().getCurso()){
+                processoAtualizado.setColegiado(colegiado);
+                break;
+            }
+        }
         processoAtualizado.setStatus(StatusEnum.DISTRIBUIDO);
         processoAtualizado.setDataDistribuicao(new Date());
         return this.processoRepository.save(processoAtualizado);
