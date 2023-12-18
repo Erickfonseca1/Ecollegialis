@@ -40,4 +40,8 @@ public class Reuniao {
         this.processos.add(processo);
     }
 
+    @Override
+    public String toString(){
+        return "Reunião de "+ this.colegiado+" - "+ this.dataReuniao;
+    }
 }

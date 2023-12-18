@@ -13,22 +13,27 @@ public class ColegiadoService {
     @Autowired
     private ColegiadoRepository colegiadoRepository;
 
-    public List<Colegiado> getColegiados(){
+    public List<Colegiado> getColegiados() {
         return this.colegiadoRepository.findAll();
     }
 
-    public Colegiado getColegiadoPorId(Long id){
+    public Colegiado getColegiadoPorId(Long id) {
         return this.colegiadoRepository.findById(id).orElse(null);
     }
 
-    public Colegiado getColegiadoPorCoordenador(Coordenador coordenador){
+    public Colegiado getColegiadoPorCoordenador(Coordenador coordenador) {
         return this.colegiadoRepository.findByCoordenador(coordenador).get(0);
     }
 
+
     public Colegiado salvarColegiado(Colegiado colegiado){
         Coordenador coordenador = colegiado.getCoordenador();
-        Professor professorCoordenador = coordenador.getProfessor();
-        professorCoordenador.adicionarColegiado(colegiado);
+        if (coordenador != null) {
+            Professor professorCoordenador = coordenador.getProfessor();
+            if (professorCoordenador != null) {
+                professorCoordenador.adicionarColegiado(colegiado);
+            }
+        }
         for(Professor professor : colegiado.getMembros() ){
             professor.adicionarColegiado(colegiado);
         }
@@ -36,7 +41,7 @@ public class ColegiadoService {
         return this.colegiadoRepository.save(colegiado);
     }
 
-    public void deletarColegiado(Long id){
+    public void deletarColegiado(Long id) {
         this.colegiadoRepository.deleteById(id);
     }
 }

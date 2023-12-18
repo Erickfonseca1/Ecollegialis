@@ -41,7 +41,6 @@
         <hr>
         <!-- INICIO DO FORM -->
         <form th:action="${acao} == 'salvar' ? @{/colegiados/criar} : @{/colegiados/{id}(id=${colegiado.id})}" method="post" th:object="${colegiado}">
-
             <div class="modal-body">
                 <div class="row">
                     <input type="hidden" th:field="*{id}"><br>
@@ -74,8 +73,7 @@
             </div>
             <div class="modal-footer" style="margin-top:10px;">
                 <a class="btn btn-secondary" th:href="@{/colegiados}" style="margin-right: 10px;">Fechar</a>
-                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal"
-                        style="padding-left: 25px; padding-right:25px">Salvar</button>
+                <button type="submit" class="btn btn-primary" style="padding-left: 25px; padding-right:25px">Salvar</button>
             </div>
         </form>
     </div>

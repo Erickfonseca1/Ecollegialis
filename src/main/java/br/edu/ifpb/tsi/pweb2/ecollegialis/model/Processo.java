@@ -15,7 +15,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,11 +25,13 @@ public class Processo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String parecerRelator;
     private String numero;
     private Date dataCriacao;
     private Date dataDistribuicao;
     private Date dataParecer;
+    private byte[] parecer;
     private byte[] documento;
 
     @ManyToOne
@@ -53,7 +54,6 @@ public class Processo {
     private List<Voto> listaDeVotos;
 
     @NotBlank(message="Campo obrigatório!")
-    @Size(min=3, max=42 ,message="A senha deverá ter pelo menos 3 caracteres e no máximo 42")
     private String textoRequerimento;
 
     @Enumerated(EnumType.STRING)
@@ -75,6 +75,11 @@ public class Processo {
     public Processo(Aluno aluno,Assunto assunto){
         this.aluno = aluno;
         this.assunto = assunto;
+    }
+
+    @Override
+    public String toString(){
+        return ""+this.numero+","+this.aluno;
     }
 
 }
