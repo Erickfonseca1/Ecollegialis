@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Aluno;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Assunto;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Curso;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Professor;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.AdminService;
 import jakarta.validation.Valid;
 
@@ -179,6 +180,79 @@ public class AdminController {
     public ModelAndView deletarAluno(@PathVariable(value = "id") Long id, ModelAndView model) {
         adminService.removerAluno(id);
         model.setViewName("redirect:/admin/alunos");
+        return model;
+    }
+
+    // CRUD Professor
+
+    @GetMapping("/professores")
+    public ModelAndView listProfessores(ModelAndView model) {
+        model.addObject("professores", adminService.getProfessores());
+        model.setViewName("Professor/listaProfessores");
+        return model;
+    }
+
+    @GetMapping("/professores/criar")
+    public ModelAndView criarProfessor(ModelAndView model) {
+        model.addObject("professor", new Professor());
+        model.addObject("cursos", this.adminService.getCursos());
+        model.addObject("acao", "salvar");
+        model.setViewName("Professor/formProfessor");
+        return model;
+    }
+
+    @PostMapping("/professores/criar")
+    public ModelAndView saveProfessor(
+            @Valid Professor professor,
+            BindingResult validation,
+            ModelAndView model,
+            RedirectAttributes redirectAttributes
+    ) {
+        if (validation.hasErrors()) {
+            model.setViewName("Professor/formProfessor");
+            model.addObject("acao", "salvar");
+            return model;
+        }
+        adminService.criarProfessor(professor);
+        model.addObject("professores", adminService.getProfessores());
+        model.setViewName("redirect:/admin/professores");
+        return model;
+    }
+
+    @GetMapping("/professores/editar/{id}")
+    public ModelAndView editProfessor(@PathVariable("id") Long id, ModelAndView model, RedirectAttributes redirectAttributes) {
+        model.addObject("professor", adminService.getProfessorPorId(id));
+        model.addObject("cursos", this.adminService.getCursos());
+        model.addObject("acao", "editar");
+        model.setViewName("Professor/formProfessor");
+        redirectAttributes.addFlashAttribute("mensagem", "O Professor foi Editado!");
+        redirectAttributes.addFlashAttribute("O Professor foi Editado", true);
+        return model;
+    }
+
+    @PostMapping("/professores/editar/{id}")
+    public ModelAndView updateProfessor(
+            @Valid Professor professor,
+            BindingResult validation,
+            @PathVariable("id") Long id,
+            ModelAndView model,
+            RedirectAttributes redirectAttributes
+    ) {
+        if (validation.hasErrors()) {
+            model.setViewName("Professor/formProfessor");
+            model.addObject("acao", "editar");
+            return model;
+        }
+        adminService.atualizarProfessor(professor);
+        model.addObject("professores", adminService.getProfessores());
+        model.setViewName("redirect:/admin/professores");
+        return model;
+    }
+
+    @PostMapping("/professores/deletar/{id}")
+    public ModelAndView deletarProfessor(@PathVariable(value = "id") Long id, ModelAndView model) {
+        adminService.removerProfessor(id);
+        model.setViewName("redirect:/admin/professores");
         return model;
     }
 

@@ -25,7 +25,7 @@ public class ProcessoCoordenadorController {
     private ProfessorService professorService;
 
     @Autowired
-    private AlunoService alunoService;
+    private AdminService adminService;
 
     @Autowired
     private ColegiadoService colegiadoService;
@@ -42,7 +42,7 @@ public class ProcessoCoordenadorController {
 
     @ModelAttribute("alunos")
     public List<Aluno> getAlunos(){
-        return this.alunoService.getAlunosComProcessos();
+        return this.adminService.getAlunosComProcessos();
     }
 
     @GetMapping("processos")

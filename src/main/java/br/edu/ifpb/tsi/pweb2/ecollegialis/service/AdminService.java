@@ -158,6 +158,16 @@ public class AdminService {
         return alunoRepository.findById(id).orElse(null);
     }
 
+    public List<Aluno> getAlunosComProcessos() {
+        List<Aluno> alunos = new ArrayList<>();
+        for (Aluno aluno : alunoRepository.findAll()) {
+            if (aluno.getListaProcessos().size() > 0) {
+                alunos.add(aluno);
+            }
+        }
+        return alunos;
+    }
+
     // CRUD professor
 
     @Transactional
@@ -171,6 +181,12 @@ public class AdminService {
             User user = new User(professor.getMatricula(), passwordEncrypt);
             user.setEnabled(true);
             user.setAuthorities(Collections.singletonList(new Authority(user, "ROLE_PROFESSOR")));
+
+            professorBD.setNome(professor.getNome());
+            professorBD.setCurso(professor.getCurso());
+            professorBD.setFone(professor.getFone());
+            professorBD.setMatricula(professor.getMatricula());
+            professorBD.setSenha(passwordEncrypt);
             professorBD.setUser(user);
         } else {
             //aqui eu faço a busca pelo professor no banco de dados. Se ele existir, eu copio as propriedades do professor que veio do formulário para o professor que está no banco de dados
@@ -195,7 +211,6 @@ public class AdminService {
     @Transactional
     public void removerProfessor(Long id) {
         Professor professor = professorRepository.findById(id).orElse(null);
-        professor.getUser().setAuthorities(null);
         professor.getUser().setEnabled(false);
         professorRepository.delete(professor);
     }
