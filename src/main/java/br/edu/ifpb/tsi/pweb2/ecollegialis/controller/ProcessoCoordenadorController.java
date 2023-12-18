@@ -74,8 +74,9 @@ public class ProcessoCoordenadorController {
 
     @GetMapping("processos")
     public ModelAndView listarProcessosCoordenador(ModelAndView model){
+        model.addObject("professores", professorService.getProfessores());
         model.addObject("processos", processoService.getProcessos());
-        model.setViewName("Coordenador/listaCoordenadorProcesso");
+        model.setViewName("Coordenador/painel");
         return model;
     }
 

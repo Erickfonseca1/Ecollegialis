@@ -54,7 +54,6 @@
       </div>
       <form th:action="${acao} == 'salvar' ? @{/coordenadores/criar} : @{/coordenadores/{id}(id=${coordenador.id})}" 
               method="POST" th:object="${coordenador}" id="coordenadorForm">
-            <!-- Seu código existente aqui -->
 
             <div class="form-group mb-3">
                 <label for="curso">Curso:</label>
@@ -65,7 +64,7 @@
             <div class="form-group mb-3">
                 <label for="professor">Professor:</label>
                 <select class="form-control" id="professor" name="professor" th:field="*{professor}">
-                    <!-- O conteúdo será preenchido dinamicamente via AJAX -->
+                    <option th:each="professor : ${professores}" th:value="${professor.id}" th:text="${professor.nome}"></option>
                 </select>
             </div>
             <div class="btn-save">
@@ -96,5 +95,26 @@
           });
       });
   </script>
+
+    <script>
+        function atribuirRelator(relatorId, processoId) {
+            // Aqui você pode realizar a lógica necessária, por exemplo, enviar uma requisição ao backend
+            // para atribuir o relator ao processo.
+
+            // Exemplo usando jQuery para enviar uma requisição POST
+            $.ajax({
+                type: "POST",
+                url: "/atribuirRelator", // Substitua pelo seu endpoint
+                data: { relatorId: relatorId, processoId: processoId },
+                success: function (data) {
+                    // Lógica a ser executada após a atribuição do relator
+                    console.log("Relator atribuído com sucesso!");
+                },
+                error: function (error) {
+                    console.error("Erro ao atribuir relator:", error);
+                }
+            });
+        }
+    </script>
 </body>
 </html>
