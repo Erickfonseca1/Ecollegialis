@@ -95,17 +95,36 @@ public class AdminService {
 
     @Transactional
     public void criarAluno(Aluno aluno) {
+        System.out.println("Aluno id:" + aluno.getId());
+        System.out.println("Aluno curso:" + aluno.getCurso());
+        System.out.println("Aluno nome:" + aluno.getNome());
+        System.out.println("Aluno matricula:" + aluno.getMatricula());
         
         PasswordEncoder hash = new BCryptPasswordEncoder();
         Aluno alunoBD;
 
         if (aluno.getId() == null) {
+            System.out.println("aluno id é null");
             alunoBD = new Aluno();
+            System.out.println("criou o alunoBD");
             String passwordEncrypt = hash.encode(aluno.getSenha());
             User user = new User(aluno.getMatricula(), passwordEncrypt);
             user.setEnabled(true);
             user.setAuthorities(Collections.singletonList(new Authority(user, "ROLE_ALUNO")));
+
             alunoBD.setUser(user);
+            alunoBD.setNome(aluno.getNome());
+            alunoBD.setCurso(aluno.getCurso());
+            alunoBD.setFone(aluno.getFone());
+            alunoBD.setMatricula(aluno.getMatricula());
+            alunoBD.setSenha(passwordEncrypt);
+
+            System.out.println("AlunoBD fone:" + alunoBD.getFone());
+            System.out.println("AlunoBD nome:" + alunoBD.getNome());
+            System.out.println("AlunoBD matricula:" + alunoBD.getMatricula());
+            System.out.println("AlunoBD curso:" + alunoBD.getCurso());
+            System.out.println("AlunoBD senha:" + alunoBD.getSenha());
+            alunoRepository.save(alunoBD);
         } else {
             alunoBD = alunoRepository.findByMatricula(aluno.getMatricula());
             BeanUtils.copyProperties(aluno, alunoBD, "senha", "processos", "matricula", "user");
@@ -114,8 +133,8 @@ public class AdminService {
                 String passwordEncrypt = hash.encode(aluno.getSenha());
                 alunoBD.setSenha(passwordEncrypt);
             }
+            alunoRepository.save(alunoBD);
         }
-        alunoRepository.save(alunoBD);
     }
 
 
@@ -127,7 +146,6 @@ public class AdminService {
     @Transactional
     public void removerAluno(Long id) {
         Aluno aluno = alunoRepository.findById(id).orElse(null);
-        aluno.getUser().setAuthorities(null);
         aluno.getUser().setEnabled(false);
         alunoRepository.delete(aluno);
     }

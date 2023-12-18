@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Aluno;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Assunto;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Curso;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.AdminService;
@@ -108,4 +109,77 @@ public class AdminController {
         model.setViewName("redirect:/admin/assuntos");
         return model;
     }
+
+    // CRUD Aluno
+
+    @GetMapping("/alunos")
+    public ModelAndView listAlunos(ModelAndView model) {
+        model.addObject("alunos", adminService.getAlunos());
+        model.setViewName("Alunos/listaAlunos");
+        return model;
+    }
+
+    @GetMapping("/alunos/criar")
+    public ModelAndView criarAluno(ModelAndView model) {
+        model.addObject("aluno", new Aluno());
+        model.addObject("cursos", adminService.getCursos());
+        model.addObject("acao", "salvar");
+        model.setViewName("Alunos/formAluno");
+        return model;
+    }
+
+    @PostMapping("/alunos/criar")
+    public ModelAndView saveAluno(
+            @Valid Aluno aluno,
+            BindingResult validation,
+            ModelAndView model,
+            RedirectAttributes redirectAttributes
+    ) {
+        if (validation.hasErrors()) {
+            model.setViewName("Alunos/formAluno");
+            model.addObject("acao", "salvar");
+            return model;
+        }
+        adminService.criarAluno(aluno);
+        model.addObject("alunos", adminService.getAlunos());
+        model.setViewName("redirect:/admin/alunos");
+        return model;
+    }
+
+    @GetMapping("/alunos/editar/{id}")
+    public ModelAndView editAluno(@PathVariable("id") Long id, ModelAndView model, RedirectAttributes redirectAttributes) {
+        model.addObject("aluno", adminService.getAlunoPorId(id));
+        model.addObject("cursos", this.adminService.getCursos());
+        model.addObject("acao", "editar");
+        model.setViewName("Alunos/formAluno");
+        redirectAttributes.addFlashAttribute("mensagem", "O Aluno foi Editado!");
+        redirectAttributes.addFlashAttribute("O Aluno foi Editado", true);
+        return model;
+    }
+    
+    @PostMapping("/alunos/editar/{id}")
+    public ModelAndView updateAluno(
+            @Valid Aluno aluno,
+            BindingResult validation,
+            @PathVariable("id") Long id,
+            ModelAndView model,
+            RedirectAttributes redirectAttributes) {
+        if (validation.hasErrors()) {
+            model.setViewName("Alunos/formAluno");
+            model.addObject("acao", "editar");
+            return model;
+        }
+        adminService.atualizarAluno(aluno);
+        model.addObject("alunos", adminService.getAlunos());
+        model.setViewName("redirect:/admin/alunos");
+        return model;
+    }
+
+    @PostMapping("/alunos/deletar/{id}")
+    public ModelAndView deletarAluno(@PathVariable(value = "id") Long id, ModelAndView model) {
+        adminService.removerAluno(id);
+        model.setViewName("redirect:/admin/alunos");
+        return model;
+    }
+
 }

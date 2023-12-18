@@ -36,10 +36,10 @@
 
     }
 </style>
-<head th:replace="~{layouts :: head('Novo Processo')}"></head>
+<head th:replace="~{layouts :: head('Novo Aluno')}"></head>
 
 <body>
-<div th:replace="~{sidebar :: aside('Novo Processo')}"></div>
+<div th:replace="~{sidebar :: aside('Novo Aluno')}"></div>
 <div class="container">
     <div class="header">
         <div class="info">
@@ -47,16 +47,16 @@
             <p>Aqui você pode cadastrar um novo aluno</p>
         </div>
         <div class="btn-minimal btn-lista-alunos">
-            <a href="/alunos" class="btn" style="background-color: #236da3; color: #fff;">Lista de alunos</a>
+            <a href="/admin/alunos" class="btn" style="background-color: #236da3; color: #fff;">Lista de alunos</a>
         </div>
     </div>
-    <form th:action="${acao} == 'salvar' ? @{/alunos/criar} : @{/alunos/{id}(id=${aluno.id})}" method="post" th:object="${aluno}">
+    <form th:action="${acao} == 'salvar' ? @{/admin/alunos/criar} : @{/admin/alunos/editar/{id}(id=${aluno.id})}" method="post" th:object="${aluno}">
         <div>
             <input type="hidden" th:field="*{id}">
         </div>
         <div class="form-group mb-3">
             <label for="nome">Nome:</label>
-            <input type="text" class="form-control" id="nome" name="nome" th:field="*{nome}">
+            <input type="text" class="form-control" id="nome" name="nome" th:field="*{nome}" required>
             <p th:if="${#fields.hasErrors('nome')}" th:errorclass="error" th:errors="*{nome}" class="alert alert-danger"></p>
         </div>
         <div class="form-group mb-3" >
