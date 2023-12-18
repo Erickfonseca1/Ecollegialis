@@ -1,46 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professor</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-</head>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<style>
+    body {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .container {
+        width: 100%;
+        margin: 0;
+        padding: 30px;
+
+        .btn-novo-processo {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .filter-and-sort {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+    }
+</style>
+<head th:replace="~{layouts :: head('Lista dos Processos')}"></head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg bg-success p-2 text-white">
-            <div class="container-fluid justify-content-center" id="navbarSupportedContent">
-                <div>
-                    <a class="navbar-brand" href="#">
-                        <img th:src="@{/imagens/sisyphus.png}"  width="50" height="50"/>
-                    <a class="navbar-brand text-white" href="#">SISYPHUS</a>
-                </div>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active text-white" aria-current="page" th:href="@{/professor/{id}(id=${professor.id})}">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active text-white" aria-current="page" th:href="@{/professor/{id}/processos(id=${professor.id})}">Processos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active text-white" aria-current="page" th:href="@{/professor/{id}/reunioes(id=${professor.id})}">Reuniões</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+<div th:replace="~{sidebar :: aside('Lista dos Processos')}"></div>
     <main>
         <div style="margin: 30px;">
             <h1 style="margin-top: 20px">Processo de [[${processo.aluno.nome}]] - #[[${processo.numero}]]</h1>
             <hr>
         </div>
         <!--PROCESSO-->
-        <form th:action="@{/professor/{id}/processos/{idProcesso}(id=${professor.id},idProcesso=${processo.id})}" class="container" method="post" th:object="${processo}">
+        <form th:action="@{/processos/{idProcesso}(idProcesso=${processo.id})}" class="container" method="post" th:object="${processo}">
             <div class="row">
                 <!--Número-->
                 <div class="mb-3">
@@ -72,11 +66,6 @@
                     <label for="data" class="form-label">Aluno:</label>
                     <input disabled class="form-control" type="text" id="data" th:value="${processo.aluno.nome}"></input>
                 </div>
-                <!--Nome do Colegiado-->
-                <div class="mb-3">
-                    <label for="data" class="form-label">Colegiado:</label>
-                    <input disabled class="form-control" type="text" id="data" th:value="${processo.colegiado.descricao}"></input>
-                </div>
                 <!--Assunto-->
                 <div class="mb-3">
                     <label for="data" class="form-label">Assunto:</label>
@@ -99,8 +88,8 @@
                 <!--Justificativa da Decisão -->
                 <div class="mb-3">
                     <label for="data" class="form-label">Justificativa do Relator:</label>
-                    <textarea th:if="${processo.justificativaRelator} == null" class="form-control" type="text" id="data" th:field="*{justificativaRelator}" rows="4"></textarea>
-                    <textarea th:unless="${processo.justificativaRelator} == null" disabled class="form-control" type="text" id="data" th:text="${processo.justificativaRelator}" rows="4"></textarea>
+                    <textarea th:if="${processo.parecerRelator} == null" class="form-control" type="text" id="data" th:field="*{parecerRelator}" rows="4"></textarea>
+                    <textarea th:unless="${processo.parecerRelator} == null" disabled class="form-control" type="text" id="data" th:text="${processo.parecerRelator}" rows="4"></textarea>
                 </div>
                 <div th:if="${processo.tipoDecisao} == null"  class="mb-3">
                     <button type="submit" class="btn btn-primary">Atribuir Decisão</button>
@@ -112,15 +101,6 @@
             </div>
         </form>   
     </main>
-    <footer class="container d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-        <div class="col-md-4 d-flex align-items-center">
-          <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
-            <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"/></svg>
-          </a>
-          <span class="mb-3 mb-md-0 text-muted">&copy; 2023 Sisyphus - IFPB </span>
-        </div>
-    </footer>
-
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>

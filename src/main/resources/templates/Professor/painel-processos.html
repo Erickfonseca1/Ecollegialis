@@ -52,7 +52,7 @@
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Aluno</th>
-                    <th scope="col">Estado</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Assunto</th>
                     <th scope="col">Data de Criação</th>
                     <th scope="col">Relator</th>
@@ -63,13 +63,13 @@
                 <tr th:each="processo:${processos}">
                     <td th:text="${processo.numero}"></td>
                     <td th:text="${processo.aluno.nome}"></td>
-                    <td th:text="${processo.estadoProcesso}"></td>
+                    <td th:text="${processo.status}"></td>
                     <td th:text="${processo.assunto.nome}"></td>
                     <td th:text="${processo.dataCriacao}"></td>
                     <td th:if="${processo.relator} == null">-</td>
                     <td th:unless="${processo.relator} == null" th:text="${processo.relator.nome}"></td>
                     <td>
-                        <a th:href="@{/professor/{id}/processos/{idProcesso}(id=${professor.id},idProcesso=${processo.id})}" type="button" class="btn btn-primary">Consultar</a>
+                        <a type="button" th:href="@{'/professor/' + ${professor.id} + '/processos/' + ${processo.id}}" class="btn btn-primary" style="padding-left: 25px; padding-right:25px">Votar</a>
                     </td>
                 </tr>
             </tbody>
