@@ -7,8 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Aluno;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Professor;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.AdminService;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.ProfessorService;
@@ -17,8 +15,6 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/professor")
 public class ProfessorController {
-    @Autowired
-    private AdminService adminService;
 
     @Autowired
     private ProfessorService professorService;
