@@ -1,5 +1,6 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Curso;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Professor;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.AdminService;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.ProfessorService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
@@ -32,8 +34,11 @@ public class AdminController {
     private ProfessorService professorService;
     
     @GetMapping("/home")
-    public ModelAndView home(ModelAndView model) {
+    public ModelAndView home(ModelAndView model, Principal principal, HttpSession session) {
         model.setViewName("home");
+        
+        session.setAttribute("nomeCompleto", "Admin");
+        session.setAttribute("nome", "Admin");
         model.addObject("titulo", "Administrador");
         model.addObject("texto", "O administrador é responsável por gerenciar diversos itens do sistema, como cursos, professores e coordenadores, dentre outros atributos essenciais.");
         return model;

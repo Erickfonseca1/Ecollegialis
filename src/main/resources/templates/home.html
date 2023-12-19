@@ -24,7 +24,7 @@
 
       <!-- Conteúdo -->
       <section class="container mt-4">
-        <h2 th:text="${titulo}"></h2>
+        <h2 th:text="${titulo} + ' - ' + ${session.nomeCompleto}"></h2>
         <p th:text="${texto}"></p>
       </section>     
     </div>
