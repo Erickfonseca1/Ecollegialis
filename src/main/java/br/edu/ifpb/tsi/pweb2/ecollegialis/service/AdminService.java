@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Aluno;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Assunto;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Authority;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Coordenador;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Curso;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Professor;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.User;
@@ -20,6 +21,7 @@ import br.edu.ifpb.tsi.pweb2.ecollegialis.model.User;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.AlunoRepository;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.AssuntoRepository;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.AuthorityRepository;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.CoordenadorRepository;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.CursoRepository;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ProfessorRepository;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.UserRepository;
@@ -49,6 +51,9 @@ public class AdminService {
 
     @Autowired
     private ProfessorRepository professorRepository;
+
+    @Autowired
+    private CoordenadorRepository coordenadorRepository;
 
     // CRUD assunto
 
@@ -224,14 +229,38 @@ public class AdminService {
     }
 
     public List<Professor> getProfessoresPorCurso(Long id) {
-        Curso curso = cursoRepository.findById(id).orElse(null);
         List<Professor> professores = new ArrayList<>();
-        for (Professor professor : professorRepository.findAll()) {
-            if (professor.getCurso().equals(curso)) {
+        for (Professor professor : this.professorRepository.findAll()) {
+            if (professor.getCurso().getId() == id) {
                 professores.add(professor);
             }
         }
         return professores;
+    }
+
+    // CRUD coordenador
+
+    public List<Coordenador> getCoordenadores() {
+        return coordenadorRepository.findAll();
+    }
+
+    public Coordenador getCoordenadorPorId(Long id) {
+        return coordenadorRepository.findById(id).orElse(null);
+    }
+
+    @Transactional
+    public void criarCoordenador(Coordenador coordenador) {
+        coordenadorRepository.save(coordenador);
+    }
+
+    @Transactional
+    public void atualizarCoordenador(Coordenador coordenador) {
+        coordenadorRepository.save(coordenador);
+    }
+
+    @Transactional
+    public void deletarCoordenador(Long id) {
+        this.coordenadorRepository.deleteById(id);
     }
 
 }
