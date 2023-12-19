@@ -77,7 +77,7 @@ public class ProcessoProfessorController {
             List<Reuniao> reunioes = colegiado.getReunioes();
             model.addObject("reuniao", reunioes);
         }
-        model.setViewName("Professor/reuniao");
+        model.setViewName("Professor/painel-reunioes");
         return model;
     }
 
@@ -87,5 +87,4 @@ public class ProcessoProfessorController {
         model.setViewName("Professor/reuniao");
         return model;
     }
-
 }
