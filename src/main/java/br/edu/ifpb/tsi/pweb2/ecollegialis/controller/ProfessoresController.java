@@ -32,7 +32,7 @@ public class ProfessoresController {
     }
 
     @GetMapping("criar")
-    public ModelAndView criarProfessores(ModelAndView model, RedirectAttributes redirectAttributes ){
+    public ModelAndView criarProfessores(ModelAndView model){
         model.addObject("professor", new Professor());
         model.addObject("cursos", this.cursoService.getCursos());
         model.addObject("acao", "salvar");
@@ -44,8 +44,7 @@ public class ProfessoresController {
     public ModelAndView salvarProfessores(
         @Valid Professor professor,
         BindingResult validation, 
-        ModelAndView model, 
-        RedirectAttributes redirectAttributes
+        ModelAndView model
         ){
         if (validation.hasErrors()) {
             model.setViewName("Professor/formProfessor");
@@ -55,19 +54,15 @@ public class ProfessoresController {
         professorService.salvarProfessor(professor);
         model.addObject("professores", professorService.getProfessores());
         model.setViewName("redirect:/professores");
-        redirectAttributes.addFlashAttribute("mensagem", "Professor Criado com Sucesso");
-        redirectAttributes.addFlashAttribute("professoresSalvo", true);
         return model;
     }
 
     @GetMapping("{id}")
-    public ModelAndView editarProfessores(@PathVariable("id") long id, ModelAndView model, RedirectAttributes redirectAttributes){
+    public ModelAndView editarProfessores(@PathVariable("id") long id, ModelAndView model){
         model.addObject("professor", professorService.getProfessorPorId(id));
         model.addObject("acao", "editar");
         model.addObject("cursos", this.cursoService.getCursos());
         model.setViewName("Professor/formProfessor");
-        redirectAttributes.addFlashAttribute("mensagem","Professor Editado com Sucesso");
-        redirectAttributes.addFlashAttribute("professoresEditado", true);
         return model;
     }
 
@@ -76,8 +71,7 @@ public class ProfessoresController {
         @Valid Professor professor, 
         BindingResult validation,
         @PathVariable("id") Long id,
-        ModelAndView model, 
-        RedirectAttributes redirectAttributes
+        ModelAndView model
         ){
         if (validation.hasErrors()) {
             model.addObject("professor", professorService.getProfessorPorId(id));
@@ -87,19 +81,15 @@ public class ProfessoresController {
         professorService.salvarProfessor(professor);
         model.addObject("professores", professorService.getProfessores());
         model.setViewName("redirect:/professores");
-        redirectAttributes.addFlashAttribute("mensagem", "Professor Editado com Sucesso");
-        redirectAttributes.addFlashAttribute("professorEditado", true);
         return model;
     }
 
     @RequestMapping("{id}/delete")
-    public ModelAndView deletarProfessores(@PathVariable("id") Long id, ModelAndView model, RedirectAttributes redirectAttributes){
+    public ModelAndView deletarProfessores(@PathVariable("id") Long id, ModelAndView model){
         professorService.deletarProfessor(id);
         model.addObject("professores", professorService.getProfessores());
         model.addObject("professor", new Professor());
         model.setViewName("redirect:/professores");
-        redirectAttributes.addFlashAttribute("mensagem","Professor Deletado com Sucesso");
-        redirectAttributes.addFlashAttribute("professoresDeletado", true);
         return model;
     }
 }

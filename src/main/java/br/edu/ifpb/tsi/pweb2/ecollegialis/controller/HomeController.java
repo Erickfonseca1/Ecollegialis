@@ -29,24 +29,16 @@ public class HomeController {
   @Autowired 
   private CoordenadorService coordenadorService;
 
-  //redirecionar para o login
   @GetMapping
   public String login() {
     return "seletorTemporario";
   }
-
-  //a partir daqui, funciona da seguinte forma:
-  // é apenas uma forma de preceder o login, para que o usuário não tenha que digitar o /id
-  // então, se o usuário for admin, ele é redirecionado para o /admin
-  // se for aluno, ele é redirecionado para o /aluno e é associado à ele o id de um aluno aleatório, para assim poder realizar os trâmites de aluno
-  // se for professor ou coordenador, ele é redirecionado para o /professor e é associado à ele o id de um professor aleatório.
 
   @GetMapping("/admin")
   public ModelAndView homeAdmin() {
     return new ModelAndView("home");
   }
 
-  //método para redirecionar a view home para chamar o /id
   @GetMapping("/aluno")
   public ModelAndView homeAluno() {
     List<Aluno> alunos = alunoService.getAlunos();

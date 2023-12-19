@@ -37,7 +37,7 @@ public class ProcessoAlunoController {
     }
 
     @GetMapping("criar")
-    public ModelAndView criarProcesso(ModelAndView model,@PathVariable("id")Long id, RedirectAttributes redirectAttributes ){
+    public ModelAndView criarProcesso(ModelAndView model,@PathVariable("id")Long id){
         Aluno aluno = this.alunoService.getAlunoPorId(id);
         model.addObject("aluno", aluno);
         model.addObject("processo", new Processo(aluno,new Assunto()));
@@ -51,8 +51,7 @@ public class ProcessoAlunoController {
         @Valid Processo processo,
         BindingResult validation, 
         @PathVariable("id")Long id,
-        ModelAndView model, 
-        RedirectAttributes redirectAttributes
+        ModelAndView model
         ){
         Aluno aluno = this.alunoService.getAlunoPorId(id);
         if (validation.hasErrors()) {
@@ -66,7 +65,6 @@ public class ProcessoAlunoController {
         model.addObject("aluno", aluno);
         model.addObject("processos", processoService.getProcessosPorAluno(aluno));
         model.setViewName("redirect:/aluno/"+id+"/processos");
-        redirectAttributes.addFlashAttribute("mensagem", "Processo criado com Sucesso");
         return model;
     }
 

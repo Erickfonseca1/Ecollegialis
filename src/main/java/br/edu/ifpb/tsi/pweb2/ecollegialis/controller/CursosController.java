@@ -29,7 +29,7 @@ public class CursosController {
     }
 
     @GetMapping("criar")
-    public ModelAndView criarCursos(ModelAndView model, RedirectAttributes redirectAttributes ){
+    public ModelAndView criarCursos(ModelAndView model){
         model.addObject("curso", new Curso());
         model.addObject("acao", "salvar");
         model.setViewName("Cursos/formCurso");
@@ -40,8 +40,7 @@ public class CursosController {
     public ModelAndView salvarCursos(
         @Valid Curso curso,
         BindingResult validation, 
-        ModelAndView model, 
-        RedirectAttributes redirectAttributes
+        ModelAndView model
         ){
         if (validation.hasErrors()) {
             model.setViewName("Cursos/formCurso");
@@ -51,18 +50,14 @@ public class CursosController {
         cursoService.salvarCurso(curso);
         model.addObject("cursos", cursoService.getCursos());
         model.setViewName("redirect:/cursos");
-        redirectAttributes.addFlashAttribute("mensagem", "Curso Criado com Sucesso");
-        redirectAttributes.addFlashAttribute("cursoSalvo", true);
         return model;
     }
 
     @GetMapping("{id}")
-    public ModelAndView editarCursos(@PathVariable("id") long id, ModelAndView model, RedirectAttributes redirectAttributes){
+    public ModelAndView editarCursos(@PathVariable("id") long id, ModelAndView model){
         model.addObject("curso", cursoService.getCursoPorId(id));
         model.addObject("acao", "editar");
         model.setViewName("Cursos/formCurso");
-        redirectAttributes.addFlashAttribute("mensagem","Curso Editado com Sucesso");
-        redirectAttributes.addFlashAttribute("cursosEditado", true);
         return model;
     }
 
@@ -71,8 +66,7 @@ public class CursosController {
         @Valid Curso curso, 
         BindingResult validation,
         @PathVariable("id") Long id,
-        ModelAndView model, 
-        RedirectAttributes redirectAttributes
+        ModelAndView model
         ){
         if (validation.hasErrors()) {
             model.addObject("curso", cursoService.getCursoPorId(id));
@@ -82,22 +76,15 @@ public class CursosController {
         cursoService.salvarCurso(curso);
         model.addObject("assuntos", cursoService.getCursos());
         model.setViewName("redirect:/assuntos");
-        redirectAttributes.addFlashAttribute("mensagem", "Curso Editado com Sucesso");
-        redirectAttributes.addFlashAttribute("cursosEditado", true);
         return model;
     }
 
-
     @RequestMapping("{id}/delete")
-    public ModelAndView deletarCursos(@PathVariable("id") Long id, ModelAndView model, RedirectAttributes redirectAttributes){
+    public ModelAndView deletarCursos(@PathVariable("id") Long id, ModelAndView model){
         cursoService.deletarCurso(id);
         model.addObject("cursos", cursoService.getCursos());
         model.addObject("curso", new Assunto());
         model.setViewName("redirect:/cursos");
-        redirectAttributes.addFlashAttribute("mensagem", "Curso Deletado com Sucesso");
-        redirectAttributes.addFlashAttribute("cursosDeletado", true);
         return model;
     }
-
-    
 }

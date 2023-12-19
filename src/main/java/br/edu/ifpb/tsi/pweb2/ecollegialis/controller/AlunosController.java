@@ -44,8 +44,7 @@ public class AlunosController {
     public ModelAndView salvarAluno(
         @Valid Aluno aluno,
         BindingResult validation, 
-        ModelAndView model, 
-        RedirectAttributes redirectAttributes
+        ModelAndView model
         ){
         if (validation.hasErrors()) {
             model.setViewName("Aluno/formAluno");
@@ -54,18 +53,15 @@ public class AlunosController {
         alunoService.salvarAluno(aluno);
         model.addObject("alunos", alunoService.getAlunos());
         model.setViewName("redirect:/alunos");
-        redirectAttributes.addFlashAttribute("mensagem", "Aluno Criado com Sucesso");
         return model;
     }
 
     @GetMapping("{id}")
-    public ModelAndView editarAluno(@PathVariable("id")Long id, ModelAndView model, RedirectAttributes redirectAttributes ){
+    public ModelAndView editarAluno(@PathVariable("id")Long id, ModelAndView model){
         model.addObject("aluno", alunoService.getAlunoPorId(id));
         model.addObject("cursos", this.cursoService.getCursos());
         model.addObject("acao", "editar");
         model.setViewName("Aluno/formAluno");
-        redirectAttributes.addFlashAttribute("mensagem", "Aluno Editado com Sucesso");
-        redirectAttributes.addFlashAttribute("alunoEditado", true);
         return model;
     }
 
@@ -74,8 +70,7 @@ public class AlunosController {
         @Valid Aluno aluno, 
         BindingResult validation,
         @PathVariable("id") Long id,
-        ModelAndView model, 
-        RedirectAttributes redirectAttributes
+        ModelAndView model
         ){
         if (validation.hasErrors()) {
             model.addObject("aluno", alunoService.getAlunoPorId(id));
@@ -85,19 +80,15 @@ public class AlunosController {
         alunoService.salvarAluno(aluno);
         model.addObject("alunos", alunoService.getAlunos());
         model.setViewName("redirect:/alunos");
-        redirectAttributes.addFlashAttribute("mensagem", "Aluno Salvo com Sucesso");
-        redirectAttributes.addFlashAttribute("alunoSalvo", true);
         return model;
     }
 
 
     @RequestMapping("{id}/delete")
-    public ModelAndView deletarAluno(ModelAndView model,@PathVariable("id") Long id, RedirectAttributes redirectAttributes){
+    public ModelAndView deletarAluno(ModelAndView model,@PathVariable("id") Long id){
         this.alunoService.apagarAluno(id);
         model.addObject("alunos", alunoService.getAlunos());
         model.setViewName("redirect:/alunos");
-        redirectAttributes.addFlashAttribute("mensagem", "Aluno Deletado com Sucesso");
-        redirectAttributes.addFlashAttribute("alunoDeletado", true);
         return model;
     }
 }

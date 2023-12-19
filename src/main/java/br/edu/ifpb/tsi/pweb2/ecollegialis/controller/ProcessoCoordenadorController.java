@@ -210,7 +210,6 @@ public class ProcessoCoordenadorController {
             model.addObject("reunioes", colegiado.getReunioes());
             model.setViewName("redirect:/coordenador/"+id+"/reunioes");
             redirectAttributes.addFlashAttribute("mensagem", e.getMessage());
-            //redirectAttributes.addFlashAttribute("reuniaoIniciada", false);
             return model;
         }
 

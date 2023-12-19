@@ -48,7 +48,7 @@ public class CoordenadoresController {
     }
 
     @GetMapping("criar")
-    public ModelAndView criarCoordenadores(ModelAndView model, RedirectAttributes redirectAttributes ){
+    public ModelAndView criarCoordenadores(ModelAndView model){
         model.addObject("coordenador", new Coordenador());
         model.addObject("acao", "salvar");
         model.setViewName("Coordenador/formCoordenador");
@@ -59,8 +59,7 @@ public class CoordenadoresController {
     public ModelAndView salvarCoordenadores(
         @Valid Coordenador coordenador,
         BindingResult validation, 
-        ModelAndView model, 
-        RedirectAttributes redirectAttributes
+        ModelAndView model
         ){
         if (validation.hasErrors()) {
             model.setViewName("Coordenador/formCoordenador");
@@ -70,8 +69,6 @@ public class CoordenadoresController {
         coordenadorService.salvarCoordenador(coordenador);
         model.addObject("coordenadores", professorService.getProfessores());
         model.setViewName("redirect:/coordenadores");
-        redirectAttributes.addFlashAttribute("mensagem", "Coordenador Criado com Sucesso");
-        redirectAttributes.addFlashAttribute("coordenadoresSalvo", true);
         return model;
     }
 
@@ -88,8 +85,7 @@ public class CoordenadoresController {
         @Valid Coordenador coordenador, 
         BindingResult validation,
         @PathVariable("id") Long id,
-        ModelAndView model, 
-        RedirectAttributes redirectAttributes
+        ModelAndView model
         ){
         if (validation.hasErrors()) {
             model.addObject("coordenador", coordenadorService.getCoordenadorPorId(id));
@@ -99,18 +95,14 @@ public class CoordenadoresController {
         coordenadorService.salvarCoordenador(coordenador);
         model.addObject("coordenadores", coordenadorService.getCoordenadores());
         model.setViewName("redirect:/coordenadores");
-        redirectAttributes.addFlashAttribute("mensagem", "Coordenador Editado com Sucesso");
-        redirectAttributes.addFlashAttribute("coordenadoresEditado", true);
         return model;
     }
 
     @RequestMapping("{id}/delete")
-    public ModelAndView deletarCoordenadores(@PathVariable("id") Long id, ModelAndView model, RedirectAttributes redirectAttributes){
+    public ModelAndView deletarCoordenadores(@PathVariable("id") Long id, ModelAndView model){
         coordenadorService.deletarCoordenador(id);
         model.addObject("coordenadores", coordenadorService.getCoordenadores());
         model.setViewName("redirect:/coordenadores");
-        redirectAttributes.addFlashAttribute("mensagem","Coordenador Deletado com Sucesso");
-        redirectAttributes.addFlashAttribute("coordenadoresDeletado", true);
         return model;
     }
 }

@@ -29,7 +29,7 @@ public class AssuntosController {
     }
 
     @GetMapping("criar")
-    public ModelAndView criarAssuntos(ModelAndView model, RedirectAttributes redirectAttributes ){
+    public ModelAndView criarAssuntos(ModelAndView model){
         model.addObject("assunto", new Assunto());
         model.addObject("acao", "salvar");
         model.setViewName("Assunto/formAssunto");
@@ -40,8 +40,7 @@ public class AssuntosController {
     public ModelAndView salvarAssuntos(
         @Valid Assunto assunto,
         BindingResult validation, 
-        ModelAndView model, 
-        RedirectAttributes redirectAttributes
+        ModelAndView model
         ){
         if (validation.hasErrors()) {
             model.setViewName("Assunto/formAssunto");
@@ -51,8 +50,6 @@ public class AssuntosController {
         assuntoService.salvarAssunto(assunto);
         model.addObject("assuntos", assuntoService.getAssuntos());
         model.setViewName("redirect:/assuntos");
-        redirectAttributes.addFlashAttribute("mensagem", "Assunto Criado com Sucesso");
-        redirectAttributes.addFlashAttribute("assuntosSalvo", true);
         return model;
     }
 
@@ -61,8 +58,6 @@ public class AssuntosController {
         model.addObject("assunto", assuntoService.getAssuntoPorId(id));
         model.addObject("acao", "editar");
         model.setViewName("Assunto/formAssunto");
-        redirectAttributes.addFlashAttribute("mensagem","Assunto Editado com Sucesso");
-        redirectAttributes.addFlashAttribute("assuntosEditado", true);
         return model;
     }
 
@@ -71,8 +66,7 @@ public class AssuntosController {
         @Valid Assunto assunto, 
         BindingResult validation,
         @PathVariable("id") Long id,
-        ModelAndView model, 
-        RedirectAttributes redirectAttributes
+        ModelAndView model
         ){
         if (validation.hasErrors()) {
             model.addObject("assunto", assuntoService.getAssuntoPorId(id));
@@ -82,11 +76,8 @@ public class AssuntosController {
         assuntoService.salvarAssunto(assunto);
         model.addObject("assuntos", assuntoService.getAssuntos());
         model.setViewName("redirect:/assuntos");
-        redirectAttributes.addFlashAttribute("mensagem", "Assunto Editado com Sucesso");
-        redirectAttributes.addFlashAttribute("assuntosEditado", true);
         return model;
     }
-
 
     @RequestMapping("{id}/delete")
     public ModelAndView deletarAssuntos(@PathVariable("id") Long id, ModelAndView model, RedirectAttributes redirectAttributes){
@@ -94,10 +85,6 @@ public class AssuntosController {
         model.addObject("assuntos", assuntoService.getAssuntos());
         model.addObject("assunto", new Assunto());
         model.setViewName("redirect:/assuntos");
-        redirectAttributes.addFlashAttribute("mensagem", "Assunto Deletado com Sucesso");
-        redirectAttributes.addFlashAttribute("assuntosDeletado", true);
         return model;
     }
-
-    
 }
