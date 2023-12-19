@@ -24,7 +24,7 @@
     <div class="container">
         <h1>Lista de coordenadores</h1>
         <div class="btn-novo-coordenador">
-            <a th:href="@{/coordenadores/criar}" class="btn" style="background-color: #236da3; color: #fff;">Adicionar coordenador</a>
+            <a th:href="@{coordenadores/criar}" class="btn" style="background-color: #236da3; color: #fff;">Adicionar coordenador</a>
         </div>
 
         <th:block th:if="${not #lists.isEmpty(coordenadores)}">
@@ -44,10 +44,10 @@
                         <td th:text="${coordenador.professor.nome}"></td>
                         <td>
                             <div class="btn-group" style="max-width: 75px">
-                                <form th:action="@{/coordenadores/{id}(id=${coordenador.id})}">
+                                <!-- <form th:action="@{coordenadores/editar/{id}(id=${coordenador.id})}">
                                     <button type="submit" class="btn btn-primary">Editar</button>
-                                </form>
-                                <form style="margin-right: 10px;" th:action="@{/coordenadores/{id}/delete(id=${coordenador.id})}">
+                                </form> -->
+                                <form style="margin-right: 10px;" th:action="@{coordenadores/deletar/{id}(id=${coordenador.id})}" method="post">
                                     <button type="submit" class="btn btn-danger">Excluir</button>
                                 </form>
                             </div>

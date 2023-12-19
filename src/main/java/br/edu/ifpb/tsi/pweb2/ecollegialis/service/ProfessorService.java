@@ -51,6 +51,10 @@ public class ProfessorService {
         return this.professorRepository.findById(id).orElse(null);
     }
 
+    public Professor getProfessorPorMatricula(String matricula){
+        return this.professorRepository.findByMatricula(matricula);
+    }
+
     public Professor salvarProfessor(Professor professor){
         return this.professorRepository.save(professor);
     }

@@ -41,7 +41,7 @@
 <div class="container">
   <h1 style="margin-bottom: 20px;margin-top: 20px;">Novo curso</h1>
   <!-- INICIO DO FORM -->
-  <form th:action="${acao} == 'salvar' ? @{/cursos/criar} : @{/curso/{id}(id=${curso.id})}" method="post" th:object="${curso}">
+  <form th:action="@{/admin/cursos/criar}" method="post" th:object="${curso}">
 
     <div class="modal-body" style="max-width: 500px">
       <div class="row">

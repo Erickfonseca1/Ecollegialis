@@ -23,7 +23,7 @@ public class ProcessoAlunoController {
     private ProcessoService processoService;
 
     @Autowired
-    private AssuntoService assuntoService;
+    private AdminService adminService;
 
 
     @GetMapping
@@ -37,10 +37,10 @@ public class ProcessoAlunoController {
 
     @GetMapping("criar")
     public ModelAndView criarProcesso(ModelAndView model,@PathVariable("id")Long id){
-        Aluno aluno = this.alunoService.getAlunoPorId(id);
+        Aluno aluno = this.adminService.getAlunoPorId(id);
         model.addObject("aluno", aluno);
         model.addObject("processo", new Processo(aluno,new Assunto()));
-        model.addObject("assuntos", this.assuntoService.getAssuntos());
+        model.addObject("assuntos", this.adminService.getAssuntos());
         model.setViewName("Processo/formProcesso");
         return model;
     }

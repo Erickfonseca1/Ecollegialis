@@ -1,5 +1,7 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.controller;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -16,11 +18,12 @@ import jakarta.validation.Valid;
 @Controller
 @RequestMapping("/professores")
 public class ProfessoresController {
-    @Autowired
-    private ProfessorService professorService;
 
     @Autowired
-    private CursoService cursoService;
+    private AdminService adminService;
+
+    @Autowired
+    private ProfessorService professorService;
 
     @GetMapping
     public ModelAndView listarProfessores(ModelAndView model){
@@ -33,7 +36,7 @@ public class ProfessoresController {
     @GetMapping("criar")
     public ModelAndView criarProfessores(ModelAndView model){
         model.addObject("professor", new Professor());
-        model.addObject("cursos", this.cursoService.getCursos());
+        model.addObject("cursos", this.adminService.getCursos());
         model.addObject("acao", "salvar");
         model.setViewName("Professor/formProfessor");
         return model;
@@ -60,7 +63,7 @@ public class ProfessoresController {
     public ModelAndView editarProfessores(@PathVariable("id") long id, ModelAndView model){
         model.addObject("professor", professorService.getProfessorPorId(id));
         model.addObject("acao", "editar");
-        model.addObject("cursos", this.cursoService.getCursos());
+        model.addObject("cursos", this.adminService.getCursos());
         model.setViewName("Professor/formProfessor");
         return model;
     }

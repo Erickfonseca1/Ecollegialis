@@ -27,9 +27,6 @@ public class ProcessoCoordenadorController {
     private CoordenadorService coordenadorService;
 
     @Autowired
-    private CursoService cursoService;
-
-    @Autowired
     private ProcessoService processoService;
 
     @Autowired
@@ -37,6 +34,9 @@ public class ProcessoCoordenadorController {
 
     @Autowired
     private AlunoService alunoService;
+
+    @Autowired
+    private AdminService adminService;
 
     @Autowired
     private ColegiadoService colegiadoService;
