@@ -16,6 +16,7 @@ import br.edu.ifpb.tsi.pweb2.ecollegialis.service.*;
 import jakarta.validation.Valid;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -124,10 +125,10 @@ public class ProcessoCoordenadorController {
     public ModelAndView criarReuniao(ModelAndView model, @PathVariable("id") Long id) {
         List<Processo> processosDisponiveis = new ArrayList<>();
         Coordenador coordenador = coordenadorService.getCoordenadorPorId(id);
+        Colegiado colegiado = colegiadoService.getColegiadoPorCoordenador(coordenador);
+        System.out.println("ALO CARALHO" + colegiado);
 
         if (coordenador != null) {
-            Colegiado colegiado = colegiadoService.getColegiadoPorCoordenador(coordenador);
-
             if (colegiado != null) {
                 for (Processo processo : colegiado.getProcessos()) {
                     if (processo.getRelator() != null) {
@@ -135,16 +136,17 @@ public class ProcessoCoordenadorController {
                     }
                 }
 
+                // Inicializa a lista de processos aqui
                 List<Processo> processosEscolhidos = new ArrayList<>();
                 Reuniao reuniao = new Reuniao(colegiado, processosEscolhidos);
-                System.out.println(reuniao.getColegiado());
+
                 model.addObject("colegiado", colegiado);
                 model.addObject("processosEscolhidos", processosEscolhidos);
                 model.addObject("processosDisponiveis", processosDisponiveis);
                 model.addObject("reuniao", reuniao);
-                model.setViewName("Coordenador/criar-reuniao");
             }
         }
+        model.setViewName("Coordenador/criar-reuniao");
         return model;
     }
 
@@ -157,12 +159,8 @@ public class ProcessoCoordenadorController {
             RedirectAttributes redirectAttributes
     ) {
         Coordenador coordenador = coordenadorService.getCoordenadorPorId(id);
-
-        // Verifica se o coordenador não é nulo
         if (coordenador != null) {
             Colegiado colegiado = colegiadoService.getColegiadoPorCoordenador(coordenador);
-
-            // Verifica se o colegiado não é nulo
             if (colegiado != null) {
                 if (validation.hasErrors()) {
                     List<Processo> processosDisponiveis = new ArrayList<>();

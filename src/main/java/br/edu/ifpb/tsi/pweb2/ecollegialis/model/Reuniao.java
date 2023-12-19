@@ -7,8 +7,10 @@ import java.util.List;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusReuniao;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @NoArgsConstructor
@@ -18,7 +20,8 @@ public class Reuniao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message="Campo obrigatório!")
+    @NotNull(message = "Campo obrigatório!")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dataReuniao;
 
     @Enumerated(EnumType.STRING)

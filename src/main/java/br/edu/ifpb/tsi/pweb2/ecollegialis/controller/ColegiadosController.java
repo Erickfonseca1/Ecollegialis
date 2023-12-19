@@ -81,6 +81,7 @@ public class ColegiadosController {
             model.addObject("acao", "salvar");
             return model;
         }
+        colegiado.setCoordenador(this.coordenadorService.getCoordenadorPorCurso(colegiado.getCurso().getId()));
         colegiadoService.salvarColegiado(colegiado);
         model.addObject("colegiados", colegiadoService.getColegiados());
         model.setViewName("redirect:/colegiados");

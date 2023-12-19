@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CoordenadorRepository extends JpaRepository<Coordenador,Long> {
-    
+
+    Coordenador findByCursoId(Long id);
 }
