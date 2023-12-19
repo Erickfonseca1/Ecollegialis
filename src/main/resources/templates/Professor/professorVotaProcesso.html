@@ -34,7 +34,7 @@
             <hr>
         </div>
         <form th:action="@{/professor/{id}/processos/{idProcesso}(id=${professor.id},idProcesso=${processo.id})}" class="container" method="post" th:object="${processo}">
-            <div class="row">
+        <div class="row">
                 <div class="mb-3">
                     <label for="data" class="form-label">Número do Processo:</label>
                     <input disabled class="form-control" type="number" id="data" th:value="${processo.numero}"></input>

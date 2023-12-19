@@ -16,7 +16,6 @@ import br.edu.ifpb.tsi.pweb2.ecollegialis.service.*;
 import jakarta.validation.Valid;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
