@@ -191,7 +191,7 @@ public class ProcessoCoordenadorController {
     }
 
     @GetMapping("reunioes/{idReuniao}")
-    public ModelAndView showReuniao(ModelAndView model, @PathVariable("id") Long id,@PathVariable("idReuniao") Long idReuniao){
+    public ModelAndView listarReuniao(ModelAndView model, @PathVariable("id") Long id,@PathVariable("idReuniao") Long idReuniao){
         model.addObject("reuniao", this.reuniaoService.getReuniaoPorId(idReuniao));
         model.setViewName("Coordenador/reuniao");
         return model;
@@ -216,7 +216,7 @@ public class ProcessoCoordenadorController {
     }
 
     @GetMapping("reunioes/{idReuniao}/painel")
-    public ModelAndView showReuniaoPainel(ModelAndView model, @PathVariable("id") Long id,@PathVariable("idReuniao") Long idReuniao){
+    public ModelAndView listarReuniaoNaTela(ModelAndView model, @PathVariable("id") Long id,@PathVariable("idReuniao") Long idReuniao){
         Reuniao reuniao = this.reuniaoService.getReuniaoPorId(idReuniao);
         model.addObject("processo", reuniao.getProcessos().get(0));
         model.addObject("reuniao", reuniao);
@@ -225,7 +225,7 @@ public class ProcessoCoordenadorController {
     }
 
     @GetMapping("reunioes/{idReuniao}/painel/{idProcesso}")
-    public ModelAndView showReuniaoPainel(
+    public ModelAndView listarReuniaoNaTela(
         ModelAndView model, 
         @PathVariable("id") Long id,
         @PathVariable("idReuniao") Long idReuniao, 
@@ -258,7 +258,7 @@ public class ProcessoCoordenadorController {
     }
 
     @PostMapping("reunioes/{idReuniao}/painel/{idProcesso}")
-    public ModelAndView judgeProcesso(
+    public ModelAndView processoJulgado(
         Processo processo,
         ModelAndView model, 
         @PathVariable("id") Long id,
@@ -285,7 +285,7 @@ public class ProcessoCoordenadorController {
     }
 
     @PostMapping("reunioes/{idReuniao}/painel/encerrar")
-    public ModelAndView finishReuniao(Reuniao reuniao,ModelAndView model, @PathVariable("id") Long id, @PathVariable("idReuniao") Long idReuniao){
+    public ModelAndView encerrarReuniao(Reuniao reuniao,ModelAndView model, @PathVariable("id") Long id, @PathVariable("idReuniao") Long idReuniao){
         reuniaoService.encerrarReuniao(reuniao, idReuniao);
         Coordenador coordenador = coordenadorService.getCoordenadorPorId(id);
         Colegiado colegiado = colegiadoService.getColegiadoPorCoordenador(coordenador);
