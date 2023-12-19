@@ -3,6 +3,7 @@ package br.edu.ifpb.tsi.pweb2.ecollegialis.controller;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +24,6 @@ public class AlunoController {
     @GetMapping("/home")
     public ModelAndView home(ModelAndView model, Principal principal, HttpSession session){
         Aluno aluno = alunoService.getAlunoPorMatricula(principal.getName());
-
-        // pegar o nome do aluno completo e enviar apenas o primeiro nome para a view
         String[] nomeCompleto = aluno.getNome().split(" ");
         String nome = nomeCompleto[0];
         session.setAttribute("nome", nome);

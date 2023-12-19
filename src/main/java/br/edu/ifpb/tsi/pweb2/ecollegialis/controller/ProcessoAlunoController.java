@@ -1,6 +1,7 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +14,11 @@ import br.edu.ifpb.tsi.pweb2.ecollegialis.model.*;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.*;
 import jakarta.validation.Valid;
 
+import java.security.Principal;
+
 @Controller
-@RequestMapping("/aluno/{id}/processos")
+@RequestMapping("/aluno/processos")
+@PreAuthorize("hasRole('ALUNO')")
 public class ProcessoAlunoController {
     @Autowired
     private AlunoService alunoService;
@@ -27,8 +31,8 @@ public class ProcessoAlunoController {
 
 
     @GetMapping
-    public ModelAndView listarProcessos(ModelAndView model, @PathVariable("id")Long id){
-        Aluno aluno = this.alunoService.getAlunoPorId(id);
+    public ModelAndView listarProcessos(ModelAndView model, Principal principal ){
+        Aluno aluno = alunoService.getAlunoPorMatricula(principal.getName());
         model.addObject("aluno", aluno);
         model.addObject("processos", processoService.getProcessosPorAluno(aluno));
         model.setViewName("Processo/ListaProcessos");

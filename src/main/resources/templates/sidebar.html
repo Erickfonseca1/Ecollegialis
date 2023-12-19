@@ -149,7 +149,7 @@
       </a>
     </li>
     <li th:if="${#authorization.expression('hasRole(''ROLE_ALUNO'')') or #authorization.expression('hasRole(''ROLE_PROFESSOR'')')}">
-      <a th:href="@{/processos/aluno/{id}(id=${id})}" class="nav-link link-dark">
+      <a th:href="@{aluno/processos}" class="nav-link link-dark">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="16"

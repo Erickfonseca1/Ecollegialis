@@ -352,6 +352,4 @@ public class AdminController {
         redirectAttributes.addFlashAttribute("coordenadoresDeletado", true);
         return model;
     }
-
-
 }
