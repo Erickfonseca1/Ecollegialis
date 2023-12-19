@@ -70,7 +70,9 @@
                     <td th:text="${processo.assunto.nome}"></td>
                     <td th:text="${processo.dataCriacao}"></td>
                     <td>
-                        <button type="button" class="btn btn-primary">Consultar</button>
+                        <a th:href="@{'/aluno/processos/' + ${processo.id}}">
+                            <button type="button" class="btn btn-primary">Consultar</button>
+                        </a>
                     </td>
                 </tr>
                 </tbody>
