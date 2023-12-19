@@ -100,13 +100,12 @@ public class ProcessoCoordenadorController {
         return model;
     }
     @PostMapping("processos/{idProcesso}/colegiado/criar")
-    public ModelAndView salvarProcessoColegiado(
+    public ModelAndView atribuirProcessoColegiado(
             ModelAndView model,
-            Processo processo,
+            @ModelAttribute("processo") Processo processo,
             @PathVariable("id") Long id,
             @PathVariable("idProcesso") Long idProcesso) {
-        processoService.atribuirProcesso(processo, idProcesso);
-        model.addObject("processos", processoService.getProcessos());
+        colegiadoService.atribuirProcessoAoColegiado(processo, idProcesso);
         model.setViewName("redirect:/coordenador/" + id + "/processos");
         return model;
     }

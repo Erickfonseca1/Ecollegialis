@@ -69,6 +69,7 @@
             <th scope="col">Data de Criação</th>
             <th scope="col">Relator</th>
             <th scope="col">Decisão</th>
+            <th scope="col">Colegiado</th>
             <th scope="col">Relator Votou?</th>
             <th scope="col">Opções</th>
         </tr>
@@ -86,6 +87,8 @@
             <td th:unless="${processo.relator} == null" th:text="${processo.relator.nome}"></td>
             <td th:if="${processo.tipoDecisao} == null" >-</td>
             <td th:unless="${processo.tipoDecisao} == null" th:text="${processo.tipoDecisao}"></td>
+            <td th:if="${processo.colegiado} == null">-</td>
+            <td th:unless="${processo.colegiado} == null" th:text="${processo.colegiado.curso.nome}"></td>
             <td th:if="${processo.tipoDecisao} == null">
                 <h3>N/A</h3>
             </td>
