@@ -4,13 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Voto;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.VotoRepository;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+@Service
 public class VotoService {
 
     @Autowired
     private VotoRepository votoRepository;
     
-    public java.util.List<Voto> getVotos(){
+    public List<Voto> getVotos(){
         return this.votoRepository.findAll();
     }
 
