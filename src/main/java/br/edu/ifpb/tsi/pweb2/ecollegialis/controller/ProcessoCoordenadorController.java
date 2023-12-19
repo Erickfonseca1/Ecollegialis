@@ -107,34 +107,44 @@ public class ProcessoCoordenadorController {
     @GetMapping("reunioes")
     public ModelAndView listarReunioes(ModelAndView model, @PathVariable("id") Long id){
         Coordenador coordenador = coordenadorService.getCoordenadorPorId(id);
-        Colegiado colegiado = colegiadoService.getColegiadoPorCoordenador(coordenador);
-        if (colegiado.getReunioes() != null && !colegiado.getReunioes().isEmpty()) {
-            model.addObject("reunioes", colegiado.getReunioes());
+
+        if (coordenador != null) {
+            Colegiado colegiado = colegiadoService.getColegiadoPorCoordenador(coordenador);
+
+            if (colegiado != null && colegiado.getReunioes() != null && !colegiado.getReunioes().isEmpty()) {
+                model.addObject("reunioes", colegiado.getReunioes());
+            }
         }
+
         model.setViewName("Coordenador/reunioes");
         return model;
     }
 
     @GetMapping("reunioes/criar")
-    public ModelAndView criarReuniao(ModelAndView model,@PathVariable("id")Long id){
-        List<Processo> processosDisponiveis = new ArrayList<Processo>();
+    public ModelAndView criarReuniao(ModelAndView model, @PathVariable("id") Long id) {
+        List<Processo> processosDisponiveis = new ArrayList<>();
         Coordenador coordenador = coordenadorService.getCoordenadorPorId(id);
-        Colegiado colegiado = colegiadoService.getColegiadoPorCoordenador(coordenador);
 
-        for(Processo processo : colegiado.getProcessos()){
-            if(processo.getRelator()!= null){
-                processosDisponiveis.add(processo);
+        if (coordenador != null) {
+            Colegiado colegiado = colegiadoService.getColegiadoPorCoordenador(coordenador);
+
+            if (colegiado != null) {
+                for (Processo processo : colegiado.getProcessos()) {
+                    if (processo.getRelator() != null) {
+                        processosDisponiveis.add(processo);
+                    }
+                }
+
+                List<Processo> processosEscolhidos = new ArrayList<>();
+                Reuniao reuniao = new Reuniao(colegiado, processosEscolhidos);
+                System.out.println(reuniao.getColegiado());
+                model.addObject("colegiado", colegiado);
+                model.addObject("processosEscolhidos", processosEscolhidos);
+                model.addObject("processosDisponiveis", processosDisponiveis);
+                model.addObject("reuniao", reuniao);
+                model.setViewName("Coordenador/criar-reuniao");
             }
         }
-
-        List<Processo> processosEscolhidos = new ArrayList<Processo>();
-        Reuniao reuniao = new Reuniao(colegiado,processosEscolhidos);
-        System.out.println(reuniao.getColegiado());
-        model.addObject("colegiado", colegiado);
-        model.addObject("processosEscolhidos", processosEscolhidos);
-        model.addObject("processosDisponiveis", processosDisponiveis);
-        model.addObject("reuniao", reuniao);
-        model.setViewName("Coordenador/formReuniao");
         return model;
     }
 
@@ -143,41 +153,45 @@ public class ProcessoCoordenadorController {
             @Valid Reuniao reuniao,
             BindingResult validation,
             ModelAndView model,
-            @PathVariable("id")Long id,
+            @PathVariable("id") Long id,
             RedirectAttributes redirectAttributes
-    ){
-        if (validation.hasErrors()) {
-            List<Processo> processosDisponiveis = new ArrayList<Processo>();
-            Coordenador coordenador = coordenadorService.getCoordenadorPorId(id);
+    ) {
+        Coordenador coordenador = coordenadorService.getCoordenadorPorId(id);
+
+        // Verifica se o coordenador não é nulo
+        if (coordenador != null) {
             Colegiado colegiado = colegiadoService.getColegiadoPorCoordenador(coordenador);
 
-            for(Processo processo : colegiado.getProcessos()){
-                if(processo.getRelator()!= null){
-                    processosDisponiveis.add(processo);
-                }
-            }
+            // Verifica se o colegiado não é nulo
+            if (colegiado != null) {
+                if (validation.hasErrors()) {
+                    List<Processo> processosDisponiveis = new ArrayList<>();
+                    for (Processo processo : colegiado.getProcessos()) {
+                        if (processo.getRelator() != null) {
+                            processosDisponiveis.add(processo);
+                        }
+                    }
 
-            List<Processo> processosEscolhidos = new ArrayList<Processo>();
-            for(int i=0;i<4;i++){
-                processosEscolhidos.add(new Processo());
+                    List<Processo> processosEscolhidos = new ArrayList<>();
+                    model.addObject("colegiado", colegiado);
+                    model.addObject("processosEscolhidos", processosEscolhidos);
+                    model.addObject("processosDisponiveis", processosDisponiveis);
+                    model.addObject("reuniao", reuniao);
+                    model.setViewName("Coordenador/criar-reuniao");
+                    return model;
+                }
+
+                reuniao.setColegiado(colegiado);
+                reuniaoService.salvarReuniao(reuniao);
+                System.out.println(reuniao.getColegiado());
+                model.addObject("reunioes", colegiado.getReunioes());
+                model.setViewName("redirect:/coordenador/" + id + "/reunioes");
+                redirectAttributes.addFlashAttribute("mensagem", "Reunião Criada com Sucesso");
+                redirectAttributes.addFlashAttribute("reuniaoSalvos", true);
             }
-            model.addObject("colegiado", colegiado);
-            model.addObject("processosEscolhidos", processosEscolhidos);
-            model.addObject("processosDisponiveis", processosDisponiveis);
-            model.addObject("reuniao", reuniao);
-            model.setViewName("Coordenador/criar-reuniao");
-            return model;
         }
-        Coordenador coordenador = coordenadorService.getCoordenadorPorId(id);
-        Colegiado colegiado = colegiadoService.getColegiadoPorCoordenador(coordenador);
-        reuniao.setColegiado(colegiado);
-        reuniaoService.salvarReuniao(reuniao);
-        System.out.println(reuniao.getColegiado());
-        model.addObject("reunioes", colegiado.getReunioes());
-        model.setViewName("redirect:/coordenador/"+id+"/reunioes");
-        redirectAttributes.addFlashAttribute("mensagem", "Reunião Criada com Sucesso");
-        redirectAttributes.addFlashAttribute("reuniaoSalvos", true);
         return model;
     }
-    
+
+
 }

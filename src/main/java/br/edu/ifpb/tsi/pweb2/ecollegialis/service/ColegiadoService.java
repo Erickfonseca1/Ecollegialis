@@ -22,7 +22,13 @@ public class ColegiadoService {
     }
 
     public Colegiado getColegiadoPorCoordenador(Coordenador coordenador) {
-        return this.colegiadoRepository.findByCoordenador(coordenador).get(0);
+        List<Colegiado> colegiados = this.colegiadoRepository.findByCoordenador(coordenador);
+    
+        if (!colegiados.isEmpty()) {
+            return colegiados.get(0);
+        } else {
+            return null;
+        }
     }
 
 
