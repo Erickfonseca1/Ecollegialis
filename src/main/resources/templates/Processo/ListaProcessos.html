@@ -33,7 +33,7 @@
         <h1>Lista de Processos</h1>
         só exibir o botão para aluno
         <div class="btn-novo-processo" >
-            <a type="button" th:href="@{'/aluno/' + ${aluno.id} + '/processos/criar'}" class="btn" style="background-color: #236da3; color: #fff;">Adicionar Processo</a>
+            <a type="button" th:href="@{'/aluno/processos/criar'}" class="btn" style="background-color: #236da3; color: #fff;">Adicionar Processo</a>
         </div>
 
         <th:block th:if="${not #lists.isEmpty(processos)}">

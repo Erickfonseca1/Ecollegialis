@@ -40,8 +40,8 @@ public class ProcessoAlunoController {
     }
 
     @GetMapping("criar")
-    public ModelAndView criarProcesso(ModelAndView model,@PathVariable("id")Long id){
-        Aluno aluno = this.adminService.getAlunoPorId(id);
+    public ModelAndView criarProcesso(ModelAndView model, Principal principal){
+        Aluno aluno = alunoService.getAlunoPorMatricula(principal.getName());
         model.addObject("aluno", aluno);
         model.addObject("processo", new Processo(aluno,new Assunto()));
         model.addObject("assuntos", this.adminService.getAssuntos());
@@ -53,10 +53,10 @@ public class ProcessoAlunoController {
     public ModelAndView salvarProcessos(
         @Valid Processo processo,
         BindingResult validation, 
-        @PathVariable("id")Long id,
+        Principal principal,
         ModelAndView model
         ){
-        Aluno aluno = this.alunoService.getAlunoPorId(id);
+        Aluno aluno = this.alunoService.getAlunoPorMatricula(principal.getName());
         if (validation.hasErrors()) {
             model.addObject("aluno", aluno);
             model.addObject("processo", new Processo(aluno,new Assunto()));
@@ -67,8 +67,7 @@ public class ProcessoAlunoController {
         processoService.salvarProcesso(processo);
         model.addObject("aluno", aluno);
         model.addObject("processos", processoService.getProcessosPorAluno(aluno));
-        model.setViewName("redirect:/aluno/"+id+"/processos");
+        model.setViewName("redirect:/aluno/processos");
         return model;
     }
-
 }
