@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.*;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.observer.AlunoObserver;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.*;
 import jakarta.validation.Valid;
 
@@ -63,6 +64,7 @@ public class ProcessoAlunoController {
         }    
         processo.setAluno(aluno);    
         processoService.salvarProcesso(processo);
+        processo.registrarObservador(new AlunoObserver(aluno));
         model.addObject("aluno", aluno);
         model.addObject("processos", processoService.getProcessosPorAluno(aluno));
         model.setViewName("redirect:/aluno/"+id+"/processos");

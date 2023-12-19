@@ -1,10 +1,13 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.model;
 
 import java.util.List;
+import java.util.Observer;
+import java.util.ArrayList;
 import java.util.Date;
 
 import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusEnum;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.TipoDecisao;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.observer.AlunoObserver;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -76,6 +79,14 @@ public class Processo {
         this.aluno = aluno;
         this.assunto = assunto;
     }
+    private List<AlunoObserver> observers = new ArrayList<>();
+
+    public void registrarObservador(AlunoObserver observer) {
+        if (!observers.stream().anyMatch(o -> o instanceof AlunoObserver && o.equals(observer))) {
+            observers.add(observer);
+        }
+    }
+    
 
     @Override
     public String toString(){

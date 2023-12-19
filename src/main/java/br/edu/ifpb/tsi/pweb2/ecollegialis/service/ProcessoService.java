@@ -2,6 +2,7 @@ package br.edu.ifpb.tsi.pweb2.ecollegialis.service;
 
 import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusEnum;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.*;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.observer.AlunoObserver;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ProcessoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,10 @@ public class ProcessoService {
         processo.setStatus(StatusEnum.CRIADO);
         processo.setDataCriacao(new Date());
         processo.setNumero(""+new Date().getTime());
+        Aluno aluno = processo.getAluno();
+        AlunoObserver alunoObserver = new AlunoObserver(aluno);
+        processo.registrarObservador(alunoObserver);
+
         return this.processoRepository.save(processo);
     }
 
