@@ -46,7 +46,6 @@ public class ReuniaoService {
         List<Processo> processosSelecionados = new ArrayList<>();
         reuniao.setStatus(StatusReuniao.PROGRAMADA);
 
-        // Verifica se a lista de processos não é nula antes de iterar sobre ela
         if (reuniao.getProcessos() != null) {
             for (Processo processo : reuniao.getProcessos()){
                 if (processo != null) {
@@ -58,11 +57,16 @@ public class ReuniaoService {
             reuniao.setProcessos(processosSelecionados);
         }
 
-        // Verifica se o colegiado não é nulo antes de adicionar a reunião
         if (reuniao.getColegiado() != null) {
             reuniao.getColegiado().adicionarReuniao(reuniao);
         }
 
         return this.reuniaoRepository.save(reuniao);
+    }
+
+    public Reuniao encerrarReuniao(Reuniao reuniao, Long id){
+        Reuniao reuniaoAtualizada = this.reuniaoRepository.findById(id).orElse(null);
+        reuniaoAtualizada.setStatus(StatusReuniao.ENCERRADA);
+        return this.reuniaoRepository.save(reuniaoAtualizada);
     }
 }
