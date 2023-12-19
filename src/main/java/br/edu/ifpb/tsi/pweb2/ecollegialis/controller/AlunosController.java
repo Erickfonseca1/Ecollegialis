@@ -22,7 +22,7 @@ public class AlunosController {
     private AlunoService alunoService;
 
     @Autowired
-    private CursoService cursoService;
+    private AdminService cursoService;
 
     @GetMapping
     public ModelAndView listarAlunos(ModelAndView model){
