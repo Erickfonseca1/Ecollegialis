@@ -42,7 +42,7 @@
         <div class="container" >
             <h1 style="margin-bottom: 20px;margin-top: 20px;">Novo Assunto</h1>
             <!-- INICIO DO FORM -->
-            <form th:action="${acao} == 'salvar' ? @{/assuntos/criar} : @{/assuntos/{id}(id=${assunto.id})}" method="post" th:object="${assunto}">
+            <form th:action="@{/admin/assuntos/criar}" method="post" th:object="${assunto}">
 
                 <div class="modal-body">
                     <div class="row">
@@ -55,34 +55,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <a th:href="@{/assuntos}"  class="btn btn-secondary" style="margin-right: 10px;">Fechar</a>
-                    <button type="submit" class="btn" data-bs-dismiss="modal"
-                            style="padding-left: 25px; padding-right:25px">Salvar</button>
+                <div style="display: flex; justify-content: flex-end">
+                    <button type="submit" class="btn btn-salvar-curso" style="background-color: #236da3; color: #fff;">
+                      Salvar
+                    </button>
                 </div>
             </form>
         </div>
     </body>
-<!-- 
-<div class="container">
-    <h1 class="text-center">Formulário de Assunto</h1>
-    <form th:action="@{/assunto/salvar-assunto}" method="post">
-        <div class="form-group">
-            <label for="assunto">Assunto :</label>
-            <input type="text" class="form-control" id="assunto"  name="assunto" th:field="*{assunto.nome}" required>
-        </div>
-        <div class="btn-save">
-            <button type="submit" class="btn btn-primary">Salvar</button>
-        </div>
-    </form>
-
-    <div class="btn-minimal">
-        <a href="/assunto/lista-assuntos" class="btn btn-secondary">Lista de Assuntos</a>
-    </div>
-
-
-</div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script> -->
 </html>

@@ -26,7 +26,7 @@
 <div class="container">
     <h1>Lista de Assuntos</h1>
     <div class="btn-novo-assunto">
-        <a th:href="@{/assuntos/criar}" class="btn" style="background-color: #236da3; color: #fff;">Adicionar assunto</a>
+        <a th:href="@{assuntos/criar}" class="btn" style="background-color: #236da3; color: #fff;">Adicionar assunto</a>
     </div>
 
     <!-- Adição do ternário para verificar se há assuntos -->
@@ -45,7 +45,7 @@
                 <td th:text="${assunto.nome}"></td>
                 <td>
                     <div>
-                        <form th:action="@{assuntos/{id}/delete(id=${assunto.id})}">
+                        <form th:action="@{assuntos/deletar/{id}(id=${assunto.id})}">
                             <button type="submit" class="btn btn-danger">Deletar</button>
                         </form>
                     </div>

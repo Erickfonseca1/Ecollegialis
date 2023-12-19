@@ -27,16 +27,18 @@ public class CoordenadoresController {
     private ProfessorService professorService;
 
     @Autowired
-    private CursoService cursoService;
+    private AdminService adminService;
+
+    
+
+    @ModelAttribute("cursos")
+    public List<Curso> getCursos() {
+        return this.adminService.getCursos();
+    }
 
     @ModelAttribute("professores")
     public List<Professor> getProfessores(){
         return this.professorService.getProfessores();
-    }
-
-    @ModelAttribute("cursos")
-    public List<Curso> getCursos(){
-        return this.cursoService.getCursos();
     }
 
     @GetMapping

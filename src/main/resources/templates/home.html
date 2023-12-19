@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-br" xmlns:th="www.thymeleaf.org">
   <style>
     body {
       display: flex;
@@ -22,37 +22,11 @@
         <p class="lead">O sistema de colegiado para alunos, professores e coordenadores</p>
       </header>
 
-      <!-- Seção do Administrador -->
-      <section class="container mt-4" th:if="${professor == null && coordenador == null && aluno == null}">
-        <h2>Administrador</h2>
-        <p>
-          O administrador é responsável por gerenciar diversos itens do sistema, como cursos, professores e coordenadores, dentre outros atributos essenciais.
-        </p>
-      </section>
-
-      <!-- Seção de Alunos -->
-      <section class="container mt-4" th:if="${professor == null && coordenador == null && aluno != null}">
-        <h2>Alunos</h2>
-        <p th:text="${aluno.nome + ', no Ecollegialis você pode criar processo, além de acessar informações sobre os seus processos e participar de sessões do colegiado.'}"></p>
-      </section>
-
-      <!-- Seção de Professores -->
-      <section class="container mt-4" th:if="${aluno == null}">
-        <h2>Professores</h2>
-        <p>
-          Professores têm a capacidade de propor tópicos de discussão, compartilhar documentos importantes e colaborar com
-          outros membros do colegiado.
-        </p>
-      </section>
-
-      <!-- Seção de Coordenadores -->
-      <section class="container mt-4" th:if="${coordenador != null}">
-        <h2>Coordenadores</h2>
-        <p>
-          Coordenadores desempenham um papel central no Ecollegialis, gerenciando reuniões, definindo pautas e garantindo
-          uma comunicação eficaz entre todos os envolvidos.
-        </p>
-      </section>
+      <!-- Conteúdo -->
+      <section class="container mt-4">
+        <h2 th:text="${titulo} + ' - ' + ${session.nomeCompleto}"></h2>
+        <p th:text="${texto}"></p>
+      </section>     
     </div>
   </body>
 </html>

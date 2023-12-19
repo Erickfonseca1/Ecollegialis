@@ -38,6 +38,10 @@ public class Professor {
     @JoinColumn(name = "curso")
     protected Curso curso;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "username")
+    private User user;
+
     @OneToMany(mappedBy = "relator")
     protected List<Processo> listaDeProcessos;
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-br" xlmns:th="www.thymeleaf.org"> 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device=width, initial-scale=1.0">
@@ -49,17 +49,21 @@
             <div>
                 <h1>Ecollegialis</h1>
             </div>
-            <form action="">
+            <form th:action="@{/auth/login}" method="POST">
                 <div class="mb-3">
-                    <label for="matricula" class="form-label">Matricula</label>
-                    <input type="number" class="form-control" id="matricula" placeholder="matricula">
+                    <label for="username" class="form-label">Matricula</label>
+                    <input type="text" name="username" class="form-control" id="username" placeholder="matricula" required>
                 </div>
                 <div class="mb-3">
-                    <label for="senha" class="form-label">Senha</label>
-                    <input type="password" class="form-control" id="senha" placeholder="Senha" aria-describedby="help">
+                    <label for="password" class="form-label">Senha</label>
+                    <input type="password" name="password" class="form-control" id="password" placeholder="Senha" required>
                     <div id="help" class="form-text">
                         Sua senha deve possuir ao menos 6 caracteres, com letras e números.
                     </div>
+                </div>
+
+                <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                    Usuário ou senha inválidos!
                 </div>
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Entrar</button>

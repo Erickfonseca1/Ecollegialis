@@ -31,8 +31,8 @@ public class ColegiadosController {
     private ProfessorService professorService;
 
     @Autowired
-    private CursoService cursoService;
-    
+    private AdminService adminService;
+
     @ModelAttribute("professores")
     public List<Professor> getProfessores(){
         return this.professorService.getProfessores();
@@ -40,7 +40,7 @@ public class ColegiadosController {
 
     @ModelAttribute("cursos")
     public List<Curso> getCursos(){
-        return this.cursoService.getCursos();
+        return this.adminService.getCursos();
     }
 
     @ModelAttribute("coordenadores")

@@ -24,7 +24,7 @@
 <div class="container">
 <h1>Lista de professores</h1>
 <div class="btn-novo-professor">
-    <a th:href="@{/professores/criar}" class="btn" style="background-color: #236da3; color: #fff;">Adicionar professor</a>
+    <a th:href="@{professores/criar}" class="btn" style="background-color: #236da3; color: #fff;">Adicionar professor</a>
 </div>
 
 <th:block th:if="${not #lists.isEmpty(professores)}">
@@ -50,10 +50,10 @@
             <td th:text="${professor.fone}"></td>
             <td>
                 <div class="btn-group" style="max-width: 75px">
-                    <form th:action="@{professores/{id}(id=${professor.id})}">
+                    <form th:action="@{professores/editar/{id}(id=${professor.id})}">
                         <button type="submit" class="btn btn-primary">Editar</button>
                     </form>
-                    <form style="margin-right: 10px;" th:action="@{professores/{id}/delete(id=${professor.id})}">
+                    <form style="margin-right: 10px;" th:action="@{professores/deletar/{id}(id=${professor.id})}">
                         <button type="submit" class="btn btn-danger">Excluir</button>
                     </form>
                 </div>

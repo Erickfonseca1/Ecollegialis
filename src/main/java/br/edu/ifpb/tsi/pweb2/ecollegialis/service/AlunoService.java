@@ -22,6 +22,10 @@ public class AlunoService {
         return this.alunoRepository.findById(id).orElse(null);
     }
 
+    public Aluno getAlunoPorMatricula(String matricula){
+        return this.alunoRepository.findByMatricula(matricula);
+    }
+
     public List<Aluno> getAlunosDeUmCurso(Long id){
         List<Aluno> alunos = new ArrayList<>();
         for (Aluno aluno : this.alunoRepository.findAll()){

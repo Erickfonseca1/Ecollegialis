@@ -46,10 +46,10 @@
                 <p>Aqui você pode cadastrar um novo Professor</p>
             </div>
             <div class="btn-minimal btn-lista-professores">
-                <a th:href="@{/professores}" class="btn" style="background-color: #236da3; color: #fff;">Lista de professores</a>
+                <a href="/admin/professores" class="btn" style="background-color: #236da3; color: #fff;">Lista de professores</a>
             </div>
         </div>
-        <form th:action="${acao} == 'salvar' ? @{/professores/criar} : @{/professores/{id}(id=${professor.id})}" method="POST" th:object="${professor}" style="max-width: 500px;">
+        <form th:action="${acao} == 'salvar' ? @{/admin/professores/criar} : @{/admin/professores/{id}(id=${professor.id})}" method="POST" th:object="${professor}" style="max-width: 500px;">
             <div>
                 <input type="hidden" th:field="*{id}">
             </div>
