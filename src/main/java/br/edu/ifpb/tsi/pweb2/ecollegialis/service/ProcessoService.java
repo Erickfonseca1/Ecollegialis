@@ -18,6 +18,9 @@ public class ProcessoService {
     private ProcessoRepository processoRepository;
 
     @Autowired
+    private AlunoService alunoService;
+
+    @Autowired
     private VotoService votoService;
 
     public List<Processo> getProcessos(){
@@ -44,7 +47,9 @@ public class ProcessoService {
     }
 
     public Processo salvarProcesso(Processo processo){
+        processo.setId(null);
         processo.getAluno().adicionarProcesso(processo);
+        alunoService.salvarAluno(processo.getAluno());
         processo.setStatus(StatusEnum.CRIADO);
         processo.setDataCriacao(new Date());
         processo.setNumero(""+new Date().getTime());
