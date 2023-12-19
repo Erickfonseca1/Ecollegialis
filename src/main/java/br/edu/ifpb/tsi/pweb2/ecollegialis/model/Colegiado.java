@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.List;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
@@ -19,6 +20,7 @@ public class Colegiado {
     private Date dataFim;
 
     @NotBlank(message="Campo obrigatório!")
+    @Size(min=3, max=42 ,message="A senha deverá ter pelo menos 3 caracteres e no máximo 42")
     private String descricao;
 
     private String portaria;
@@ -63,8 +65,8 @@ public class Colegiado {
 
     @Override
     public String toString(){
-        return "Colegiado de " + this.curso;
-    } 
+        return "Colegiado do " + this.curso;
+    }
 
 
 }

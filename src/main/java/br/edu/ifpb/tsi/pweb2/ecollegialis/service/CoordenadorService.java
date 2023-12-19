@@ -24,6 +24,10 @@ public class CoordenadorService {
         return this.coordenadorRepository.save(coordenador);
     }
 
+    public Coordenador getCoordenadorPorCurso(Long id){
+        return this.coordenadorRepository.findByCursoId(id);
+    }
+
     public void deletarCoordenador(Long id){
         this.coordenadorRepository.deleteById(id);
     }

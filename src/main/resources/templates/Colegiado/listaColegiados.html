@@ -40,7 +40,7 @@
             <tbody>
             <tr th:each="colegiado:${colegiados}">
                 <td>[[${colegiado.id}]]</td>
-                <td th:text="${colegiado.curso}"></td>
+                <td th:text="${colegiado.curso.nome}"></td>
                 <td th:text="${colegiado.dataInicio}"></td>
                 <td>
                     <div class="btn-group">

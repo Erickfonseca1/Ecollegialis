@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<style>
+    body {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .container {
+        width: 100%;
+        margin: 0;
+        padding: 30px;
+
+        .btn-novo-professor {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+    }
+</style>  
+<head th:replace="~{layouts :: head('Lista de professores')}"></head>
+<body>
+<div th:replace="~{sidebar :: aside('Lista de professores')}"></div>
+    <div style="margin: 30px;">
+        <h1 style="margin-top: 20px">Listagem de Reuniões</h1>
+        <hr>
+        <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 20px;">
+            <div class="btn-group">
+                <div class="input-group mb-3" style="margin-right: 10px;">
+                    <label class="input-group-text" for="filterStatus">Status da Reunião</label>
+                    <select class="form-select" id="filterStatus">
+                        <option value="" selected>Todos</option>
+                        <option value="Encerrada">Encerrada</option>
+                        <option value="Programada">Programada</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <a th:href="@{reunioes/criar}" class="btn btn-primary justify-self-center">Criar Reunião</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Data</th>
+                    <th scope="col">Status da Reunião</th>
+                    <th scope="col">Quantidade de Processos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="reuniao:${reunioes}">
+                    <td th:text="${reuniao.id}?:'-'"></td>
+
+                    <td th:if="${reuniao.dataReuniao} == null">-</td>
+                    <td th:unless="${reuniao.dataReuniao} == null" th:text="${reuniao.dataReuniao}?:'-'"></td>
+                    
+                    <td th:text="${reuniao.status}?:'-'"></td>
+
+                    <td th:if="${reuniao.processos} == null">-</td>
+                    <td th:unless="${reuniao.processos} == null" th:text="${reuniao.processos.size()}"></td>
+                     
+                    <td>
+                        <a href="#" type="button" class="btn btn-primary">Consultar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script th:src="@{/js/bootstrap.buddle.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    
+    <!-- FILTRO POR STATUS-->
+    <script>
+     $(document).ready(function () {
+        $('#filterStatus').on('change', function () {
+            var status = $('#filterStatus').val().toLowerCase();
+            filterTable(status);
+        });
+
+        function filterTable(status) {
+            var rows = $('table tbody tr');
+            rows.show();
+
+            rows.filter(function () {
+                var text = $(this).text().toLowerCase();
+                return (status && text.indexOf(status) === -1);
+            }).hide();
+        }
+    });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista dos Processos</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .container {
+            width: 100%;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .header {
+            margin-top: 20px;
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        .mb-3 {
+            margin-bottom: 15px;
+        }
+
+        .btn-novo-processo {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .filter-and-sort {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<head th:replace="~{layouts :: head('Lista de Alunos')}"></head>
+<body>
+<div th:replace="~{sidebar :: aside('Lista dos Processos')}"></div>
+
+<div class="container">
+    <form th:action="@{/coordenador/{idCoordenador}/processos/{id}(idCoordenador=${coordenador.id},id=${processo.id})}"
+          method="post" th:object="${processo}">
+        <div class="header">
+            <h4>Atribuir Relator do Processo de Número: [[${processo.numero}]]</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <input type="hidden" th:field="*{id}">
+                <div class="mb-3">
+                    <label for="relator" class="form-label">Selecione um Relator:</label>
+                    <select required id="relator" class="form-control" th:field="*{relator}">
+                        <option th:each="professor:${professores}" th:value="${professor.id}"
+                                th:text="${professor.nome}"></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Atribuir Relator</button>
+        </div>
+    </form>
+</div>
+
+<!-- Aqui você pode adicionar mais conteúdo, como rodapé (footer) ou outros elementos HTML -->
+
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<style>
+    body {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .container {
+        width: 100%;
+        margin: 0;
+        padding: 30px;
+
+        .btn-novo-processo {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .filter-and-sort {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+    }
+</style>
+<head th:replace="~{layouts :: head('Lista dos Processos')}"></head>
+<body>
+    <div th:replace="~{sidebar :: aside('Lista dos Processos')}"></div>
+    <div style="margin: 30px;">
+        <h1 style="margin-top: 20px">Processos Atribuidos ao Professor</h1>
+        <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 20px;">
+            <div class="btn-group">
+                <div class="input-group mb-3" style="margin-right: 10px;">
+                    <label class="input-group-text" for="filterStatus">Status</label>
+                    <select class="form-select" id="filterStatus">
+                        <option value="" selected>Todos</option>
+                        <option value="Criado">Criado</option>
+                        <option value="Distribuido">Distribuído</option>
+                        <option value="Em pauta">Em pauta</option>
+                        <option value="Em julgamento">Em julgamento</option>
+                        <option value="Julgado">Julgado</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Aluno</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Assunto</th>
+                    <th scope="col">Data de Criação</th>
+                    <th scope="col">Relator</th>
+                    <th scope="col">Opções</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="processo:${processos}">
+                    <td th:text="${processo.numero}"></td>
+                    <td th:text="${processo.aluno.nome}"></td>
+                    <td th:text="${processo.status}"></td>
+                    <td th:text="${processo.assunto.nome}"></td>
+                    <td th:text="${processo.dataCriacao}"></td>
+                    <td th:if="${processo.relator} == null">-</td>
+                    <td th:unless="${processo.relator} == null" th:text="${processo.relator.nome}"></td>
+                    <td>
+                        <a type="button" th:href="@{'/professor/' + ${professor.id} + '/processos/' + ${processo.id}}" class="btn btn-primary" style="padding-left: 25px; padding-right:25px">Votar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script th:src="@{/js/bootstrap.buddle.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    
+    <script>
+        $(document).ready(function () {
+           $('#filterStatus, #filterAluno, #filterRelator').on('change', function () {
+               var status = $('#filterStatus').val().toLowerCase();
+               var aluno = $('#filterAluno').val().toLowerCase();
+               var relator = $('#filterRelator').val().toLowerCase();
+               filterTable(status, aluno, relator);
+           });
+   
+           function filterTable(status, aluno, relator) {
+               var rows = $('table tbody tr');
+               rows.show();
+   
+               rows.filter(function () {
+                   var text = $(this).text().toLowerCase();
+                   return (status && text.indexOf(status) === -1) || (aluno && text.indexOf(aluno) === -1) || (relator && text.indexOf(relator) === -1);
+               }).hide();
+           }
+       });
+    </script>
+
+</body>
+</html>

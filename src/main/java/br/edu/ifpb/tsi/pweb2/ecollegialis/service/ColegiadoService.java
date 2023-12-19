@@ -13,19 +13,33 @@ public class ColegiadoService {
     @Autowired
     private ColegiadoRepository colegiadoRepository;
 
-    public List<Colegiado> getColegiados(){
+    public List<Colegiado> getColegiados() {
         return this.colegiadoRepository.findAll();
     }
 
-    public Colegiado getColegiadoPorId(Long id){
+    public Colegiado getColegiadoPorId(Long id) {
         return this.colegiadoRepository.findById(id).orElse(null);
     }
 
-    public Colegiado getColegiadoPorCoordenador(Coordenador coordenador){
-        return this.colegiadoRepository.findByCoordenador(coordenador).get(0);
+    public Colegiado getColegiadoPorCoordenador(Coordenador coordenador) {
+        List<Colegiado> colegiados = this.colegiadoRepository.findByCoordenador(coordenador);
+    
+        if (!colegiados.isEmpty()) {
+            return colegiados.get(0);
+        } else {
+            return null;
+        }
     }
 
+
     public Colegiado salvarColegiado(Colegiado colegiado){
+        Coordenador coordenador = colegiado.getCoordenador();
+        if (coordenador != null) {
+            Professor professorCoordenador = coordenador.getProfessor();
+            if (professorCoordenador != null) {
+                professorCoordenador.adicionarColegiado(colegiado);
+            }
+        }
         for(Professor professor : colegiado.getMembros() ){
             professor.adicionarColegiado(colegiado);
         }
@@ -33,7 +47,15 @@ public class ColegiadoService {
         return this.colegiadoRepository.save(colegiado);
     }
 
-    public void deletarColegiado(Long id){
+    public void deletarColegiado(Long id) {
         this.colegiadoRepository.deleteById(id);
+    }
+
+    public void atribuirProcessoAoColegiado(Processo processo, Long idProcesso) {
+        Colegiado colegiado = this.getColegiadoPorId(idProcesso);
+        if (colegiado != null) {
+            colegiado.adicionarProcesso(processo);
+            this.colegiadoRepository.save(colegiado);
+        }
     }
 }

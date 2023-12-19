@@ -26,7 +26,7 @@ public class Processo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
+    private String parecerRelator;
     private String numero;
     private Date dataCriacao;
     private Date dataDistribuicao;
@@ -75,6 +75,11 @@ public class Processo {
     public Processo(Aluno aluno,Assunto assunto){
         this.aluno = aluno;
         this.assunto = assunto;
+    }
+
+    @Override
+    public String toString(){
+        return ""+this.numero+","+this.aluno;
     }
 
 }

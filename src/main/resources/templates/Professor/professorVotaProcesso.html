@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<style>
+    body {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .container {
+        width: 100%;
+        margin: 0;
+        padding: 30px;
+
+        .btn-novo-processo {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .filter-and-sort {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+    }
+</style>
+<head th:replace="~{layouts :: head('Lista dos Processos')}"></head>
+<body>
+<div th:replace="~{sidebar :: aside('Lista dos Processos')}"></div>
+    <main>
+        <div style="margin: 30px;">
+            <h1 style="margin-top: 20px">Processo a ser votado</h1>
+            <hr>
+        </div>
+        <form th:action="@{/professor/{id}/processos/{idProcesso}(id=${professor.id},idProcesso=${processo.id})}" class="container" method="post" th:object="${processo}">
+        <div class="row">
+                <div class="mb-3">
+                    <label for="data" class="form-label">Número do Processo:</label>
+                    <input disabled class="form-control" type="number" id="data" th:value="${processo.numero}"></input>
+                </div>
+                <div class="mb-3">
+                    <label for="data" class="form-label">Data da Criação:</label>
+                    <input disabled class="form-control" type="text" id="data" th:value="${processo.dataCriacao}"></input>
+                </div>
+                <div class="mb-3">
+                    <label for="data" class="form-label">Data da Distribuição:</label>
+                    <input disabled class="form-control" type="text" id="data" th:value="${processo.dataDistribuicao}"></input>
+                </div>
+                <div class="mb-3">
+                    <label for="data" class="form-label">Data do Parecer:</label>
+                    <input disabled class="form-control" type="text" id="data" th:value="${processo.dataParecer}"></input>
+                </div>
+                <div class="mb-3">
+                    <label for="data" class="form-label">Relator:</label>
+                    <input disabled class="form-control" type="text" id="data" th:value="${processo.relator.nome}"></input>
+                </div>
+                <div class="mb-3">
+                    <label for="data" class="form-label">Aluno:</label>
+                    <input disabled class="form-control" type="text" id="data" th:value="${processo.aluno.nome}"></input>
+                </div>
+                <div class="mb-3">
+                    <label for="data" class="form-label">Assunto:</label>
+                    <input disabled class="form-control" type="text" id="data" th:value="${processo.assunto.nome}"></input>
+                </div>
+                <div class="mb-3">
+                    <label for="data" class="form-label">Motivo do Requerimento:</label>
+                    <textarea disabled class="form-control" type="text" id="data" th:text="${processo.textoRequerimento}" rows="4"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="data" class="form-label">Decisão do Processo:</label>
+                    <select th:if="${processo.tipoDecisao} == null" class="form-select" id="processo" th:field="*{tipoDecisao}">
+                        <option th:value="${Deferido}" th:text="DEFERIDO"></option>
+                        <option th:value="${Indeferido}" th:text="INDEFERIDO"></option>
+                    </select>
+                    <input th:unless="${processo.tipoDecisao} == null" disabled class="form-control" type="text" id="data" th:value="${processo.tipoDecisao}"></input>
+                </div>
+                <div class="mb-3">
+                    <label for="data" class="form-label">Justificativa do Relator:</label>
+                    <textarea th:if="${processo.parecerRelator} == null" class="form-control" type="text" id="data" th:field="*{parecerRelator}" rows="4"></textarea>
+                    <textarea th:unless="${processo.parecerRelator} == null" disabled class="form-control" type="text" id="data" th:text="${processo.parecerRelator}" rows="4"></textarea>
+                </div>
+                <div th:if="${processo.tipoDecisao} == null"  class="mb-3">
+                    <button type="submit" class="btn btn-primary">Votar</button>
+                </div>
+                <div th:unless="${processo.tipoDecisao} == null"  class="mb-3">
+                    <a th:href="@{/professor/{id}/processos(id=${professor.id})}" class="btn btn-secondary">Voltar</a>
+                </div>
+            </div>
+        </form>   
+    </main>
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>

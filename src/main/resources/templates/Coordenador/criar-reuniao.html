@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<style>
+    body {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .container {
+        width: 100%;
+        margin: 0;
+        padding: 30px;
+
+        .btn-novo-processo {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .filter-and-sort {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+    }
+</style>
+<head th:replace="~{layouts :: head('Lista dos Processos')}"></head>
+<body>
+<div th:replace="~{sidebar :: aside('Lista dos Processos')}"></div>
+<main>
+    <div style="margin: 30px;">
+        <h1 style="margin-top: 20px">Criar Reuniao</h1>
+        <hr>
+    </div>
+    <!--FORM DE PROCESSO-->
+    <form class="container" th:action="@{'/coordenador/' + ${coordenador.id} + '/reunioes/criar'}" method="post" th:object="${reuniao}">
+        <div>
+            <div class="row">
+                <input type="hidden" th:field="*{id}"><br>
+                <div class="mb-3">
+                    <label for="data" class="form-label">Data da Reunião:</label>
+                    <input class="form-control" type="date" id="data" th:field="*{dataReuniao}" th:format="'yyyy-MM-dd'"></input>
+                    <p th:if="${#fields.hasErrors('dataReuniao')}" th:errorclass="error" th:errors="*{dataReuniao}" class="alert alert-danger"></p>
+                </div>
+                <div class="mb-3">
+                    <label for="colegiado" class="form-label">Colegiado:</label>
+                    <input class="form-control" disabled type="text" id="colegiado" th:value="${colegiado.descricao}"></input>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h3>Selecione a Pauta:</h3>
+            <p>Obs.: Até 5 processos.</p>
+            <div class="col-md-6" th:each="processo, itemStat : ${processosEscolhidos}">
+                <div class="mb-3">
+                    <label for="processo" class="form-label">Processo [[${itemStat.index+1}]]: </label>
+                    <select class="form-select" id="processo" th:field="*{processos[__${itemStat.index}__]}">
+                        <option th:value="null">-</option>
+                        <option th:each="processo: ${processosDisponiveis}" th:value="${processo.id}" th:text="${processo.numero}+','+${processo.aluno.nome}"></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Criar</button>
+    </form>
+</main>
+<script th:src="@{/js/bootstrap.buddle.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+</body>
+</html>
