@@ -68,10 +68,10 @@ public class ColegiadosController {
 
     @PostMapping("criar")
     public ModelAndView salvarColegiados(
-        @Valid Colegiado colegiado,
-        BindingResult validation,
-        ModelAndView model
-        ){
+            @Valid Colegiado colegiado,
+            BindingResult validation,
+            ModelAndView model
+    ){
         if (validation.hasErrors()) {
             List<Professor> membros = new ArrayList<Professor>();
             model.addObject("membros", membros);

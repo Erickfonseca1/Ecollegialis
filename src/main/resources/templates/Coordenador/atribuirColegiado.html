@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,7 +47,7 @@
 <body>
 <div th:replace="~{sidebar :: aside('Lista dos Processos')}"></div>
 <div class="container">
-    <form th:action="@{/coordenador/{id}/processos/{idProcesso}/colegiado/criar(idProcesso=${processo.id}, id=${coordenador.id)}"
+    <form th:action="@{/coordenador/{id}/processos/{idProcesso}/colegiado/criar(idProcesso=${processo.id}, id=${coordenador.id})}"
           method="post" th:object="${processo}">
         <div class="header">
             <h4>Atribuir Processo ao Colegiado</h4>

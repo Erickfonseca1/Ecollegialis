@@ -64,6 +64,11 @@ public class ProcessoCoordenadorController {
         return this.alunoService.getAlunosComProcessos();
     }
 
+    @ModelAttribute("processos")
+    public List<Processo> getProcessos() {
+        return this.processoService.getProcessos();
+    }
+
     @GetMapping("processos")
     public ModelAndView listarProcessosCoordenador(ModelAndView model) {
         model.addObject("professores", professorService.getProfessores());
