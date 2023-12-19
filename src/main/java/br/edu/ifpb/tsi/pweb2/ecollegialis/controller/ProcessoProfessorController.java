@@ -4,11 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.TipoDecisao;
@@ -70,12 +66,29 @@ public class ProcessoProfessorController {
 
     //----- REUNIÕES -----
     @GetMapping("/reunioes")
-    public ModelAndView listarReunioesProfessor(ModelAndView model,@PathVariable("id") Long id){
+    public ModelAndView listarReunioesProfessor(
+            ModelAndView model,
+            @PathVariable("id") Long id,
+            @RequestParam(name = "status", required = false) String status) {
+
         Professor professor = professorService.getProfessorPorId(id);
+
         if (professor.getListaColegiados() != null && !professor.getListaColegiados().isEmpty()) {
             Colegiado colegiado = professor.getListaColegiados().get(0);
-            List<Reuniao> reunioes = colegiado.getReunioes();
-            model.addObject("reuniao", reunioes);
+
+            if (colegiado != null) {
+                List<Reuniao> reunioes;
+
+                if ("finalizada".equalsIgnoreCase(status)) {
+                    reunioes = reuniaoService.getReunioesFinalizadasDoColegiado(colegiado);
+                } else if ("agendada".equalsIgnoreCase(status)) {
+                    reunioes = reuniaoService.getReunioesAgendadasDoColegiado(colegiado);
+                } else {
+                    reunioes = reuniaoService.getReunioes();
+                }
+
+                model.addObject("reunioes", reunioes);
+            }
         }
         model.setViewName("Professor/painel-reunioes");
         return model;

@@ -70,6 +70,13 @@ public class ProcessoService {
         return this.processoRepository.save(processoAtualizado);
     }
 
+    public Processo atribuirProcessoColegiado(Processo processo,Long id){
+        Processo processoAtualizado = this.processoRepository.findById(id).orElse(new Processo());
+        processoAtualizado.setColegiado(processo.getColegiado());
+        processoAtualizado.setDataDistribuicao(new Date());
+        return this.processoRepository.save(processoAtualizado);
+    }
+
     public Processo julgarProcesso(Processo processo, Long id){
         Processo processoAtualizado = this.processoRepository.findById(id).orElse(new Processo());
         List<Voto> novaListaVotos = new ArrayList<Voto>();

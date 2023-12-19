@@ -2,6 +2,7 @@ package br.edu.ifpb.tsi.pweb2.ecollegialis.service;
 
 import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusEnum;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusReuniao;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Colegiado;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Processo;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.Reuniao;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.repository.ReuniaoRepository;
@@ -68,5 +69,13 @@ public class ReuniaoService {
         Reuniao reuniaoAtualizada = this.reuniaoRepository.findById(id).orElse(null);
         reuniaoAtualizada.setStatus(StatusReuniao.ENCERRADA);
         return this.reuniaoRepository.save(reuniaoAtualizada);
+    }
+
+    public List<Reuniao> getReunioesAgendadasDoColegiado(Colegiado colegiado) {
+        return reuniaoRepository.findByColegiadoAndStatus(colegiado, StatusReuniao.PROGRAMADA);
+    }
+
+    public List<Reuniao> getReunioesFinalizadasDoColegiado(Colegiado colegiado) {
+        return reuniaoRepository.findByColegiadoAndStatus(colegiado, StatusReuniao.ENCERRADA);
     }
 }
