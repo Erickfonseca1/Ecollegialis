@@ -67,7 +67,7 @@
                     <td th:if="${processo.relator} == null">-</td>
                     <td th:unless="${processo.relator} == null" th:text="${processo.relator.nome}"></td>
                     <td>
-                        <a type="button" th:href="@{'/professor/' + ${professor.id} + '/processos/' + ${processo.id}}" class="btn btn-primary" style="padding-left: 25px; padding-right:25px">Votar</a>
+                        <a type="button" th:href="@'/professor/processos/ + ${processo.id}" class="btn btn-primary" style="padding-left: 25px; padding-right:25px">Votar</a>
                     </td>
                 </tr>
             </tbody>

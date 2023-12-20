@@ -58,7 +58,7 @@
         </div>
         <div>
             <h3>Processo:</h3>
-            <select class="form-select" id="processos" th:field="*{processos}">
+            <select class="form-select" id="processos" th:field="*{processos}" multiple>
                 <option th:each="processo : ${processosDisponiveis}" th:value="${processo.id}" th:text="${processo.numero}"></option>
             </select>
         </div>

@@ -23,7 +23,7 @@ public class Reuniao {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dataReuniao;
 
-    @Enumerated(EnumType.STRING)
+    @Column
     private StatusReuniao status;
 
     @OneToMany(mappedBy = "reuniao")

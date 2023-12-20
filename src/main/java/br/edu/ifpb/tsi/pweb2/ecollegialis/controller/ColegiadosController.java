@@ -219,7 +219,7 @@ public class ColegiadosController {
             reuniaoService.salvarReuniao(reuniao);
 
             model.addObject("reunioes", colegiado.getReunioes());
-            model.setViewName("redirect:/colegiado/reunioes");
+            model.setViewName("redirect:/colegiados/reunioes");
             redirectAttributes.addFlashAttribute("mensagem", "Reunião Criada com Sucesso");
         }
 
@@ -227,7 +227,7 @@ public class ColegiadosController {
     }
 
     @GetMapping("reunioes/{idReuniao}")
-    public ModelAndView listarReuniao(ModelAndView model, @PathVariable("id") Long id, @PathVariable("idReuniao") Long idReuniao) {
+    public ModelAndView listarReuniao(ModelAndView model, @PathVariable("idReuniao") Long idReuniao) {
         model.addObject("reuniao", this.reuniaoService.getReuniaoPorId(idReuniao));
         model.setViewName("Coordenador/reuniao");
         return model;

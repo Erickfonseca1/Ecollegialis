@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
 <html lang="en" xmlns:th="www.thymeleaf.org">
+<head th:replace="~{layouts :: head('Reunião')}"></head>
 <style>
     body {
         display: flex;
@@ -11,23 +11,45 @@
         width: 100%;
         margin: 0;
         padding: 30px;
-
-        .btn-novo-professor {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 20px;
-        }
     }
-</style>  
-<head th:replace="~{layouts :: head('Lista de professores')}"></head>
+
+    h1 {
+        margin-top: 20px;
+    }
+
+    hr {
+        margin-bottom: 30px;
+    }
+
+    form {
+        margin: 30px;
+    }
+
+    .mb-3 {
+        margin-bottom: 20px;
+    }
+
+    .card {
+        margin-bottom: 20px;
+        min-width: 500px;
+    }
+
+    h3 {
+        margin-top: 20px;
+    }
+
+    h4 {
+        margin: 0;
+    }
+</style>
 <body>
-<div th:replace="~{sidebar :: aside('Lista de professores')}"></div>
+<div th:replace="~{sidebar :: aside('Reunião')}"></div>
 <main>
-    <div style="margin: 30px;">
-        <h1 style="margin-top: 20px">Reuniao</h1>
+    <div class="container">
+        <h1>Reunião</h1>
         <hr>
     </div>
-    <!--FORM DE PROCESSO-->
+    <!-- FORM DE PROCESSO -->
     <form class="container" th:object="${reuniao}">
         <div class="row">
             <div class="mb-3">
@@ -41,45 +63,35 @@
         </div>
         <div>
             <h3>Pauta:</h3>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Aluno</th>
-                        <th scope="col">Estado</th>
-                        <th scope="col">Assunto</th>
-                        <th scope="col">Relator</th>
-                        <th scope="col">Decisão</th>
-                        <th scope="col">Relator Votou?</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="processo:${reuniao.processos}">
-                        <td th:text="${processo.numero}?:'-'"></td>
-    
-                        <td th:if="${processo.aluno} == null">-</td>
-                        <td th:unless="${processo.aluno} == null" th:text="${processo.aluno.nome}?:'-'"></td>
-                        
-                        <td th:text="${processo.status}?:'-'"></td>
-    
-                        <td th:if="${processo.assunto} == null">-</td>
-                        <td th:unless="${processo.assunto} == null" th:text="${processo.assunto.nome}"></td>
-    
-                        <td th:if="${processo.relator} == null">-</td>
-                        <td th:unless="${processo.relator} == null" th:text="${processo.relator.nome}"></td>
-                        <td th:if="${processo.tipoDecisao} == null" >-</td>
-                        <td th:unless="${processo.tipoDecisao} == null" th:text="${processo.tipoDecisao}"></td>
-                        <td th:if="${processo.tipoDecisao} == null">
-                            <h4>Não votou</h4>
-                        </td>
-                        <td th:unless="${processo.tipoDecisao} == null">
-                            <h4>Votou!</h4>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="row">
+                <div th:each="processo:${reuniao.processos}" class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${processo.numero}?:'-'"></h5>
+                            <p class="card-text">
+                                <strong>Aluno:</strong> <span th:if="${processo.aluno} == null">-</span>
+                                <span th:unless="${processo.aluno} == null" th:text="${processo.aluno.nome}?:'-'"></span><br>
+                                <strong>Estado:</strong> <span th:text="${processo.status}?:'-'"></span><br>
+                                <strong>Assunto:</strong> <span th:if="${processo.assunto} == null">-</span>
+                                <span th:unless="${processo.assunto} == null" th:text="${processo.assunto.nome}"></span><br>
+                                <strong>Relator:</strong> <span th:if="${processo.relator} == null">-</span>
+                                <span th:unless="${processo.relator} == null" th:text="${processo.relator.nome}"></span><br>
+                                <strong>Decisão:</strong> <span th:if="${processo.tipoDecisao} == null">-</span>
+                                <span th:unless="${processo.tipoDecisao} == null" th:text="${processo.tipoDecisao}"></span><br>
+                                <strong>Relator Votou?</strong>
+                                <span th:if="${processo.tipoDecisao} == null">
+                                    <h4>Não votou</h4>
+                                </span>
+                                <span th:unless="${processo.tipoDecisao} == null">
+                                    <h4>Votou!</h4>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </form>   
+    </form>
 </main>
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/js/popper.min.js}"></script>

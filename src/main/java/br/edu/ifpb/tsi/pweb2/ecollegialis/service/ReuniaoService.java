@@ -45,7 +45,6 @@ public class ReuniaoService {
 
     public Reuniao salvarReuniao(Reuniao reuniao){
         List<Processo> processosSelecionados = new ArrayList<>();
-        reuniao.setStatus(StatusReuniao.PROGRAMADA);
 
         if (reuniao.getProcessos() != null) {
             for (Processo processo : reuniao.getProcessos()){
