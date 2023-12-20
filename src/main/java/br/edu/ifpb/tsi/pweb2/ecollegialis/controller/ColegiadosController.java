@@ -232,19 +232,24 @@ public class ColegiadosController {
         return model;
     }
 
-    @PostMapping("{idReuniao}/iniciar")
+    @PostMapping("reunioes/iniciar/{idReuniao}")
     public ModelAndView iniciarReuniao(Reuniao reuniao, ModelAndView model, Principal principal, @PathVariable("idReuniao") Long idReuniao, RedirectAttributes redirectAttributes) {
         try {
             this.reuniaoService.iniciarReuniao(reuniao, idReuniao);
             model.addObject("reuniao", this.reuniaoService.getReuniaoPorId(idReuniao));
-            model.setViewName("redirect:/coordenador/reunioes/" + idReuniao);
+
+            boolean reuniaoIniciou = true;
+
+            model.addObject("reuniaoIniciou", reuniaoIniciou);
+
+            model.setViewName("redirect:/colegiados/reunioes/" + idReuniao);
             return model;
         } catch (Exception e) {
             Professor professor = this.professorService.getProfessorPorMatricula(principal.getName());
             Coordenador coordenador = coordenadorService.getCoordenadorPorProfessor(professor.getId());
             Colegiado colegiado = colegiadoService.getColegiadoPorCoordenador(coordenador);
             model.addObject("reunioes", colegiado.getReunioes());
-            model.setViewName("redirect:/coordenador/reunioes");
+            model.setViewName("redirect:/colegiados/reunioes");
             return model;
         }
     }

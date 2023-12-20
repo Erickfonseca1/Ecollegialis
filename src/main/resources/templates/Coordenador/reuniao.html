@@ -49,9 +49,9 @@
         <div>
             <h1>Reunião</h1>
         </div>
-        <div class="mb-3" th:object="${reuniao}">
-            <form style="margin-right: 10px;" th:action="@{/colegiados/reunioes/{idReuniao}/iniciar(idReuniao=${reuniao.id})}" method="post">
-                <button type="submit" class="btn btn-primary">Ver reuniões</button>
+        <div class="mb-3" th:object="${reuniao}" th:if="${reuniao.status == 'PROGRAMADA'} ">
+            <form style="margin-right: 10px;" th:action="@{/iniciar/{idReuniao}(idReuniao=${reuniao.id})}" method="post">
+                <button type="submit" class="btn btn-primary">Iniciar reunião</button>
             </form>
         </div>
     </div>
