@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -233,18 +232,19 @@ public class ColegiadosController {
         return model;
     }
 
-    @PostMapping("reunioes/{idReuniao}/iniciar")
-    public ModelAndView iniciarReuniao(Reuniao reuniao, ModelAndView model, @PathVariable("id") Long id, @PathVariable("idReuniao") Long idReuniao, RedirectAttributes redirectAttributes) {
+    @PostMapping("{idReuniao}/iniciar")
+    public ModelAndView iniciarReuniao(Reuniao reuniao, ModelAndView model, Principal principal, @PathVariable("idReuniao") Long idReuniao, RedirectAttributes redirectAttributes) {
         try {
             this.reuniaoService.iniciarReuniao(reuniao, idReuniao);
             model.addObject("reuniao", this.reuniaoService.getReuniaoPorId(idReuniao));
-            model.setViewName("redirect:/coordenador/" + id + "/reunioes/" + idReuniao + "/painel");
+            model.setViewName("redirect:/coordenador/reunioes/" + idReuniao);
             return model;
         } catch (Exception e) {
-            Coordenador coordenador = coordenadorService.getCoordenadorPorId(id);
+            Professor professor = this.professorService.getProfessorPorMatricula(principal.getName());
+            Coordenador coordenador = coordenadorService.getCoordenadorPorProfessor(professor.getId());
             Colegiado colegiado = colegiadoService.getColegiadoPorCoordenador(coordenador);
             model.addObject("reunioes", colegiado.getReunioes());
-            model.setViewName("redirect:/coordenador/" + id + "/reunioes");
+            model.setViewName("redirect:/coordenador/reunioes");
             return model;
         }
     }
