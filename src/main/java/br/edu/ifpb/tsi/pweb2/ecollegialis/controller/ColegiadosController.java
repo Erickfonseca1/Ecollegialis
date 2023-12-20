@@ -237,11 +237,8 @@ public class ColegiadosController {
         try {
             this.reuniaoService.iniciarReuniao(reuniao, idReuniao);
             model.addObject("reuniao", this.reuniaoService.getReuniaoPorId(idReuniao));
-
             boolean reuniaoIniciou = true;
-
             model.addObject("reuniaoIniciou", reuniaoIniciou);
-
             model.setViewName("redirect:/colegiados/reunioes/" + idReuniao);
             return model;
         } catch (Exception e) {
@@ -254,40 +251,26 @@ public class ColegiadosController {
         }
     }
 
-    @GetMapping("reunioes/{idReuniao}/painel")
-    public ModelAndView listarReuniaoNaTela(ModelAndView model, @PathVariable("id") Long id, @PathVariable("idReuniao") Long idReuniao) {
-        Reuniao reuniao = this.reuniaoService.getReuniaoPorId(idReuniao);
-        model.addObject("processo", reuniao.getProcessos().get(0));
-        model.addObject("reuniao", reuniao);
-        model.setViewName("Coordenador/painel-reuniao");
-        return model;
-    }
-
-    @GetMapping("reunioes/{idReuniao}/painel/{idProcesso}")
+    @GetMapping("reunioes/{idReuniao}/{idProcesso}")
     public ModelAndView listarReuniaoNaTela(
             ModelAndView model,
-            @PathVariable("id") Long id,
+            Principal principal,
             @PathVariable("idReuniao") Long idReuniao,
             @PathVariable("idProcesso") Long idProcesso) {
-        Reuniao reuniao = this.reuniaoService.getReuniaoPorId(idReuniao);
-        Processo processo = this.processoService.getProcessoPorId(idProcesso);
+        Reuniao reuniao = reuniaoService.getReuniaoPorId(idReuniao);
+        Processo processo = processoService.getProcessoPorId(idProcesso);
         Colegiado colegiado = reuniao.getColegiado();
-        List<Voto> listaVotos = new ArrayList<Voto>();
+        List<Voto> listaVotos = new ArrayList<>();
         for (Professor membro : colegiado.getMembros()) {
             Voto voto = new Voto();
-            if (membro == processo.getRelator()) {
-                Coordenador coordenador = colegiado.getCoordenador();
-                Professor professor = coordenador.getProfessor();
-                voto.setProfessor(professor);
-            } else {
-                Professor professor = membro;
-                voto.setProfessor(professor);
-            }
+            Professor professor = (membro == processo.getRelator()) ? colegiado.getCoordenador().getProfessor()
+                    : membro;
+
+            voto.setProfessor(professor);
             voto.setProcesso(processo);
             listaVotos.add(voto);
         }
         processo.setListaDeVotos(listaVotos);
-        System.out.println(processo.getListaDeVotos());
         model.addObject("processo", processo);
         model.addObject("listaVotos", listaVotos);
         model.addObject("reuniao", reuniao);
@@ -302,7 +285,6 @@ public class ColegiadosController {
             @PathVariable("id") Long id,
             @PathVariable("idReuniao") Long idReuniao,
             @PathVariable("idProcesso") Long idProcesso) {
-        System.out.println(processo.getListaDeVotos());
         processoService.julgarProcesso(processo, idProcesso);
         Processo novoProcesso = processoService.getProcessoPorId(idProcesso);
         Reuniao reuniao = this.reuniaoService.getReuniaoPorId(idReuniao);
