@@ -25,13 +25,15 @@
         margin: 30px;
     }
 
-    .mb-3 {
-        margin-bottom: 20px;
+    .cards {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
     }
 
     .card {
         margin-bottom: 20px;
-        min-width: 500px;
+        min-width: 300px;
     }
 
     h3 {
@@ -56,7 +58,7 @@
         </div>
     </div>
     <!-- FORM DE PROCESSO -->
-    <form class="container" th:object="${reuniao}">
+    <div class="container" th:object="${reuniao}">
         <div class="row">
 
             <div class="mb-3">
@@ -71,11 +73,11 @@
         <div>
             <h3>Pauta:</h3>
             <div class="row">
-                <div th:each="processo:${reuniao.processos}" class="col-md-4">
+                <div th:each="processo:${reuniao.processos}" class="col-md-4 cards">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title" th:text="${processo.numero}?:'-'"></h5>
-                            <p class="card-text">
+                            <div class="card-text">
                                 <strong>Aluno:</strong> <span th:if="${processo.aluno} == null">-</span>
                                 <span th:unless="${processo.aluno} == null" th:text="${processo.aluno.nome}?:'-'"></span><br>
                                 <strong>Estado:</strong> <span th:text="${processo.status}?:'-'"></span><br>
@@ -83,25 +85,42 @@
                                 <span th:unless="${processo.assunto} == null" th:text="${processo.assunto.nome}"></span><br>
                                 <strong>Relator:</strong> <span th:if="${processo.relator} == null">-</span>
                                 <span th:unless="${processo.relator} == null" th:text="${processo.relator.nome}"></span><br>
-                                <strong>Decisão:</strong> <span th:if="${processo.tipoDecisao} == null">-</span>
+                                <strong>Decisão Relator:</strong> <span th:if="${processo.tipoDecisao} == null">-</span>
                                 <span th:unless="${processo.tipoDecisao} == null" th:text="${processo.tipoDecisao}"></span><br>
-                                <strong>Relator Votou?</strong>
-                                <span th:if="${processo.tipoDecisao} == null">
-                                    <h4>Não votou</h4>
-                                </span>
-                                <span th:unless="${processo.tipoDecisao} == null">
-                                    <h4>Votou!</h4>
-                                </span>
-                            </p>
+                                <hr>
+                                <strong>Votação</strong>
+                                <div th:object="${professor}">
+                                    <div th:if="${processo.tipoDecisao == null}" class="mt-3">O relator ainda não votou nesse processo</div>
+                                    <div th:if="${processo.tipoDecisao != null and professor.id == processo.relator.id}">
+                                        não é possível votar no seu próprio processo
+                                    </div>
+
+                                    <div th:if="${processo.tipoDecisao != null and professor.id != processo.relator.id}">
+                                        <div class="form-check mb-3 mt-3">
+                                            <input class="form-check-input" type="radio" th:name="${processo.id}" th:id="${processo.id}">
+                                            <label class="form-check-label" th:for="${processo.id}">
+                                            Favoravel ao Relator
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" th:name="${processo.id}" th:id="${processo.id}">
+                                            <label class="form-check-label"  th:for="${processo.id}">
+                                            Contrário ao Relator
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
+                <form method="post">
+                    <button type="submit" class="btn btn-primary">Votar</button>
+                </form>
             </div>
         </div>
-    </form>
+    </div>
 </main>
-<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/js/popper.min.js}"></script>
-<script th:src="@{/js/bootstrap.min.js}"></script>
 </body>
 </html>

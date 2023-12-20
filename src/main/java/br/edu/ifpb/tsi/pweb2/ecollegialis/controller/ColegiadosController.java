@@ -146,7 +146,6 @@ public class ColegiadosController {
 
     
     @GetMapping("reunioes")
-    @PreAuthorize("hasRole('COORDENADOR')")
     public ModelAndView listarReunioes(ModelAndView model, Principal principal) {
         Professor professor = this.professorService.getProfessorPorMatricula(principal.getName());
         Coordenador coordenador = coordenadorService.getCoordenadorPorProfessor(professor.getId());
@@ -155,6 +154,22 @@ public class ColegiadosController {
             if (colegiado != null) {
                 model.addObject("reunioes", colegiado.getReunioes());
             }
+        }
+
+        if (professor != null) {
+            // achar as reuniões de colegiado que o professor participa
+            Colegiado colegiado = professor.getListaColegiados().get(0);
+            List<Reuniao> reunioes = colegiado.getReunioes();
+
+            //para ver de qual reunião o professor é membro
+            List<Reuniao> reunioesProfessor = new ArrayList<>();
+            for (Reuniao reuniao : reunioes) {
+                if (reuniao.getColegiado().getMembros().contains(professor)) {
+                    reunioesProfessor.add(reuniao);
+                }
+            } 
+
+            model.addObject("reunioes", reunioesProfessor);
         }
         model.setViewName("Coordenador/reunioes");
         return model;
@@ -187,6 +202,7 @@ public class ColegiadosController {
     }
 
     @PostMapping("reunioes/criar")
+    @PreAuthorize("hasRole('COORDENADOR')")
     public ModelAndView salvarReuniao(
             @Valid Reuniao reuniao,
             BindingResult validation,
@@ -226,7 +242,10 @@ public class ColegiadosController {
     }
 
     @GetMapping("reunioes/{idReuniao}")
-    public ModelAndView listarReuniao(ModelAndView model, @PathVariable("idReuniao") Long idReuniao) {
+    public ModelAndView listarReuniao(ModelAndView model, @PathVariable("idReuniao") Long idReuniao, Principal principal) {
+        Professor professor = this.professorService.getProfessorPorMatricula(principal.getName());
+
+        model.addObject("professor", professor);
         model.addObject("reuniao", this.reuniaoService.getReuniaoPorId(idReuniao));
         model.setViewName("Coordenador/reuniao");
         return model;

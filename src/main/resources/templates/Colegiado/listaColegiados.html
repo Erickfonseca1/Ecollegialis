@@ -35,18 +35,17 @@
                     <strong>ID:</strong> <span th:text="${colegiado.id}"></span><br>
                     <strong>Data de Início:</strong> <span th:text="${colegiado.dataInicio}"></span>
                 </p>
-                <div th:if="${#authorization.expression('hasRole(''ROLE_COORDENADOR'')')}" class="btn-group">
-                    <form style="margin-right: 10px;" th:action="@{colegiados/{id}/delete(id=${colegiado.id})}">
+                <div th:if="${#authorization.expression('hasRole(''ROLE_COORDENADOR'')') or #authorization.expression('hasRole(''ROLE_PROFESSOR'')')}" class="btn-group">
+                    <form th:if="${#authorization.expression('hasRole(''ROLE_PROFESSOR'')') and !#authorization.expression('hasRole(''ROLE_PROFESSOR'')')}" style="margin-right: 10px;" th:action="@{colegiados/{id}/delete(id=${colegiado.id})}">
                         <button type="submit"  class="btn btn-danger">Excluir</button>
                     </form>
-                    <form style="margin-right: 10px;" th:action="@{colegiados/{id}(id=${colegiado.id})}">
+                    <form  th:if="${#authorization.expression('hasRole(''ROLE_PROFESSOR'')') and !#authorization.expression('hasRole(''ROLE_PROFESSOR'')')}" style="margin-right: 10px;" th:action="@{colegiados/{id}(id=${colegiado.id})}">
                         <button type="submit" class="btn btn-primary">Editar</button>
                     </form>
                     <form style="margin-right: 10px;" th:action="@{colegiados/reunioes}">
                         <button type="submit" class="btn btn-primary">Ver reuniões</button>
                     </form>
                 </div>
-                <p th:if="${#authorization.expression('hasRole(''ROLE_PROFESSOR'')') and !#authorization.expression('hasRole(''ROLE_COORDENADOR'')')}">-</p>
             </div>
         </div>
     </div>
