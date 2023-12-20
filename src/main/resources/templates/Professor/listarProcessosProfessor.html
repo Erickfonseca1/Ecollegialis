@@ -64,10 +64,12 @@
                     <td th:text="${processo.status}"></td>
                     <td th:text="${processo.assunto.nome}"></td>
                     <td th:text="${processo.dataCriacao}"></td>
-                    <td th:if="${processo.relator} == null">-</td>
                     <td th:unless="${processo.relator} == null" th:text="${processo.relator.nome}"></td>
-                    <td>
-                        <a type="button" th:href="@'/professor/processos/ + ${processo.id}" class="btn btn-primary" style="padding-left: 25px; padding-right:25px">Votar</a>
+                    <td th:if="${processo.tipoDecisao == null}">
+                        <a type="button" th:href="@{processos/votar/{idProcesso}(idProcesso=${processo.id})}" class="btn btn-primary" style="padding-left: 25px; padding-right:25px; width: 150px">Votar</a>
+                    </td>
+                    <td th:if="${processo.tipoDecisao != null}">
+                        <a type="button" th:href="@{processos/votar/{idProcesso}(idProcesso=${processo.id})}" class="btn btn-primary" style="padding-left: 25px; padding-right:25px; width: 150px">Ver Voto</a>
                     </td>
                 </tr>
             </tbody>

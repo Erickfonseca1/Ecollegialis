@@ -54,19 +54,19 @@ public class ProcessoProfessorController {
         return model;
     }
 
-    @GetMapping("/processos/{idProcesso}")
+    @GetMapping("votar/{idProcesso}")
     public ModelAndView listarProcessos(ModelAndView model, @PathVariable("idProcesso") Long idProcesso){
         model.addObject("processo", processoService.getProcessoPorId(idProcesso));
         model.setViewName("Professor/professorVotaProcesso");
         return model;
     }
 
-    @PostMapping("/processos/{idProcesso}")
+    @PostMapping("votar/{idProcesso}")
     public ModelAndView atualizarProcessos(ModelAndView model, Processo processo, Principal principal, @PathVariable("idProcesso") Long idProcesso){
         processoService.atualizarProcesso(processo,idProcesso);
         Professor professor = this.professorService.getProfessorPorMatricula(principal.getName());
         model.addObject("processos", processoService.getProcessosPorProfessor(professor));
-        model.setViewName("redirect:professor/processos");
+        model.setViewName("redirect:/professor/processos");
         return model;
     }
 
