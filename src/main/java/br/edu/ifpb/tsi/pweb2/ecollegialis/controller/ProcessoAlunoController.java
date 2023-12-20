@@ -70,4 +70,12 @@ public class ProcessoAlunoController {
         model.setViewName("redirect:/aluno/processos");
         return model;
     }
+
+    @GetMapping("/{idProcesso}")
+    public ModelAndView verDetalhesProcesso(@PathVariable("idProcesso") Long id, ModelAndView model) {
+        Processo processo = processoService.getProcessoPorId(id);
+        model.addObject("processo", processo);
+        model.setViewName("Processo/detalhesProcesso");
+        return model;
+    }
 }

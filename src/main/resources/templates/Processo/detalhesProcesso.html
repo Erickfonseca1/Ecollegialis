@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<head th:replace="~{layouts :: head('Detalhes do Processo')}"></head>
+<style>
+    body {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .container {
+        width: 100%;
+        margin: 0;
+        padding: 30px;
+    }
+
+    .header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .info {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: start;
+        margin-bottom: 20px;
+    }
+
+    .btn-lista-assuntos {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .form-info {
+        margin-bottom: 20px;
+    }
+
+    .btn-voltar {
+        background-color: #236da3;
+        color: #fff;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        display: inline-block;
+    }
+</style>
+
+<body>
+    <div th:replace="~{sidebar :: aside('Detalhes do Processo')}"></div>
+    <div class="container">
+        <div class="header">
+            <div class="info">
+                <h1>Detalhes do Processo</h1>
+                <p>Aqui você pode ver os detalhes do Processo</p>
+            </div>
+            <div class="btn-lista-assuntos">
+                <a th:href="@{'/aluno/processos'}" class="btn-voltar">Voltar para a lista de processos</a>
+            </div>
+        </div>
+        <form class="form-container" th:action="@{'/aluno/processos/detalhes'}" method="get" th:object="${processo}">
+            <div class="form-info">
+                <label for="assunto" class="form-label">Aluno Requisitante:</label>
+                <p id="assunto" th:text="*{aluno.nome}"></p>
+            </div>
+            <div class="form-info">
+                <label for="assunto" class="form-label">Assunto:</label>
+                <p id="assunto" th:text="*{assunto.nome}"></p>
+            </div>
+            <div class="form-info mb-3">
+                <label for="justificativa" class="form-label">Justificativa:</label>
+                <p id="justificativa" th:text="*{textoRequerimento}"></p>
+            </div>
+            <div class="form-info mb-3">
+                <label for="formFileMultiple" class="form-label">Arquivos do processo:</label>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
