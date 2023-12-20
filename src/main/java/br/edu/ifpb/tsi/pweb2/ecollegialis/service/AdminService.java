@@ -241,7 +241,13 @@ public class AdminService {
     // CRUD coordenador
 
     public List<Coordenador> getCoordenadores() {
+        
+        for (Coordenador coordenador : coordenadorRepository.findAll()) {
+            System.out.println(coordenador.getProfessor().getUser().getAuthorities());
+        }
+
         return coordenadorRepository.findAll();
+        
     }
 
     public Coordenador getCoordenadorPorId(Long id) {
@@ -250,6 +256,18 @@ public class AdminService {
 
     @Transactional
     public void criarCoordenador(Coordenador coordenador) {
+        Professor professor = coordenador.getProfessor();
+        User user = professor.getUser();
+        System.out.println(user.getAuthorities());
+
+        boolean hasCoordenadorRole = user.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_COORDENADOR"));
+        System.out.println("hasCoordenadorRole: " + hasCoordenadorRole);
+        if (!hasCoordenadorRole) {
+            Authority coordenadorAuthority = new Authority(user, "ROLE_COORDENADOR");   
+            user.getAuthorities().add(coordenadorAuthority);
+            System.out.println("authorites: " + user.getAuthorities());
+        }
+
         coordenadorRepository.save(coordenador);
     }
 
