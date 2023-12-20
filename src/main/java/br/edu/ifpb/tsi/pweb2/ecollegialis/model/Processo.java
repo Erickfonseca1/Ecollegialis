@@ -5,6 +5,8 @@ import java.util.Date;
 
 import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusEnum;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.TipoDecisao;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.state.EstadoCriado;
+import br.edu.ifpb.tsi.pweb2.ecollegialis.state.EstadoProcesso;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -44,7 +46,7 @@ public class Processo {
     @OneToMany(mappedBy = "processo")
     private List<Voto> listaDeVotos;
 
-    @NotBlank(message="Campo obrigatório!")
+    @NotBlank(message = "Campo obrigatório!")
     private String textoRequerimento;
 
     @Enumerated(EnumType.STRING)
@@ -53,7 +55,10 @@ public class Processo {
     @ManyToOne
     private Reuniao reuniao;
 
-    public Processo( Aluno aluno, Assunto assunto, String textoRequerimento, Colegiado colegiado) {
+    @ManyToOne
+    private EstadoProcesso estado;  // Adicionando o atributo estado
+
+    public Processo(Aluno aluno, Assunto assunto, String textoRequerimento, Colegiado colegiado) {
         this.aluno = aluno;
         this.numero = Long.toString(this.id);
         this.status = StatusEnum.CRIADO;
@@ -61,16 +66,21 @@ public class Processo {
         this.assunto = assunto;
         this.textoRequerimento = textoRequerimento;
         this.colegiado = colegiado;
+        this.estado = new EstadoCriado(this);  // Definindo o estado inicial
     }
 
-    public Processo(Aluno aluno,Assunto assunto){
+    public Processo(Aluno aluno, Assunto assunto) {
         this.aluno = aluno;
         this.assunto = assunto;
+        this.estado = new EstadoCriado(this);  // Definindo o estado inicial
+    }
+
+    public void setEstado(EstadoProcesso novoEstado) {
+        this.estado = novoEstado;
     }
 
     @Override
-    public String toString(){
-        return ""+this.numero+","+this.aluno;
+    public String toString() {
+        return "" + this.numero + "," + this.aluno;
     }
-
 }
