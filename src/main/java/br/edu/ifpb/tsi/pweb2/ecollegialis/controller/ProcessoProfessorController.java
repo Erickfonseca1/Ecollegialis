@@ -69,4 +69,41 @@ public class ProcessoProfessorController {
         model.setViewName("redirect:professor/processos");
         return model;
     }
+
+    //----- REUNIÕES -----
+    @GetMapping("/reunioes")
+    public ModelAndView listarReunioesProfessor(
+            ModelAndView model,
+            @PathVariable("id") Long id,
+            @RequestParam(name = "status", required = false) String status) {
+
+        Professor professor = professorService.getProfessorPorId(id);
+
+        if (professor.getListaColegiados() != null && !professor.getListaColegiados().isEmpty()) {
+            Colegiado colegiado = professor.getListaColegiados().get(0);
+
+            if (colegiado != null) {
+                List<Reuniao> reunioes;
+
+                if ("finalizada".equalsIgnoreCase(status)) {
+                    reunioes = reuniaoService.getReunioesFinalizadasDoColegiado(colegiado);
+                } else if ("agendada".equalsIgnoreCase(status)) {
+                    reunioes = reuniaoService.getReunioesAgendadasDoColegiado(colegiado);
+                } else {
+                    reunioes = reuniaoService.getReunioes();
+                }
+
+                model.addObject("reunioes", reunioes);
+            }
+        }
+        model.setViewName("Professor/painel-reunioes");
+        return model;
+    }
+
+    @GetMapping("/reunioes/{idReuniao}")
+    public ModelAndView listarReunioes(ModelAndView model, @PathVariable("idReuniao") Long idReuniao){
+        model.addObject("reuniao", this.reuniaoService.getReuniaoPorId(idReuniao));
+        model.setViewName("Professor/reuniao");
+        return model;
+    }
 }

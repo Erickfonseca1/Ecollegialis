@@ -23,7 +23,6 @@
 <div th:replace="~{sidebar :: aside('Lista de professores')}"></div>
     <div style="margin: 30px;">
         <h1 style="margin-top: 20px">Listagem de Reuniões</h1>
-        <hr>
         <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 20px;">
             <div class="btn-group">
                 <div class="input-group mb-3" style="margin-right: 10px;">
@@ -36,34 +35,28 @@
                 </div>
             </div>
         </div>
-        <a th:href="@{reunioes/criar}" class="btn btn-primary justify-self-center">Criar Reunião</a>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Data</th>
-                    <th scope="col">Status da Reunião</th>
-                    <th scope="col">Quantidade de Processos</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="reuniao:${reunioes}">
-                    <td th:text="${reuniao.id}?:'-'"></td>
-
-                    <td th:if="${reuniao.dataReuniao} == null">-</td>
-                    <td th:unless="${reuniao.dataReuniao} == null" th:text="${reuniao.dataReuniao}?:'-'"></td>
-                    
-                    <td th:text="${reuniao.status}?:'-'"></td>
-
-                    <td th:if="${reuniao.processos} == null">-</td>
-                    <td th:unless="${reuniao.processos} == null" th:text="${reuniao.processos.size()}"></td>
-                     
-                    <td>
+        <a th:href="@{reunioes/criar}" class="btn btn-primary justify-self-end">Criar Reunião</a>
+        <div class="row">
+            <div th:each="reuniao:${reunioes}" class="col-sm-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${reuniao.id}?:'-'"></h5>
+                        <p class="card-text">
+                            <strong>Data:</strong> <span th:if="${reuniao.dataReuniao} == null">-</span>
+                            <span th:unless="${reuniao.dataReuniao} == null" th:text="${reuniao.dataReuniao}?:'-'"></span><br>
+                            <strong>Status da Reunião:</strong> <span th:text="${reuniao.status}?:'-'"></span><br>
+                            <strong>Quantidade de Processos:</strong> <span th:if="${reuniao.processos} == null">-</span>
+                            <span th:unless="${reuniao.processos} == null" th:text="${reuniao.processos.size()}"></span>
+                        </p>
                         <a href="#" type="button" class="btn btn-primary">Consultar</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <th:block th:if="${#lists.isEmpty(reunioes)}">
+            <p>Não há reuniões disponíveis.</p>
+        </th:block>
     </div>
     <script th:src="@{/js/bootstrap.buddle.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>

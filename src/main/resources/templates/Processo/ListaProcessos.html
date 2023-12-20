@@ -31,8 +31,7 @@
 <div class="container">
     <div class="container">
         <h1>Lista de Processos</h1>
-        só exibir o botão para aluno
-        <div class="btn-novo-processo" >
+        <div class="btn-novo-processo"  th:if="${#authorization.expression('hasRole(''ROLE_ALUNO'')')}">
             <a type="button" th:href="@{'/aluno/processos/criar'}" class="btn" style="background-color: #236da3; color: #fff;">Adicionar Processo</a>
         </div>
 

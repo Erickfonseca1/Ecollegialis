@@ -43,7 +43,7 @@
         <hr>
     </div>
     <!-- FORM DE PROCESSO -->
-    <form th:action="@{'/coordenador/' + ${coordenador.id} + '/reunioes/criar'}" method="post" th:object="${reuniao}">
+    <form th:action="@{'/colegiados/reunioes/criar'}" method="post" th:object="${reuniao}">
         <div class="row">
             <input type="hidden" th:field="*{id}">
             <div class="mb-3">
@@ -63,9 +63,9 @@
             </select>
         </div>
         <div>
-            <h3>Processo:</h3>
-            <select class="form-select" id="membros" th:field="*{colegiado.getMembros()}" multiple>
-                <option th:each="membro : ${professoresMembros}" th:value="${membro.id}" th:text="${membro.nome}"></option>
+            <h3>Professores:</h3>
+            <select class="form-select" id="membros" th:field="*{colegiado.membros}" multiple>
+                <option th:each="membro : ${membros}" th:value="${membro.id}" th:text="${membro.nome}"></option>
             </select>
         </div>
         <button type="submit" class="btn btn-primary">Criar</button>

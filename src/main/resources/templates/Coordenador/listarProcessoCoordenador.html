@@ -29,7 +29,7 @@
 <body>
 <div th:replace="~{sidebar :: aside('Lista dos Processos')}"></div>
 <div style="margin: 30px;">
-    <h1 style="margin-top: 20px">Listagem de Processos por Coordenador</h1>
+    <h1 class="ma-5">Listagem de Processos por Coordenador</h1>
     <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 20px;">
         <div class="btn-group">
             <div class="input-group mb-3" style="margin-right: 10px;">
@@ -59,48 +59,31 @@
             </div>
         </div>
     </div>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Aluno</th>
-            <th scope="col">Estado</th>
-            <th scope="col">Assunto</th>
-            <th scope="col">Data de Criação</th>
-            <th scope="col">Relator</th>
-            <th scope="col">Decisão</th>
-            <th scope="col">Colegiado</th>
-            <th scope="col">Relator Votou?</th>
-            <th scope="col">Opções</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="processo:${processos}">
-            <td th:text="${processo.numero}?:'-'"></td>
-            <td th:if="${processo.aluno} == null">-</td>
-            <td th:unless="${processo.aluno} == null" th:text="${processo.aluno.nome}?:'-'"></td>
-            <td th:text="${processo.status}?:'-'"></td>
-            <td th:if="${processo.assunto} == null">-</td>
-            <td th:unless="${processo.assunto} == null" th:text="${processo.assunto.nome}"></td>
-            <td th:text="${processo.dataCriacao}?:'-'"></td>
-            <td th:if="${processo.relator} == null">-</td>
-            <td th:unless="${processo.relator} == null" th:text="${processo.relator.nome}"></td>
-            <td th:if="${processo.tipoDecisao} == null" >-</td>
-            <td th:unless="${processo.tipoDecisao} == null" th:text="${processo.tipoDecisao}"></td>
-            <td th:if="${processo.colegiado} == null">-</td>
-            <td th:unless="${processo.colegiado} == null" th:text="${processo.colegiado.curso.nome}"></td>
-            <td th:if="${processo.tipoDecisao} == null">
-                <h3>N/A</h3>
-            </td>
-            <td th:unless="${processo.tipoDecisao} == null">
-                <h3>Votou</h3>
-            </td>
-            <td>
-                <a type="button" th:href="@{'/coordenador/' + ${coordenador.id} + '/processos/' + ${processo.id}}" class="btn btn-primary" style="padding-left: 25px; padding-right:25px">Atribuir Relator</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div th:each="processo:${processos}" class="card" style="width: 100%;">
+        <div class="card-body">
+            <h5 class="card-title" th:text="${processo.numero}?:'-'"></h5>
+            <p class="card-text">
+                <strong>Aluno:</strong> <span th:if="${processo.aluno} == null">-</span>
+                <span th:unless="${processo.aluno} == null" th:text="${processo.aluno.nome}?:'-'"></span><br>
+                <strong>Estado:</strong> <span th:text="${processo.status}?:'-'"></span><br>
+                <strong>Assunto:</strong> <span th:if="${processo.assunto} == null">-</span>
+                <span th:unless="${processo.assunto} == null" th:text="${processo.assunto.nome}"></span><br>
+                <strong>Data de Criação:</strong> <span th:text="${processo.dataCriacao}?:'-'"></span><br>
+                <strong>Relator:</strong> <span th:if="${processo.relator} == null">-</span>
+                <span th:unless="${processo.relator} == null" th:text="${processo.relator.nome}"></span><br>
+                <strong>Decisão:</strong> <span th:if="${processo.tipoDecisao} == null" >-</span>
+                <span th:unless="${processo.tipoDecisao} == null" th:text="${processo.tipoDecisao}"></span><br>
+                <strong>Colegiado:</strong> <span th:if="${processo.colegiado} == null">-</span>
+                <span th:unless="${processo.colegiado} == null" th:text="${processo.colegiado.curso.nome}"></span><br>
+                <strong>Relator Votou?</strong> <span th:if="${processo.tipoDecisao} == null">N/A</span>
+                <span th:unless="${processo.tipoDecisao} == null">Votou</span>
+            </p>
+            <div style="display: flex; flex-direction: row; gap: 15px;">
+                <a type="button" th:href="@{'/coordenador/processos/' + ${processo.id} + '/atribuir-relator'}" class="btn btn-primary">Atribuir Relator</a>
+                <a type="button" th:href="@{'/coordenador/processos/' + ${processo.id} + '/atribuir-colegiado'}" class="btn btn-primary">Atribuir Colegiado</a>
+            </div>
+        </div>
+    </div>
 </div>
 <script th:src="@{/js/bootstrap.buddle.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>

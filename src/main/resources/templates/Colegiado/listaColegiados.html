@@ -28,35 +28,27 @@
                style="margin-bottom: 20px;">Cadastrar Colegiados</a>
         </div>
 
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Curso</th>
-                <th scope="col">Data Inicio</th>
-                <th scope="col">Opções</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="colegiado:${colegiados}">
-                <td>[[${colegiado.id}]]</td>
-                <td th:text="${colegiado.curso.nome}"></td>
-                <td th:text="${colegiado.dataInicio}"></td>
-                <td  th:if="${#authorization.expression('hasRole(''ROLE_COORDENADOR'')')}">
-                    <div class="btn-group">
-                        <form style="margin-right: 10px;" th:action="@{colegiados/{id}/delete(id=${colegiado.id})}">
-                            <button type="submit"  class="btn btn-danger">Excluir</button>
-                        </form>
-                        <form style="margin-right: 10px;" th:action="@{colegiados/{id}(id=${colegiado.id})}">
-                            <button type="submit" class="btn btn-primary">Editar</button>
-                        </form>
-
-                    </div>
-                </td>
-                <td th:if="${#authorization.expression('hasRole(''ROLE_PROFESSOR'')')}">-</td>
-            </tr>
-            </tbody>
-        </table>
+        <div th:each="colegiado:${colegiados}" class="card" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${colegiado.curso.nome}"></h5>
+                <p class="card-text">
+                    <strong>ID:</strong> <span th:text="${colegiado.id}"></span><br>
+                    <strong>Data de Início:</strong> <span th:text="${colegiado.dataInicio}"></span>
+                </p>
+                <div th:if="${#authorization.expression('hasRole(''ROLE_COORDENADOR'')')}" class="btn-group">
+                    <form style="margin-right: 10px;" th:action="@{colegiados/{id}/delete(id=${colegiado.id})}">
+                        <button type="submit"  class="btn btn-danger">Excluir</button>
+                    </form>
+                    <form style="margin-right: 10px;" th:action="@{colegiados/{id}(id=${colegiado.id})}">
+                        <button type="submit" class="btn btn-primary">Editar</button>
+                    </form>
+                    <form style="margin-right: 10px;" th:action="@{colegiados/reunioes}">
+                        <button type="submit" class="btn btn-primary">Ver reuniões</button>
+                    </form>
+                </div>
+                <p th:if="${#authorization.expression('hasRole(''ROLE_PROFESSOR'')') and !#authorization.expression('hasRole(''ROLE_COORDENADOR'')')}">-</p>
+            </div>
+        </div>
     </div>
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/js/popper.min.js}"></script>

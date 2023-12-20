@@ -49,7 +49,7 @@
 <div th:replace="~{sidebar :: aside('Lista dos Processos')}"></div>
 
 <div class="container">
-    <form th:action="@{/coordenador/{idCoordenador}/processos/{id}(idCoordenador=${coordenador.id},id=${processo.id})}"
+    <form th:action="@{/coordenador/processos/{idProcesso}/atribuir-relator(idProcesso=${processo.id})}"
           method="post" th:object="${processo}">
         <div class="header">
             <h4>Atribuir Relator do Processo de Número: [[${processo.numero}]]</h4>

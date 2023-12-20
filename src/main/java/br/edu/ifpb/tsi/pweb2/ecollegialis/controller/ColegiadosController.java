@@ -3,6 +3,7 @@ package br.edu.ifpb.tsi.pweb2.ecollegialis.controller;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusReuniao;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.*;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.*;
 import jakarta.validation.Valid;
@@ -30,6 +33,9 @@ public class ColegiadosController {
 
     @Autowired
     private CoordenadorService coordenadorService;
+
+    @Autowired
+    private ProcessoService processoService;
 
     @Autowired
     private ProfessorService professorService;
@@ -139,40 +145,185 @@ public class ColegiadosController {
         return model;
     }
 
-    //----- REUNIÕES -----
-    @GetMapping("/reunioes")
-    public ModelAndView listarReunioesProfessor(
-            ModelAndView model,
-            @PathVariable("id") Long id,
-            @RequestParam(name = "status", required = false) String status) {
-
-        Professor professor = professorService.getProfessorPorId(id);
-
-        if (professor.getListaColegiados() != null && !professor.getListaColegiados().isEmpty()) {
-            Colegiado colegiado = professor.getListaColegiados().get(0);
-
+    
+    @GetMapping("reunioes")
+    @PreAuthorize("hasRole('COORDENADOR')")
+    public ModelAndView listarReunioes(ModelAndView model, Principal principal) {
+        Professor professor = this.professorService.getProfessorPorMatricula(principal.getName());
+        Coordenador coordenador = coordenadorService.getCoordenadorPorProfessor(professor.getId());
+        if (coordenador != null) {
+            Colegiado colegiado = colegiadoService.getColegiadoPorCoordenador(coordenador);
             if (colegiado != null) {
-                List<Reuniao> reunioes;
-
-                if ("finalizada".equalsIgnoreCase(status)) {
-                    reunioes = reuniaoService.getReunioesFinalizadasDoColegiado(colegiado);
-                } else if ("agendada".equalsIgnoreCase(status)) {
-                    reunioes = reuniaoService.getReunioesAgendadasDoColegiado(colegiado);
-                } else {
-                    reunioes = reuniaoService.getReunioes();
-                }
-
-                model.addObject("reunioes", reunioes);
+                model.addObject("reunioes", colegiado.getReunioes());
             }
         }
-        model.setViewName("Professor/painel-reunioes");
+        model.setViewName("Coordenador/reunioes");
         return model;
     }
 
-    @GetMapping("/reunioes/{idReuniao}")
-    public ModelAndView listarReunioes(ModelAndView model, @PathVariable("idReuniao") Long idReuniao){
+    @GetMapping("reunioes/criar")
+    @PreAuthorize("hasRole('COORDENADOR')")
+    public ModelAndView criarReuniao(ModelAndView model, Principal principal) {
+        Professor professor = this.professorService.getProfessorPorMatricula(principal.getName());
+        Coordenador coordenador = coordenadorService.getCoordenadorPorProfessor(professor.getId());
+
+        Colegiado colegiado = coordenador != null ? colegiadoService.getColegiadoPorCoordenador(coordenador) : null;
+        List<Professor> membros = colegiado.getMembros();
+
+        List<Processo> processosDisponiveis = colegiado != null ? colegiado.getProcessos().stream()
+                .filter(processo -> processo.getRelator() != null)
+                .collect(Collectors.toList()) : new ArrayList<>();
+
+        List<Processo> processosEscolhidos = new ArrayList<>();
+        Reuniao reuniao = new Reuniao(colegiado, processosEscolhidos);
+
+        model.addObject("colegiado", colegiado);
+        model.addObject("membros", membros);
+        model.addObject("processosEscolhidos", processosEscolhidos);
+        model.addObject("processosDisponiveis", processosDisponiveis);
+        model.addObject("reuniao", reuniao);
+
+        model.setViewName("Coordenador/criar-reuniao");
+        return model;
+    }
+
+    @PostMapping("reunioes/criar")
+    public ModelAndView salvarReuniao(
+            @Valid Reuniao reuniao,
+            BindingResult validation,
+            ModelAndView model,
+            Principal principal,
+            RedirectAttributes redirectAttributes) {
+
+        Professor professor = this.professorService.getProfessorPorMatricula(principal.getName());
+        Coordenador coordenador = coordenadorService.getCoordenadorPorProfessor(professor.getId());
+        Colegiado colegiado = coordenador != null ? colegiadoService.getColegiadoPorCoordenador(coordenador) : null;
+
+        if (colegiado != null) {
+            if (validation.hasErrors()) {
+                List<Processo> processosDisponiveis = colegiado.getProcessos().stream()
+                        .filter(processo -> processo.getRelator() != null)
+                        .collect(Collectors.toList());
+
+                List<Processo> processosEscolhidos = new ArrayList<>();
+                model.addObject("colegiado", colegiado);
+                model.addObject("processosEscolhidos", processosEscolhidos);
+                model.addObject("processosDisponiveis", processosDisponiveis);
+                model.addObject("reuniao", reuniao);
+                model.setViewName("Coordenador/criar-reuniao");
+                return model;
+            }
+
+            reuniao.setColegiado(colegiado);
+            reuniao.setStatus(StatusReuniao.PROGRAMADA);
+            reuniaoService.salvarReuniao(reuniao);
+
+            model.addObject("reunioes", colegiado.getReunioes());
+            model.setViewName("redirect:/colegiado/reunioes");
+            redirectAttributes.addFlashAttribute("mensagem", "Reunião Criada com Sucesso");
+        }
+
+        return model;
+    }
+
+    @GetMapping("reunioes/{idReuniao}")
+    public ModelAndView listarReuniao(ModelAndView model, @PathVariable("id") Long id, @PathVariable("idReuniao") Long idReuniao) {
         model.addObject("reuniao", this.reuniaoService.getReuniaoPorId(idReuniao));
-        model.setViewName("Professor/reuniao");
+        model.setViewName("Coordenador/reuniao");
+        return model;
+    }
+
+    @PostMapping("reunioes/{idReuniao}/iniciar")
+    public ModelAndView iniciarReuniao(Reuniao reuniao, ModelAndView model, @PathVariable("id") Long id, @PathVariable("idReuniao") Long idReuniao, RedirectAttributes redirectAttributes) {
+        try {
+            this.reuniaoService.iniciarReuniao(reuniao, idReuniao);
+            model.addObject("reuniao", this.reuniaoService.getReuniaoPorId(idReuniao));
+            model.setViewName("redirect:/coordenador/" + id + "/reunioes/" + idReuniao + "/painel");
+            return model;
+        } catch (Exception e) {
+            Coordenador coordenador = coordenadorService.getCoordenadorPorId(id);
+            Colegiado colegiado = colegiadoService.getColegiadoPorCoordenador(coordenador);
+            model.addObject("reunioes", colegiado.getReunioes());
+            model.setViewName("redirect:/coordenador/" + id + "/reunioes");
+            return model;
+        }
+    }
+
+    @GetMapping("reunioes/{idReuniao}/painel")
+    public ModelAndView listarReuniaoNaTela(ModelAndView model, @PathVariable("id") Long id, @PathVariable("idReuniao") Long idReuniao) {
+        Reuniao reuniao = this.reuniaoService.getReuniaoPorId(idReuniao);
+        model.addObject("processo", reuniao.getProcessos().get(0));
+        model.addObject("reuniao", reuniao);
+        model.setViewName("Coordenador/painel-reuniao");
+        return model;
+    }
+
+    @GetMapping("reunioes/{idReuniao}/painel/{idProcesso}")
+    public ModelAndView listarReuniaoNaTela(
+            ModelAndView model,
+            @PathVariable("id") Long id,
+            @PathVariable("idReuniao") Long idReuniao,
+            @PathVariable("idProcesso") Long idProcesso) {
+        Reuniao reuniao = this.reuniaoService.getReuniaoPorId(idReuniao);
+        Processo processo = this.processoService.getProcessoPorId(idProcesso);
+        Colegiado colegiado = reuniao.getColegiado();
+        List<Voto> listaVotos = new ArrayList<Voto>();
+        for (Professor membro : colegiado.getMembros()) {
+            Voto voto = new Voto();
+            if (membro == processo.getRelator()) {
+                Coordenador coordenador = colegiado.getCoordenador();
+                Professor professor = coordenador.getProfessor();
+                voto.setProfessor(professor);
+            } else {
+                Professor professor = membro;
+                voto.setProfessor(professor);
+            }
+            voto.setProcesso(processo);
+            listaVotos.add(voto);
+        }
+        processo.setListaDeVotos(listaVotos);
+        System.out.println(processo.getListaDeVotos());
+        model.addObject("processo", processo);
+        model.addObject("listaVotos", listaVotos);
+        model.addObject("reuniao", reuniao);
+        model.setViewName("Coordenador/painel-reuniao");
+        return model;
+    }
+
+    @PostMapping("reunioes/{idReuniao}/painel/{idProcesso}")
+    public ModelAndView processoJulgado(
+            Processo processo,
+            ModelAndView model,
+            @PathVariable("id") Long id,
+            @PathVariable("idReuniao") Long idReuniao,
+            @PathVariable("idProcesso") Long idProcesso) {
+        System.out.println(processo.getListaDeVotos());
+        processoService.julgarProcesso(processo, idProcesso);
+        Processo novoProcesso = processoService.getProcessoPorId(idProcesso);
+        Reuniao reuniao = this.reuniaoService.getReuniaoPorId(idReuniao);
+        List<Voto> listaVotos = new ArrayList<Voto>();
+        for (Professor membro : reuniao.getColegiado().getMembros()) {
+            Voto voto = new Voto();
+            voto.setProcesso(novoProcesso);
+            voto.setProfessor(membro);
+            listaVotos.add(voto);
+        }
+        novoProcesso.setListaDeVotos(listaVotos);
+        model.addObject("processo", novoProcesso);
+        model.addObject("listaVotos", listaVotos);
+        model.addObject("reuniao", reuniao);
+        model.setViewName("redirect:/coordenador/" + id + "/reunioes/" + idReuniao + "/painel/" + idProcesso);
+        return model;
+    }
+
+    @PostMapping("reunioes/{idReuniao}/painel/encerrar")
+    public ModelAndView encerrarReuniao(Reuniao reuniao, ModelAndView model, @PathVariable("id") Long id,
+            @PathVariable("idReuniao") Long idReuniao) {
+        reuniaoService.encerrarReuniao(reuniao, idReuniao);
+        Coordenador coordenador = coordenadorService.getCoordenadorPorId(id);
+        Colegiado colegiado = colegiadoService.getColegiadoPorCoordenador(coordenador);
+        model.addObject("reunioes", colegiado.getReunioes());
+        model.setViewName("/coordenador/painel-reunioes");
         return model;
     }
 }
