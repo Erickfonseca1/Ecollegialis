@@ -24,7 +24,7 @@
     <div class="container">
         <h1>Lista de Colegiados</h1>
         <div class="btn-novo-colegiado" th:if="${#authorization.expression('hasRole(''ROLE_COORDENADOR'')')}">
-            <a th:href="@{/coordenador/colegiados/criar}" type="button" class="btn btn-primary"
+            <a th:href="@{/colegiados/criar}" type="button" class="btn btn-primary"
                style="margin-bottom: 20px;">Cadastrar Colegiados</a>
         </div>
 

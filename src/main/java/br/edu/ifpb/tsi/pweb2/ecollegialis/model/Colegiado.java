@@ -67,6 +67,4 @@ public class Colegiado {
     public String toString(){
         return "Colegiado do " + this.curso;
     }
-
-
 }
