@@ -40,7 +40,7 @@
         <h1 style="margin-top: 20px;margin-bottom: 20px;">Editar Colegiado</h1>
         <hr>
         <!-- INICIO DO FORM -->
-        <form th:action="${acao} == 'salvar' ? @{/colegiados/criar} : @{/colegiados/{id}(id=${colegiado.id})}" method="post" th:object="${colegiado}">
+        <form th:action="${acao} == 'salvar' ? @{/coordenador/colegiados/criar} : @{/colegiados/{id}(id=${colegiado.id})}" method="post" th:object="${colegiado}">
             <div class="modal-body">
                 <div class="row">
                     <input type="hidden" th:field="*{id}"><br>
@@ -71,9 +71,10 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer" style="margin-top:10px;">
-                <a class="btn btn-secondary" th:href="@{/colegiados}" style="margin-right: 10px;">Fechar</a>
-                <button type="submit" class="btn btn-primary" style="padding-left: 25px; padding-right:25px">Salvar</button>
+            <div style="display: flex; justify-content: flex-end">
+                <button type="submit" class="btn btn-salvar-curso" style="background-color: #236da3; color: #fff;">
+                    Salvar
+                </button>
             </div>
         </form>
     </div>

@@ -28,6 +28,10 @@ public class CoordenadorService {
         return this.coordenadorRepository.findByCursoId(id);
     }
 
+    public Coordenador getCoordenadorPorProfessor(Long id){
+        return this.coordenadorRepository.findByProfessorId(id);
+    }
+
     public void deletarCoordenador(Long id){
         this.coordenadorRepository.deleteById(id);
     }

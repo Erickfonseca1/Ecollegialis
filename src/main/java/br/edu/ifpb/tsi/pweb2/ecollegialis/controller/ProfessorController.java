@@ -31,4 +31,10 @@ public class ProfessorController {
         model.addObject("texto", "O professor pode criar e visualizar os seus processos, além de participar de colegiados que ele faz parte.");
         return model;
     }
+
+    @GetMapping("/colegiados")
+    public ModelAndView listarColegiados(ModelAndView model) {
+        model.setViewName("/professor/colegiados");
+        return model;
+    }
 }

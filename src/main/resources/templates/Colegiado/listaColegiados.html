@@ -23,8 +23,8 @@
     <div th:replace="~{sidebar :: aside('Lista de colegiados')}"></div>
     <div class="container">
         <h1>Lista de Colegiados</h1>
-        <div class="btn-novo-colegiado">
-            <a th:href="@{/colegiados/criar}" type="button" class="btn btn-primary"
+        <div class="btn-novo-colegiado" th:if="${#authorization.expression('hasRole(''ROLE_COORDENADOR'')')}">
+            <a th:href="@{/coordenador/colegiados/criar}" type="button" class="btn btn-primary"
                style="margin-bottom: 20px;">Cadastrar Colegiados</a>
         </div>
 
@@ -42,7 +42,7 @@
                 <td>[[${colegiado.id}]]</td>
                 <td th:text="${colegiado.curso.nome}"></td>
                 <td th:text="${colegiado.dataInicio}"></td>
-                <td>
+                <td  th:if="${#authorization.expression('hasRole(''ROLE_COORDENADOR'')')}">
                     <div class="btn-group">
                         <form style="margin-right: 10px;" th:action="@{colegiados/{id}/delete(id=${colegiado.id})}">
                             <button type="submit"  class="btn btn-danger">Excluir</button>
@@ -53,6 +53,7 @@
 
                     </div>
                 </td>
+                <td th:if="${#authorization.expression('hasRole(''ROLE_PROFESSOR'')')}">-</td>
             </tr>
             </tbody>
         </table>

@@ -1,9 +1,11 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.*;
@@ -19,6 +22,7 @@ import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/colegiados")
+@PreAuthorize("hasAnyRole('COORDENADOR', 'PROFESSOR')")
 public class ColegiadosController {
     
     @Autowired
@@ -32,6 +36,9 @@ public class ColegiadosController {
 
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private ReuniaoService reuniaoService;
 
     @ModelAttribute("professores")
     public List<Professor> getProfessores(){
@@ -56,10 +63,15 @@ public class ColegiadosController {
     }
 
     @GetMapping("criar")
-    public ModelAndView criarColegiados(ModelAndView model){
+    @PreAuthorize("hasRole('COORDENADOR')")
+    public ModelAndView criarColegiados(ModelAndView model, Principal principal){
         List<Professor> membros = new ArrayList<Professor>();
+        //buscar o nome do professor associado via id ao coordenador
+        Professor professor = this.professorService.getProfessorPorMatricula(principal.getName());
+        Coordenador coordenador = this.coordenadorService.getCoordenadorPorProfessor(professor.getId());
+
         model.addObject("colegiado", new Colegiado(membros));
-        model.addObject("coordenador", this.coordenadorService.getCoordenadorPorId(1L));
+        model.addObject("coordenador", coordenador);
         model.addObject("membros", membros);
         model.addObject("acao", "salvar");
         model.setViewName("Colegiado/formColegiado");
@@ -67,6 +79,7 @@ public class ColegiadosController {
     }
 
     @PostMapping("criar")
+    @PreAuthorize("hasRole('COORDENADOR')")
     public ModelAndView salvarColegiados(
             @Valid Colegiado colegiado,
             BindingResult validation,
@@ -82,7 +95,7 @@ public class ColegiadosController {
         colegiado.setCoordenador(this.coordenadorService.getCoordenadorPorCurso(colegiado.getCurso().getId()));
         colegiadoService.salvarColegiado(colegiado);
         model.addObject("colegiados", colegiadoService.getColegiados());
-        model.setViewName("redirect:/colegiados");
+        model.setViewName("redirect:/coordenador/colegiados");
         return model;
     }
 
@@ -123,6 +136,43 @@ public class ColegiadosController {
         model.addObject("colegiados", colegiadoService.getColegiados());
         model.addObject("colegiado", new Colegiado(new ArrayList<Professor>()));
         model.setViewName("redirect:/colegiados");
+        return model;
+    }
+
+    //----- REUNIÕES -----
+    @GetMapping("/reunioes")
+    public ModelAndView listarReunioesProfessor(
+            ModelAndView model,
+            @PathVariable("id") Long id,
+            @RequestParam(name = "status", required = false) String status) {
+
+        Professor professor = professorService.getProfessorPorId(id);
+
+        if (professor.getListaColegiados() != null && !professor.getListaColegiados().isEmpty()) {
+            Colegiado colegiado = professor.getListaColegiados().get(0);
+
+            if (colegiado != null) {
+                List<Reuniao> reunioes;
+
+                if ("finalizada".equalsIgnoreCase(status)) {
+                    reunioes = reuniaoService.getReunioesFinalizadasDoColegiado(colegiado);
+                } else if ("agendada".equalsIgnoreCase(status)) {
+                    reunioes = reuniaoService.getReunioesAgendadasDoColegiado(colegiado);
+                } else {
+                    reunioes = reuniaoService.getReunioes();
+                }
+
+                model.addObject("reunioes", reunioes);
+            }
+        }
+        model.setViewName("Professor/painel-reunioes");
+        return model;
+    }
+
+    @GetMapping("/reunioes/{idReuniao}")
+    public ModelAndView listarReunioes(ModelAndView model, @PathVariable("idReuniao") Long idReuniao){
+        model.addObject("reuniao", this.reuniaoService.getReuniaoPorId(idReuniao));
+        model.setViewName("Professor/reuniao");
         return model;
     }
 }
