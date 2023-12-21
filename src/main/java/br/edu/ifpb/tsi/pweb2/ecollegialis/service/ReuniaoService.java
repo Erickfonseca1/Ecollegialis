@@ -94,7 +94,6 @@ public class ReuniaoService {
 
     public boolean temReuniaoEmAndamento(Colegiado colegiado) {
         List<Reuniao> reunioes = this.getReunioesPorColegiado(colegiado);
-        System.out.println(reunioes);
         for (Reuniao reuniao : reunioes) {
             if (reuniao.getStatus().equals(StatusReuniao.EM_ANDAMENTO)) {
                 return true;

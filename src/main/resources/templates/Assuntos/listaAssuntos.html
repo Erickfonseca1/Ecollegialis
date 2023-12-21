@@ -45,7 +45,7 @@
                 <td th:text="${assunto.nome}"></td>
                 <td>
                     <div>
-                        <form th:action="@{assuntos/deletar/{id}(id=${assunto.id})}">
+                        <form th:action="@{assuntos/deletar/{id}(id=${assunto.id})}" method="post">
                             <button type="submit" class="btn btn-danger">Deletar</button>
                         </form>
                     </div>

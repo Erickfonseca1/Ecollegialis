@@ -267,7 +267,6 @@ public class ColegiadosController {
         // }
 
         boolean reuniaoPodeEncerrar = this.reuniaoService.todosProcessosJulgados(reuniao);
-        System.out.println("reuniao pode encerrar: " + reuniaoPodeEncerrar);
 
         // model.addObject("votosProfessor", votosProfessor);
         model.addObject("reuniaoEmAndamento", reuniaoEmAndamento);
@@ -303,7 +302,6 @@ public class ColegiadosController {
         Reuniao reuniao = this.reuniaoService.getReuniaoPorId(idReuniao);
 
         boolean reuniaoPodeEncerrar = this.reuniaoService.todosProcessosJulgados(reuniao);
-        System.out.println("reuniao pode encerrar: " + reuniaoPodeEncerrar);
         
         if (reuniaoPodeEncerrar) {
             this.reuniaoService.encerrarReuniao(reuniao, idReuniao);
@@ -362,13 +360,11 @@ public class ColegiadosController {
         voto.setProfessor(professor);
         voto.setProcesso(processo);
         List<Voto> listaVotosAtual = processo.getListaDeVotos();
-        System.out.println("lista de votos atual: " + listaVotosAtual);
         this.votoService.salvarVoto(voto);
         
 
         if (listaVotosAtual.isEmpty()) {    
             processo.setStatus(StatusEnum.EM_JULGAMENTO);
-            System.out.println("status do processo: " + processo.getStatus());
         }
 
         listaVotosAtual.add(voto);
@@ -376,8 +372,6 @@ public class ColegiadosController {
         // caso o numero de votos seja igual ao numero de membros da reuniao, com exceção do professor relator
         // o processo é alterado seu status para "JULGADO" e o resultado é definido
         if (listaVotosAtual.size() == processo.getReuniao().getColegiado().getMembros().size() - 1) {
-            
-            System.out.println("status do processo: " + processo.getStatus());
 
             // verifica se há mais votos contrários ou a favor do voto do relator
             int votosContra = 0;
@@ -394,63 +388,25 @@ public class ColegiadosController {
             }
 
             if (votosContra > votosFavor) {
-                System.out.println("mais votos contra o relator");
                 if (processo.getTipoDecisao() == TipoDecisao.DEFERIDO) {
                     processo.setTipoDecisao(TipoDecisao.INDEFERIDO);
-
-                    System.out.println("tipo de decisão: " + processo.getTipoDecisao());
                 } else {
                     processo.setTipoDecisao(processo.getTipoDecisao());
-                    System.out.println("tipo de decisão: " + processo.getTipoDecisao());
                 }
             } else {
-                System.out.println("mais votos a favor do relator");
                 processo.setTipoDecisao(processo.getTipoDecisao());
             }
 
             processo.setStatus(StatusEnum.JULGADO);
-            System.out.println("status do processo: " + processo.getStatus());
 
             this.processoService.atualizarProcessoParaJulgado(processo, idProcesso);
             model.setViewName("redirect:/colegiados/reunioes/" + idReuniao);
             return model;
         }
 
-        System.out.println("lista de votos atual: " + listaVotosAtual);
         processo.setListaDeVotos(listaVotosAtual);
-
-        System.out.println("dados do processo: " + processo.getListaDeVotos() + " " + processo.getStatus() + " " + processo.getTipoDecisao());
         this.processoService.atualizarProcesso(processo, idProcesso);
         model.setViewName("redirect:/colegiados/reunioes/" + idReuniao);
         return model;
     } 
-
-    // @GetMapping("reunioes/{idReuniao}/{idProcesso}")
-    // public ModelAndView listarReuniaoNaTela(
-    //         ModelAndView model,
-    //         Principal principal,
-    //         @PathVariable("idReuniao") Long idReuniao,
-    //         @PathVariable("idProcesso") Long idProcesso) {
-    //     Reuniao reuniao = reuniaoService.getReuniaoPorId(idReuniao);
-    //     Processo processo = processoService.getProcessoPorId(idProcesso);
-    //     Colegiado colegiado = reuniao.getColegiado();
-    //     List<Voto> listaVotos = new ArrayList<>();
-    //     for (Professor membro : colegiado.getMembros()) {
-    //         Voto voto = new Voto();
-    //         Professor professor = (membro == processo.getRelator()) ? colegiado.getCoordenador().getProfessor()
-    //                 : membro;
-
-    //         voto.setProfessor(professor);
-    //         voto.setProcesso(processo);
-    //         listaVotos.add(voto);
-    //     }
-    //     processo.setListaDeVotos(listaVotos);
-    //     model.addObject("processo", processo);
-    //     model.addObject("listaVotos", listaVotos);
-    //     model.addObject("reuniao", reuniao);
-    //     model.setViewName("Coordenador/painel-reuniao");
-    //     return model;
-    // }
-
-   
 }
