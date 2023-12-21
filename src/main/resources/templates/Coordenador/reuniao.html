@@ -29,11 +29,21 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        flex-wrap: wrap;
     }
 
     .card {
         margin-bottom: 20px;
-        min-width: 300px;
+        min-width: 400px;
+
+        .card-title {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 500;
+            justify-content: center;
+        }
     }
 
     h3 {
@@ -76,7 +86,7 @@
                 <div th:each="processo:${reuniao.processos}" class="col-md-4 cards">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title" th:text="${processo.numero}?:'-'"></h5>
+                            <h5 class="card-title" th:text="'#' + ${processo.numero}?:'-'"></h5>
                             <div class="card-text">
                                 <strong>Aluno:</strong> <span th:if="${processo.aluno} == null">-</span>
                                 <span th:unless="${processo.aluno} == null" th:text="${processo.aluno.nome}?:'-'"></span><br>
@@ -96,18 +106,9 @@
                                     </div>
 
                                     <div th:if="${processo.tipoDecisao != null and professor.id != processo.relator.id}">
-                                        <div class="form-check mb-3 mt-3">
-                                            <input class="form-check-input" type="radio" th:name="${processo.id}" th:id="${processo.id}">
-                                            <label class="form-check-label" th:for="${processo.id}">
-                                            Favoravel ao Relator
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" th:name="${processo.id}" th:id="${processo.id}">
-                                            <label class="form-check-label"  th:for="${processo.id}">
-                                            Contrário ao Relator
-                                            </label>
-                                        </div>
+                                        <form method="post">
+                                            <button type="submit" class="btn btn-primary">Votar</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -115,9 +116,7 @@
                         </div>
                     </div>
                 </div>
-                <form method="post">
-                    <button type="submit" class="btn btn-primary">Votar</button>
-                </form>
+                
             </div>
         </div>
     </div>
