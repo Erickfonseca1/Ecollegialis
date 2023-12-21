@@ -82,6 +82,16 @@ public class ReuniaoService {
         return reuniaoRepository.findByColegiadoId(colegiado.getId());
     }
 
+    // método que verifica se todos os processos da reunião já foram julgados
+    public boolean todosProcessosJulgados(Reuniao reuniao) {
+        for (Processo processo : reuniao.getProcessos()) {
+            if (!processo.getStatus().equals(StatusEnum.JULGADO)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public boolean temReuniaoEmAndamento(Colegiado colegiado) {
         List<Reuniao> reunioes = this.getReunioesPorColegiado(colegiado);
         System.out.println(reunioes);

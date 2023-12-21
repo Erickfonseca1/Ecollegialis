@@ -254,7 +254,7 @@ public class ColegiadosController {
     }
 
     @GetMapping("reunioes/{idReuniao}")
-    public ModelAndView listarReuniao(ModelAndView model, @PathVariable("idReuniao") Long idReuniao, Principal principal) {
+    public ModelAndView listarReuniao(ModelAndView model, @PathVariable("idReuniao") Long idReuniao, Principal principal, RedirectAttributes redirectAttributes) {
         Professor professor = this.professorService.getProfessorPorMatricula(principal.getName());
         Reuniao reuniao = this.reuniaoService.getReuniaoPorId(idReuniao);
         Colegiado colegiado = reuniao.getColegiado();
@@ -266,10 +266,15 @@ public class ColegiadosController {
         //     votosProfessor.put(processo, professorVotou);
         // }
 
+        boolean reuniaoPodeEncerrar = this.reuniaoService.todosProcessosJulgados(reuniao);
+        System.out.println("reuniao pode encerrar: " + reuniaoPodeEncerrar);
+
         // model.addObject("votosProfessor", votosProfessor);
         model.addObject("reuniaoEmAndamento", reuniaoEmAndamento);
+        model.addObject("reuniaoPodeEncerrar", reuniaoPodeEncerrar);
+        model.addObject("mensagem", "Não é possível encerrar a reunião, pois há processos que ainda não foram julgados");
         model.addObject("professor", professor);
-        model.addObject("reuniao", this.reuniaoService.getReuniaoPorId(idReuniao));
+        model.addObject("reuniao", reuniao);
         model.setViewName("Coordenador/reuniao");
         return model;
     }
@@ -291,6 +296,33 @@ public class ColegiadosController {
             model.setViewName("redirect:/colegiados/reunioes");
             return model;
         }
+    }
+
+    @PostMapping("reunioes/encerrar/{idReuniao}")
+    public ModelAndView encerrarReuniao(ModelAndView model, Principal principal, @PathVariable("idReuniao") Long idReuniao, RedirectAttributes redirectAttributes) {
+        Reuniao reuniao = this.reuniaoService.getReuniaoPorId(idReuniao);
+
+        boolean reuniaoPodeEncerrar = this.reuniaoService.todosProcessosJulgados(reuniao);
+        System.out.println("reuniao pode encerrar: " + reuniaoPodeEncerrar);
+        
+        if (reuniaoPodeEncerrar) {
+            this.reuniaoService.encerrarReuniao(reuniao, idReuniao);
+            model.addObject("reuniao", this.reuniaoService.getReuniaoPorId(idReuniao));
+            model.addObject("reuniaoPodeEncerrar", reuniaoPodeEncerrar);
+            
+            model.setViewName("redirect:/colegiados/reunioes/" + idReuniao);
+            return model;
+        } else {
+            Professor professor = this.professorService.getProfessorPorMatricula(principal.getName());
+            Coordenador coordenador = coordenadorService.getCoordenadorPorProfessor(professor.getId());
+            Colegiado colegiado = colegiadoService.getColegiadoPorCoordenador(coordenador);
+            //passar uma mensagem de que não é possível encerrar a reunião
+            redirectAttributes.addFlashAttribute("mensagem", "Não é possível encerrar a reunião, pois há processos que ainda não foram julgados");
+            model.addObject("reunioes", colegiado.getReunioes());
+            model.setViewName("redirect:/colegiados/reunioes/" + idReuniao);
+            return model;
+        }
+
     }
 
     @GetMapping("reunioes/{idReuniao}/processo/{idProcesso}")

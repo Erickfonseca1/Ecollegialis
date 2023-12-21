@@ -45,7 +45,7 @@
             <p th:field="*{status}" th:text="${reuniao.status}"></p>
         </div>
         <div class="mb-3" th:if="${#strings.equals(reuniao.status, 'PROGRAMADA')}">
-            <form style="margin-right: 10px;" th:action="@{/colegiados/reunioes/iniciar/{idReuniao}(idReuniao=${reuniao.id})}" method="post">
+            <form th:action="@{/colegiados/reunioes/iniciar/{idReuniao}(idReuniao=${reuniao.id})}" method="post">
                 <button type="submit" th:if="${reuniaoEmAndamento == false}" class="btn btn-primary">Iniciar reunião</button>
                 
                 <div th:if="${reuniaoEmAndamento == true}">
@@ -55,8 +55,19 @@
 
             </form>
         </div>
+        <div class="mb-3" >
+            <form th:action="@{/colegiados/reunioes/encerrar/{idReuniao}(idReuniao=${reuniao.id})}" method="post">
+                <button type="submit" th:if="${reuniaoPodeEncerrar and #strings.equals(reuniao.status, 'EM_ANDAMENTO')}" class="btn btn-primary">Finalizar reunião</button>
+
+                <div th:if="${reuniaoPodeEncerrar == false}">
+                    <button type="submit" disabled class="btn btn-primary">Finalizar reunião</button>
+                    <p th:text="${mensagem}"></p>
+                </div>
+
+            </form>
+        </div>
+        
     </div>
-    <!-- FORM DE PROCESSO -->
     <div class="container" th:object="${reuniao}">
         <div class="row">
 
@@ -86,16 +97,19 @@
                                 <span th:unless="${processo.relator} == null" th:text="${processo.relator.nome}"></span><br>
                                 <strong>Decisão:</strong> <span th:if="${processo.tipoDecisao} == null">-</span>
                                 <span th:unless="${processo.tipoDecisao} == null" th:text="${processo.tipoDecisao}"></span><br>
-                                <hr>
-                                <strong>Votação</strong>
-                                <div th:object="${professor}">
-                                    <div th:if="${processo.tipoDecisao == null}" class="mt-3">O relator ainda não votou nesse processo</div>
-                                    <div th:if="${processo.tipoDecisao != null and professor.id == processo.relator.id}">
-                                        não é possível votar no seu próprio processo
-                                    </div>
 
-                                    <div th:if="${processo.tipoDecisao != null and professor.id != processo.relator.id}">
-                                        <a th:href="@{/colegiados/reunioes/{idReuniao}/processo/{idProcesso}(idReuniao=${reuniao.id},idProcesso=${processo.id})}" class="btn btn-primary">Votar</a>
+                                <div th:if="${reuniaoEmAndamento == true}">
+                                    <hr>
+                                    <strong>Votação</strong>
+                                    <div th:object="${professor}">
+                                        <div th:if="${processo.tipoDecisao == null}" class="mt-3">O relator ainda não votou nesse processo</div>
+                                        <div th:if="${processo.tipoDecisao != null and professor.id == processo.relator.id}">
+                                            não é possível votar no seu próprio processo
+                                        </div>
+    
+                                        <div th:if="${processo.tipoDecisao != null and professor.id != processo.relator.id}">
+                                            <a th:href="@{/colegiados/reunioes/{idReuniao}/processo/{idProcesso}(idReuniao=${reuniao.id},idProcesso=${processo.id})}" class="btn btn-primary">Votar</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -106,6 +120,7 @@
             
             </div>
         </div>
+        
     </div>
 </main>
 </body>
