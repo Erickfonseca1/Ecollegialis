@@ -36,10 +36,6 @@ public class AdminService {
     @Autowired
     AuthorityRepository authorityRepository;
 
-    // ñ estou adicionando o colegiadoRepository pq o colegiado ñ será criado pelo admin
-    // @Autowired
-    // ColegiadoRepository colegiadoRepository;
-
     @Autowired
     private AssuntoRepository assuntoRepository;
 

@@ -1,7 +1,5 @@
 package br.edu.ifpb.tsi.pweb2.ecollegialis.controller;
 
-import java.security.Principal;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;

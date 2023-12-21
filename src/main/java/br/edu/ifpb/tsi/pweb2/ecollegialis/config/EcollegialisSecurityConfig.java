@@ -2,7 +2,6 @@ package br.edu.ifpb.tsi.pweb2.ecollegialis.config;
 
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -24,13 +23,10 @@ import org.springframework.security.web.SecurityFilterChain;
 public class EcollegialisSecurityConfig {
     private DataSource dataSource;
 
-    @Autowired
     public EcollegialisSecurityConfig(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-
-    // definiçao das restrições nas rotas para cada tipo de usuário
     @Bean
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
@@ -52,13 +48,11 @@ public class EcollegialisSecurityConfig {
         return http.build();
     }
 
-    // definição do password encoder utilizando BCrypt
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // definição do user details service
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails admin = User.withUsername("admin")
@@ -75,7 +69,6 @@ public class EcollegialisSecurityConfig {
         return users;
     }
 
-    // definição do provider de autenticação
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();

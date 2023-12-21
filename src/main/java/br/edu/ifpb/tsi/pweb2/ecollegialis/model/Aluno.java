@@ -41,8 +41,6 @@ public class Aluno {
     @JoinColumn(name="curso")
     private Curso curso;
 
-    //preferi não inserir atributo Boolean admin, pois não vejo situações onde aluno é admin
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username")
     private User user;

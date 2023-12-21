@@ -3,7 +3,6 @@ package br.edu.ifpb.tsi.pweb2.ecollegialis.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,12 +13,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.*;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.*;
-import jakarta.validation.Valid;
-
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/coordenador/processos")
@@ -37,15 +32,6 @@ public class ProcessoCoordenadorController {
 
     @Autowired
     private AlunoService alunoService;
-
-    @Autowired
-    private AdminService adminService;
-
-    @Autowired
-    private ColegiadoService colegiadoService;
-
-    @Autowired
-    private ReuniaoService reuniaoService;
 
     @ModelAttribute("coordenador")
     public Coordenador getCoordenador(Principal principal) {
@@ -99,22 +85,4 @@ public class ProcessoCoordenadorController {
         model.setViewName("redirect:/coordenador/processos");
         return model;
     }
-
-    // @GetMapping("{idProcesso}/atribuir-colegiado")
-    // public ModelAndView exibirProcessoColegiado(ModelAndView model, @PathVariable("idProcesso") Long id) {
-    //     model.addObject("processo", processoService.getProcessoPorId(id));
-    //     model.addObject("colegiados", colegiadoService.getColegiados());
-    //     model.setViewName("Coordenador/atribuirColegiado");
-    //     return model;
-    // }
-    
-    // @PostMapping("{idProcesso}/atribuir-colegiado")
-    // public ModelAndView atribuirProcessoColegiado(
-    //         ModelAndView model,
-    //         @ModelAttribute("processo") Processo processo,
-    //         @PathVariable("idProcesso") Long idProcesso) {
-    //     colegiadoService.atribuirProcessoAoColegiado(processo, idProcesso);
-    //     model.setViewName("redirect:/coordenador/processos");
-    //     return model;
-    // }
 }

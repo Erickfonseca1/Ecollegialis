@@ -26,9 +26,6 @@ public class ProcessoProfessorController {
 
     @Autowired
     private ReuniaoService reuniaoService;
-    
-    @Autowired
-    private AdminService adminService;
 
     @ModelAttribute("professor")
     public Professor getProfessor(Principal principal){
@@ -45,7 +42,6 @@ public class ProcessoProfessorController {
         return TipoDecisao.INDEFERIDO;
     }
 
-    //----- PROCESSOS -----
     @GetMapping
     public ModelAndView listarProcessoProfessores(ModelAndView model,Principal principal){
         Professor professor = this.professorService.getProfessorPorMatricula(principal.getName());
@@ -70,7 +66,6 @@ public class ProcessoProfessorController {
         return model;
     }
 
-    //----- REUNIÕES -----
     @GetMapping("/reunioes")
     public ModelAndView listarReunioesProfessor(
             ModelAndView model,

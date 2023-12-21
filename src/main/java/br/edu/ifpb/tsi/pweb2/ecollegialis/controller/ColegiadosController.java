@@ -2,9 +2,7 @@ package br.edu.ifpb.tsi.pweb2.ecollegialis.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +20,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusEnum;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.StatusReuniao;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.TipoDecisao;
-import br.edu.ifpb.tsi.pweb2.ecollegialis.enums.TipoVoto;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.model.*;
 import br.edu.ifpb.tsi.pweb2.ecollegialis.service.*;
 import jakarta.validation.Valid;
@@ -79,7 +76,6 @@ public class ColegiadosController {
     @PreAuthorize("hasRole('COORDENADOR')")
     public ModelAndView criarColegiados(ModelAndView model, Principal principal){
         List<Professor> membros = new ArrayList<Professor>();
-        //buscar o nome do professor associado via id ao coordenador
         Professor professor = this.professorService.getProfessorPorMatricula(principal.getName());
         Coordenador coordenador = this.coordenadorService.getCoordenadorPorProfessor(professor.getId());
 
@@ -165,11 +161,11 @@ public class ColegiadosController {
         }
 
         if (professor != null) {
-            // achar as reuniões de colegiado que o professor participa
+            // reuniões de colegiado que o professor participa
             Colegiado colegiado = professor.getListaColegiados().get(0);
             List<Reuniao> reunioes = colegiado.getReunioes();
 
-            //para ver de qual reunião o professor é membro
+            // ver de qual reunião o professor é membro
             List<Reuniao> reunioesProfessor = new ArrayList<>();
             for (Reuniao reuniao : reunioes) {
                 if (reuniao.getColegiado().getMembros().contains(professor)) {
@@ -192,9 +188,6 @@ public class ColegiadosController {
         Colegiado colegiado = coordenador != null ? colegiadoService.getColegiadoPorCoordenador(coordenador) : null;
         List<Professor> membros = colegiado.getMembros();
 
-
-        // filtrar processos do colegiado que não possuam status de "EM_PAUTA, pois já está numa reunião
-        // "EM_JULGAMENTO" e "JULGADO", pois já estão em trâmite e também que possuam relator
         List<Processo> processosDisponiveis = colegiado != null ? colegiado.getProcessos().stream()
                 .filter(processo -> processo.getStatus() != StatusEnum.EM_PAUTA && processo.getStatus() != StatusEnum.EM_JULGAMENTO && processo.getStatus() != StatusEnum.JULGADO && processo.getRelator() != null)
                 .collect(Collectors.toList()) : new ArrayList<>();
@@ -314,7 +307,7 @@ public class ColegiadosController {
             Professor professor = this.professorService.getProfessorPorMatricula(principal.getName());
             Coordenador coordenador = coordenadorService.getCoordenadorPorProfessor(professor.getId());
             Colegiado colegiado = colegiadoService.getColegiadoPorCoordenador(coordenador);
-            //passar uma mensagem de que não é possível encerrar a reunião
+
             redirectAttributes.addFlashAttribute("mensagem", "Não é possível encerrar a reunião, pois há processos que ainda não foram julgados");
             model.addObject("reunioes", colegiado.getReunioes());
             model.setViewName("redirect:/colegiados/reunioes/" + idReuniao);
@@ -332,7 +325,6 @@ public class ColegiadosController {
         TipoDecisao decisaoTemporaria = processo.getTipoDecisao();
         String numProcesso = processo.getNumero();
 
-        // achar professor relator do processo
         Professor relator = processo.getRelator();
         Voto voto = new Voto();
 
@@ -351,18 +343,16 @@ public class ColegiadosController {
 
     @PostMapping("reunioes/{idReuniao}/processo/{idProcesso}/votar")
     public ModelAndView votar(ModelAndView model, @PathVariable("idReuniao") Long idReuniao, @PathVariable("idProcesso") Long idProcesso, Voto voto, Principal principal) {
-        // adicionar o voto que vem do form à listaDeVotos do processo, e salvar o processo
-        // caso a listaDeVotos esteja vazia e receba o primeiro voto, o processo é alterado para "EM_JULGAMENTO"
+        // adiciona o voto que vem do form à listaDeVotos do processo, e salvar o processo
         Processo processo = this.processoService.getProcessoPorId(idProcesso);
         Professor professor = this.professorService.getProfessorPorMatricula(principal.getName());
-        Reuniao reuniao = this.reuniaoService.getReuniaoPorId(idReuniao);
 
         voto.setProfessor(professor);
         voto.setProcesso(processo);
         List<Voto> listaVotosAtual = processo.getListaDeVotos();
         this.votoService.salvarVoto(voto);
         
-
+        // caso a listaDeVotos esteja vazia e receba o primeiro voto, o processo é alterado para "EM_JULGAMENTO"
         if (listaVotosAtual.isEmpty()) {    
             processo.setStatus(StatusEnum.EM_JULGAMENTO);
         }
@@ -373,7 +363,6 @@ public class ColegiadosController {
         // o processo é alterado seu status para "JULGADO" e o resultado é definido
         if (listaVotosAtual.size() == processo.getReuniao().getColegiado().getMembros().size() - 1) {
 
-            // verifica se há mais votos contrários ou a favor do voto do relator
             int votosContra = 0;
             int votosFavor = 0;
 

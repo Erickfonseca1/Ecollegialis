@@ -21,7 +21,7 @@ public class UserService {
 
         String result;
 
-        //se authorities possuir ROLE_COORDENADOR, então redireciona para /coordenador
+        //se user authorities possuir ROLE_COORDENADOR, então redireciona para /coordenador
         if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_COORDENADOR"))) {
             result = "/coordenador/home";
         } else if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_PROFESSOR"))) {
