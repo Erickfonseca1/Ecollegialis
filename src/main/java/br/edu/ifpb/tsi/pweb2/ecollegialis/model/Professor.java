@@ -27,7 +27,7 @@ public class Professor {
     private String fone;
 
     @NotBlank(message="Campo obrigatório")
-    @Pattern(regexp = "[0-9]{11}" , message = "Matrícula inválida")
+    @Matricula
     private String matricula;
 
     @NotBlank(message="Campo obrigatório")
