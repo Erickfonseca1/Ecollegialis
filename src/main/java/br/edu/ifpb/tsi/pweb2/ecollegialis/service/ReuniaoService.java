@@ -25,10 +25,6 @@ public class ReuniaoService {
         return this.reuniaoRepository.findById(id).orElse(null);
     }
 
-    public void apagarReuniao(Long id){
-        this.reuniaoRepository.deleteById(id);
-    }
-
     public Reuniao iniciarReuniao(Reuniao reuniao, Long id) throws Exception{
         for(Reuniao reuniao2 : this.reuniaoRepository.findAll()){
             if(reuniao2.getStatus().equals(StatusReuniao.EM_ANDAMENTO)){
@@ -82,7 +78,7 @@ public class ReuniaoService {
         return reuniaoRepository.findByColegiadoId(colegiado.getId());
     }
 
-    // método que verifica se todos os processos da reunião já foram julgados
+    // verifica se todos os processos da reunião já foram julgados
     public boolean todosProcessosJulgados(Reuniao reuniao) {
         for (Processo processo : reuniao.getProcessos()) {
             if (!processo.getStatus().equals(StatusEnum.JULGADO)) {

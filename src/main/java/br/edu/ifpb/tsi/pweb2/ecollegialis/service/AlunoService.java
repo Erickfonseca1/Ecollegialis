@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class AlunoService {
@@ -24,16 +23,6 @@ public class AlunoService {
 
     public Aluno getAlunoPorMatricula(String matricula){
         return this.alunoRepository.findByMatricula(matricula);
-    }
-
-    public List<Aluno> getAlunosDeUmCurso(Long id){
-        List<Aluno> alunos = new ArrayList<>();
-        for (Aluno aluno : this.alunoRepository.findAll()){
-            if(Objects.equals(aluno.getCurso().getId(), id)){
-                alunos.add(aluno);
-            }
-        }
-        return alunos;
     }
 
     public List<Aluno> getAlunosComProcessos(){

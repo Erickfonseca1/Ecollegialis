@@ -31,7 +31,6 @@ public class ColegiadoService {
         }
     }
 
-
     public Colegiado salvarColegiado(Colegiado colegiado){
         Coordenador coordenador = colegiado.getCoordenador();
         if (coordenador != null) {
@@ -49,13 +48,5 @@ public class ColegiadoService {
 
     public void deletarColegiado(Long id) {
         this.colegiadoRepository.deleteById(id);
-    }
-
-    public void atribuirProcessoAoColegiado(Processo processo, Long idProcesso) {
-        Colegiado colegiado = this.getColegiadoPorId(idProcesso);
-        if (colegiado != null) {
-            colegiado.adicionarProcesso(processo);
-            this.colegiadoRepository.save(colegiado);
-        }
     }
 }

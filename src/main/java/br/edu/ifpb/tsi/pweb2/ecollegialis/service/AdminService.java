@@ -177,7 +177,6 @@ public class AdminService {
             professorBD.setSenha(passwordEncrypt);
             professorBD.setUser(user);
         } else {
-            //aqui eu faço a busca pelo professor no banco de dados. Se ele existir, eu copio as propriedades do professor que veio do formulário para o professor que está no banco de dados
             professorBD = professorRepository.findByMatricula(professor.getMatricula());
             BeanUtils.copyProperties(professor, professorBD, "senha", "processos", "matricula", "user");
             boolean matchPassword = hash.matches(professor.getSenha(), professorBD.getSenha());
