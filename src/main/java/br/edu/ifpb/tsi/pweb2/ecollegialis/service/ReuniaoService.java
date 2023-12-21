@@ -77,4 +77,19 @@ public class ReuniaoService {
     public List<Reuniao> getReunioesFinalizadasDoColegiado(Colegiado colegiado) {
         return reuniaoRepository.findByColegiadoAndStatus(colegiado, StatusReuniao.ENCERRADA);
     }
+
+    public List<Reuniao> getReunioesPorColegiado(Colegiado colegiado) {
+        return reuniaoRepository.findByColegiadoId(colegiado.getId());
+    }
+
+    public boolean temReuniaoEmAndamento(Colegiado colegiado) {
+        List<Reuniao> reunioes = this.getReunioesPorColegiado(colegiado);
+        System.out.println(reunioes);
+        for (Reuniao reuniao : reunioes) {
+            if (reuniao.getStatus().equals(StatusReuniao.EM_ANDAMENTO)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

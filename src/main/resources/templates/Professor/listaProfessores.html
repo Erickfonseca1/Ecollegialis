@@ -53,9 +53,9 @@
                     <form th:action="@{professores/editar/{id}(id=${professor.id})}">
                         <button type="submit" class="btn btn-primary">Editar</button>
                     </form>
-                    <form style="margin-right: 10px;" th:action="@{professores/deletar/{id}(id=${professor.id})}">
+                    <form style="margin-right: 10px;" th:action="@{professores/deletar/{id}(id=${professor.id})}" method="post">
                         <button type="submit" class="btn btn-danger">Excluir</button>
-                    </form>
+                    </form> 
                 </div>
             </td>
         </tr>

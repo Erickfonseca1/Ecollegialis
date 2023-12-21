@@ -37,13 +37,22 @@
 <body>
 <div th:replace="~{sidebar :: aside('Reunião')}"></div>
 <main>
-    <div class="container">
+    <div class="container" th:object="${reuniao}">
         <div>
             <h1>Reunião</h1>
         </div>
-        <div class="mb-3" th:object="${reuniao}" th:if="${reuniao.status == 'PROGRAMADA'} ">
-            <form style="margin-right: 10px;" th:action="@{/iniciar/{idReuniao}(idReuniao=${reuniao.id})}" method="post">
-                <button type="submit" class="btn btn-primary">Iniciar reunião</button>
+        <div>
+            <p th:field="*{status}" th:text="${reuniao.status}"></p>
+        </div>
+        <div class="mb-3" th:if="${#strings.equals(reuniao.status, 'PROGRAMADA')}">
+            <form style="margin-right: 10px;" th:action="@{/colegiados/reunioes/iniciar/{idReuniao}(idReuniao=${reuniao.id})}" method="post">
+                <button type="submit" th:if="${reuniaoEmAndamento == false}" class="btn btn-primary">Iniciar reunião</button>
+                
+                <div th:if="${reuniaoEmAndamento == true}">
+                    <button type="submit" disabled class="btn btn-primary">Iniciar reunião</button>
+                    <p>Não é possível iniciar um reuniao caso outra esteja em andamento</p>
+                </div>
+
             </form>
         </div>
     </div>

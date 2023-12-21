@@ -12,4 +12,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReuniaoRepository extends JpaRepository<Reuniao,Long>{
     List<Reuniao> findByColegiadoAndStatus(Colegiado colegiado, StatusReuniao status);
+
+    List<Reuniao> findByColegiado(Colegiado colegiado);
+
+    List<Reuniao> findByColegiadoId(Long id);
 }

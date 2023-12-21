@@ -257,7 +257,9 @@ public class ColegiadosController {
     public ModelAndView listarReuniao(ModelAndView model, @PathVariable("idReuniao") Long idReuniao, Principal principal) {
         Professor professor = this.professorService.getProfessorPorMatricula(principal.getName());
         Reuniao reuniao = this.reuniaoService.getReuniaoPorId(idReuniao);
+        Colegiado colegiado = reuniao.getColegiado();
 
+        boolean reuniaoEmAndamento = this.reuniaoService.temReuniaoEmAndamento(colegiado);
         // Map<Processo, Boolean> votosProfessor = new HashMap<>();
         // for (Processo processo : reuniao.getProcessos()) {
         //     boolean professorVotou = processo.professorVotou(professor);
@@ -265,6 +267,7 @@ public class ColegiadosController {
         // }
 
         // model.addObject("votosProfessor", votosProfessor);
+        model.addObject("reuniaoEmAndamento", reuniaoEmAndamento);
         model.addObject("professor", professor);
         model.addObject("reuniao", this.reuniaoService.getReuniaoPorId(idReuniao));
         model.setViewName("Coordenador/reuniao");
@@ -380,7 +383,7 @@ public class ColegiadosController {
             model.setViewName("redirect:/colegiados/reunioes/" + idReuniao);
             return model;
         }
-        
+
         System.out.println("lista de votos atual: " + listaVotosAtual);
         processo.setListaDeVotos(listaVotosAtual);
 
