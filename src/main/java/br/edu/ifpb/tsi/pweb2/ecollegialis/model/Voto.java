@@ -22,7 +22,7 @@ public class Voto {
     private Long id;
     private boolean ausente;
 
-    @OneToOne
+    @ManyToOne
     private Professor professor;
 
     @ManyToOne

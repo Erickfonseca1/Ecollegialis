@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+    <style>
+        body {
+            display: flex;
+            flex-direction: row;
+        }
+    
+        .container {
+            width: 100%;
+            margin: 0;
+            padding: 30px;
+
+            .header {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+
+                .info {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: start;
+                margin-bottom: 20px;
+                }
+    
+                .btn-lista-assuntos {
+                    display: flex;
+                    justify-content: flex-end;
+                    margin-bottom: 20px;
+                }
+            }
+
+            
+        }
+    </style>
+    <head th:replace="~{layouts :: head('Novo Assunto')}"></head>
+    <body>
+        <div th:replace="~{sidebar :: aside('Novo Assunto')}"></div>
+        <div class="container" >
+            <h1 style="margin-bottom: 20px;margin-top: 20px;">Sessão de votação</h1>
+            <p th:text="${professor.nome} + ' - Processo ' + ${numProcesso}"></p>
+            <!-- INICIO DO FORM -->
+            <div th:object="${processo}">
+
+              <div class="mb-3">
+                <label>Número do Processo:</label>
+                <div th:text="${processo.numero}"></div>
+            </div>
+            <div class="mb-3">
+                <label>Data da Criação:</label>
+                <div th:text="${processo.dataCriacao}"></div>
+            </div>
+            <div class="mb-3">
+                <label>Data da Distribuição:</label>
+                <div th:text="${processo.dataDistribuicao}"></div>
+            </div>
+            <div class="mb-3">
+                <label>Relator:</label>
+                <div th:text="${processo.relator.nome}"></div>
+            </div>
+            <div class="mb-3">
+                <label>Aluno:</label>
+                <div th:text="${processo.aluno.nome}"></div>
+            </div>
+            <div class="mb-3">
+                <label>Assunto:</label>
+                <div th:text="${processo.assunto.nome}"></div>
+            </div>
+            <div class="mb-3">
+                <label>Motivo do Requerimento:</label>
+                <div th:text="${processo.textoRequerimento}"></div>
+            </div>
+            <div class="mb-3">
+                <label>Decisão do Processo:</label>
+                <div th:text="${processo.tipoDecisao}"></div>
+            </div>
+            <div class="mb-3">
+                <label>Justificativa do Relator:</label>
+                <div th:text="${processo.parecerRelator}"></div>
+            </div>
+            <hr>
+
+            <form th:action="@{/colegiados/reunioes/{idReuniao}/processo/{idProcesso}/votar(idReuniao=${reuniao.id}, idProcesso=${processo.id})}" th:object="${voto}" method="post">
+              <div class="mb-3">
+                <label for="data" class="form-label">Declare seu voto:</label>
+                <select class="form-select" id="processo" th:field="*{tipoVoto}">
+                    <option th:value="'COM_RELATOR'" th:text="COM_RELATOR"></option>
+                    <option th:value="'DIVERGENTE'" th:text="DIVERGENTE"></option>
+                </select>
+
+                <div class="mb-3">
+                  <button type="submit" class="btn btn-primary">Votar</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+
+        </div>
+    </body>
+</html>

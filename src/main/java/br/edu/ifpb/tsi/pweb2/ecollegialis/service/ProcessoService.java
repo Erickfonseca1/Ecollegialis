@@ -40,6 +40,11 @@ public class ProcessoService {
     }
 
     public Processo atualizarProcesso(Processo processo, Long id){
+        
+        if (processo.getStatus() == StatusEnum.JULGADO) {
+            return null;
+        }
+
         Processo processoAtualizado = this.processoRepository.findById(id).orElse(new Processo());
         processoAtualizado.setParecerRelator(processo.getParecerRelator());
         processoAtualizado.setTipoDecisao(processo.getTipoDecisao());

@@ -73,4 +73,13 @@ public class Processo {
         return ""+this.numero+","+this.aluno;
     }
 
+    public boolean professorVotou(Professor professor) {
+        for (Voto voto : this.listaDeVotos) {
+            if (voto.getProfessor().equals(professor)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
