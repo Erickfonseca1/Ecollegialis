@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="www.thymeleaf.org">
-<head th:replace="~{layouts :: head('Lista de professores')}"></head>
 <style>
     body {
         display: flex;
@@ -12,95 +11,58 @@
         margin: 0;
         padding: 30px;
 
-        .btn-novo-professor {
+        .btn-nova-reuniao {
             display: flex;
             justify-content: flex-end;
             margin-bottom: 20px;
         }
-
-        h1 {
-            margin-top: 20px;
-        }
-
-        .btn-group {
-            margin-bottom: 20px;
-        }
-
-        .card {
-            margin-bottom: 20px;
-        }
-
-        .card-title {
-            font-size: 1.5rem;
-        }
-
-        .card-text {
-            margin-top: 10px;
-        }
-
-        .btn-primary {
-            margin-top: 10px;
-        }
-
-        .row {
-            margin-top: 20px;
-        }
-
-        p {
-            margin-bottom: 0;
-        }
-
-        .btn-primary {
-            margin-top: 10px;
-        }
-
-        .mb-3 {
-            margin-bottom: 10px;
-        }
     }
 </style>
+<head th:replace="~{layouts :: head('Lista de professores')}"></head>
 <body>
     <div th:replace="~{sidebar :: aside('Lista de professores')}"></div>
     <div class="container">
         <h1>Listagem de Reuniões</h1>
-        <div class="d-flex justify-content-between align-items-center">
-            <div class="btn-group">
-                <div class="input-group mb-3">
-                    <label class="input-group-text" for="filterStatus">Status da Reunião</label>
-                    <select class="form-select" id="filterStatus">
-                        <option value="" selected>Todos</option>
-                        <option value="Encerrada">Encerrada</option>
-                        <option value="Programada">Programada</option>
-                    </select>
-                </div>
-            </div>
+        <div class="btn-nova-reuniao">
+            <a th:href="@{reunioes/criar}" class="btn" style="background-color: #236da3; color: #fff;">Criar Reunião</a>
         </div>
-        <a th:href="@{reunioes/criar}" class="btn btn-primary justify-self-end">Criar Reunião</a>
-        <div class="row">
-            <div th:each="reuniao:${reunioes}" class="col-sm-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${reuniao.id}?:'-'"></h5>
-                        <p class="card-text">
-                            <strong>Data:</strong> <span th:if="${reuniao.dataReuniao} == null">-</span>
-                            <span th:unless="${reuniao.dataReuniao} == null" th:text="${reuniao.dataReuniao}?:'-'"></span><br>
-                            <strong>Status da Reunião:</strong> <span th:text="${reuniao.status}?:'-'"></span><br>
-                            <strong>Quantidade de Processos:</strong> <span th:if="${reuniao.processos} == null">-</span>
-                            <span th:unless="${reuniao.processos} == null" th:text="${reuniao.processos.size()}"></span>
-                        </p>
-                        <a th:href="@{reunioes/{idReuniao}(idReuniao=${reuniao.id})}" type="button" class="btn btn-primary">Consultar</a>
+
+        <th:block th:if="${not #lists.isEmpty(reunioes)}">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="filterStatus">Status da Reunião</label>
+                        <select class="form-select" id="filterStatus">
+                            <option value="" selected>Todos</option>
+                            <option value="Encerrada">Encerrada</option>
+                            <option value="Programada">Programada</option>
+                        </select>
                     </div>
                 </div>
             </div>
-        </div>
+            <div class="row">
+                <div th:each="reuniao:${reunioes}" class="col-sm-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${reuniao.id}?:'-'"></h5>
+                            <p class="card-text">
+                                <strong>Data:</strong> <span th:if="${reuniao.dataReuniao} == null">-</span>
+                                <span th:unless="${reuniao.dataReuniao} == null" th:text="${reuniao.dataReuniao}?:'-'"></span><br>
+                                <strong>Status da Reunião:</strong> <span th:text="${reuniao.status}?:'-'"></span><br>
+                                <strong>Quantidade de Processos:</strong> <span th:if="${reuniao.processos} == null">-</span>
+                                <span th:unless="${reuniao.processos} == null" th:text="${reuniao.processos.size()}"></span>
+                            </p>
+                            <a th:href="@{reunioes/{idReuniao}(idReuniao=${reuniao.id})}" type="button" class="btn btn-primary">Consultar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </th:block>
 
         <th:block th:if="${#lists.isEmpty(reunioes)}">
             <p>Não há reuniões disponíveis.</p>
         </th:block>
     </div>
-    <script th:src="@{/js/bootstrap.buddle.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
-    <script th:src="@{/js/popper.min.js}"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     
     <!-- FILTRO POR STATUS-->

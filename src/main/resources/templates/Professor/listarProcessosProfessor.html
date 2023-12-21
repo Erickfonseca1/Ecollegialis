@@ -29,23 +29,23 @@
 <body>
     <div th:replace="~{sidebar :: aside('Lista dos Processos')}"></div>
     <div class="container">
-        <h1>Processos Atribuidos</h1>
-        <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 20px;">
-            <div class="btn-group">
-                <div class="input-group mb-3" style="margin-right: 10px;">
-                    <label class="input-group-text" for="filterStatus">Status</label>
-                    <select class="form-select" id="filterStatus">
-                        <option value="" selected>Todos</option>
-                        <option value="Criado">Criado</option>
-                        <option value="Distribuido">Distribuído</option>
-                        <option value="Em pauta">Em pauta</option>
-                        <option value="Em julgamento">Em julgamento</option>
-                        <option value="Julgado">Julgado</option>
-                    </select>
+        <h1 class="mb-3">Processos Atribuidos</h1>
+        <th:block th:if="${not #lists.isEmpty(processos)}">
+            <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 20px;">
+                <div class="btn-group">
+                    <div class="input-group mb-3" style="margin-right: 10px;">
+                        <label class="input-group-text" for="filterStatus">Status</label>
+                        <select class="form-select" id="filterStatus">
+                            <option value="" selected>Todos</option>
+                            <option value="Criado">Criado</option>
+                            <option value="Distribuido">Distribuído</option>
+                            <option value="Em pauta">Em pauta</option>
+                            <option value="Em julgamento">Em julgamento</option>
+                            <option value="Julgado">Julgado</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
-        <th:block th:if="${not #lists.isEmpty(processos)}">
             <table class="table table-ligth table-striped mt-2">
                 <thead>
                     <tr>

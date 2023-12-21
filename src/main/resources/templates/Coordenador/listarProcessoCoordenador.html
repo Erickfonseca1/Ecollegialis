@@ -23,92 +23,102 @@
             width: 100%;
             margin-bottom: 20px;
         }
+
+        .card {
+            margin-bottom: 16px;
+        }
     }
 </style>
 <head th:replace="~{layouts :: head('Lista dos Processos')}"></head>
 <body>
 <div th:replace="~{sidebar :: aside('Lista dos Processos')}"></div>
-<div style="margin: 30px;">
-    <h1 class="ma-5">Listagem de Processos por Coordenador</h1>
-    <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 20px;">
-        <div class="btn-group">
-            <div class="input-group mb-3" style="margin-right: 10px;">
-                <label class="input-group-text" for="filterStatus">Status</label>
-                <select class="form-select" id="filterStatus">
-                    <option value="" selected>Todos</option>
-                    <option value="Criado">Criado</option>
-                    <option value="Distribuido">Distribuído</option>
-                    <option value="Em pauta">Em pauta</option>
-                    <option value="Em julgamento">Em julgamento</option>
-                    <option value="Julgado">Julgado</option>
-                </select>
-            </div>
-            <div class="input-group mb-3" style="margin-right: 10px;">
-                <label class="input-group-text" for="filterAluno">Aluno</label>
-                <select class="form-select" id="filterAluno">
-                    <option value="">Todos</option>
-                    <option th:each="aluno:${alunos}" th:value="${aluno.nome}">[[${aluno.nome}]]</option>
-                </select>
-            </div>
-            <div class="input-group mb-3">
-                <label class="input-group-text" for="filterRelator">Relator</label>
-                <select class="form-select" id="filterRelator">
-                    <option selected value="-">Todos</option>
-                    <option th:each="relator:${relatores}" th:value="${relator.nome}">[[${relator.nome}]]</option>
-                </select>
-            </div>
-        </div>
-    </div>
-    <div th:each="processo:${processos}" class="card" style="width: 100%;">
-        <div class="card-body">
-            <h5 class="card-title" th:text="${processo.numero}?:'-'"></h5>
-            <p class="card-text">
-                <strong>Aluno:</strong> <span th:if="${processo.aluno} == null">-</span>
-                <span th:unless="${processo.aluno} == null" th:text="${processo.aluno.nome}?:'-'"></span><br>
-                <strong>Estado:</strong> <span th:text="${processo.status}?:'-'"></span><br>
-                <strong>Assunto:</strong> <span th:if="${processo.assunto} == null">-</span>
-                <span th:unless="${processo.assunto} == null" th:text="${processo.assunto.nome}"></span><br>
-                <strong>Data de Criação:</strong> <span th:text="${processo.dataCriacao}?:'-'"></span><br>
-                <strong>Relator:</strong> <span th:if="${processo.relator} == null">-</span>
-                <span th:unless="${processo.relator} == null" th:text="${processo.relator.nome}"></span><br>
-                <strong>Decisão:</strong> <span th:if="${processo.tipoDecisao} == null" >-</span>
-                <span th:unless="${processo.tipoDecisao} == null" th:text="${processo.tipoDecisao}"></span><br>
-                <strong>Colegiado:</strong> <span th:if="${processo.colegiado} == null">-</span>
-                <span th:unless="${processo.colegiado} == null" th:text="${processo.colegiado.curso.nome}"></span><br>
-                <strong>Relator Votou?</strong> <span th:if="${processo.tipoDecisao} == null">N/A</span>
-                <span th:unless="${processo.tipoDecisao} == null">Votou</span>
-            </p>
-            <div style="display: flex; flex-direction: row; gap: 15px;">
-                <a type="button" th:href="@{'/coordenador/processos/' + ${processo.id} + '/atribuir-relator'}" class="btn btn-primary">Atribuir Relator</a>
-                <!-- <a type="button" th:href="@{'/coordenador/processos/' + ${processo.id} + '/atribuir-colegiado'}" class="btn btn-primary">Atribuir Colegiado</a> -->
+<div class="container">
+    <h1 class="mb-5">Processos do Curso</h1>
+
+    <th:block th:if="${not #lists.isEmpty(processos)}">
+        <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 20px;">
+            <div class="btn-group">
+                <div class="input-group mb-3" style="margin-right: 10px;">
+                    <label class="input-group-text" for="filterStatus">Status</label>
+                    <select class="form-select" id="filterStatus">
+                        <option value="" selected>Todos</option>
+                        <option value="Criado">Criado</option>
+                        <option value="Distribuido">Distribuído</option>
+                        <option value="Em pauta">Em pauta</option>
+                        <option value="Em julgamento">Em julgamento</option>
+                        <option value="Julgado">Julgado</option>
+                    </select>
+                </div>
+                <div class="input-group mb-3" style="margin-right: 10px;">
+                    <label class="input-group-text" for="filterAluno">Aluno</label>
+                    <select class="form-select" id="filterAluno">
+                        <option value="">Todos</option>
+                        <option th:each="aluno:${alunos}" th:value="${aluno.nome}">[[${aluno.nome}]]</option>
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="filterRelator">Relator</label>
+                    <select class="form-select" id="filterRelator">
+                        <option selected value="-">Todos</option>
+                        <option th:each="relator:${relatores}" th:value="${relator.nome}">[[${relator.nome}]]</option>
+                    </select>
+                </div>
             </div>
         </div>
-    </div>
+        <div th:each="processo:${processos}" class="card" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${processo.numero}?:'-'"></h5>
+                <p class="card-text">
+                    <strong>Aluno:</strong> <span th:if="${processo.aluno} == null">-</span>
+                    <span th:unless="${processo.aluno} == null" th:text="${processo.aluno.nome}?:'-'"></span><br>
+                    <strong>Estado:</strong> <span th:text="${processo.status}?:'-'"></span><br>
+                    <strong>Assunto:</strong> <span th:if="${processo.assunto} == null">-</span>
+                    <span th:unless="${processo.assunto} == null" th:text="${processo.assunto.nome}"></span><br>
+                    <strong>Data de Criação:</strong> <span th:text="${processo.dataCriacao}?:'-'"></span><br>
+                    <strong>Relator:</strong> <span th:if="${processo.relator} == null">-</span>
+                    <span th:unless="${processo.relator} == null" th:text="${processo.relator.nome}"></span><br>
+                    <strong>Decisão:</strong> <span th:if="${processo.tipoDecisao} == null" >-</span>
+                    <span th:unless="${processo.tipoDecisao} == null" th:text="${processo.tipoDecisao}"></span><br>
+                    <strong>Colegiado:</strong> <span th:if="${processo.colegiado} == null">-</span>
+                    <span th:unless="${processo.colegiado} == null" th:text="${processo.colegiado.curso.nome}"></span><br>
+                    <strong>Relator Votou?</strong> <span th:if="${processo.tipoDecisao} == null">N/A</span>
+                    <span th:unless="${processo.tipoDecisao} == null">Votou</span>
+                </p>
+                <div style="display: flex; flex-direction: row;" th:if="${processo.relator == null}">
+                    <a type="button" th:href="@{'/coordenador/processos/' + ${processo.id} + '/atribuir-relator'}" class="btn btn-primary">Atribuir Relator</a>
+                    <!-- <a type="button" th:href="@{'/coordenador/processos/' + ${processo.id} + '/atribuir-colegiado'}" class="btn btn-primary">Atribuir Colegiado</a> -->
+                </div>
+            </div>
+        </div>
+    </th:block>
+
+    <th:block th:if="${#lists.isEmpty(processos)}">
+        <div>
+            <p>Não há processos cadastrados</p>
+        </div>
+    </th:block>
 </div>
-<script th:src="@{/js/bootstrap.buddle.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
-    <script th:src="@{/js/popper.min.js}"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    
-    <script>
-     $(document).ready(function () {
-        $('#filterStatus, #filterAluno, #filterRelator').on('change', function () {
-            var status = $('#filterStatus').val().toLowerCase();
-            var aluno = $('#filterAluno').val().toLowerCase();
-            var relator = $('#filterRelator').val().toLowerCase();
-            filterTable(status, aluno, relator);
-        });
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 
-        function filterTable(status, aluno, relator) {
-            var rows = $('table tbody tr');
-            rows.show();
-
-            rows.filter(function () {
-                var text = $(this).text().toLowerCase();
-                return (status && text.indexOf(status) === -1) || (aluno && text.indexOf(aluno) === -1) || (relator && text.indexOf(relator) === -1);
-            }).hide();
-        }
+<script>
+    $(document).ready(function () {
+    $('#filterStatus, #filterAluno, #filterRelator').on('change', function () {
+        var status = $('#filterStatus').val().toLowerCase();
+        var aluno = $('#filterAluno').val().toLowerCase();
+        var relator = $('#filterRelator').val().toLowerCase();
+        filterTable(status, aluno, relator);
     });
-    </script>
+
+    function filterTable(status, aluno, relator) {
+        var rows = $('table tbody tr');
+        rows.show();
+
+        rows.filter(function () {
+            var text = $(this).text().toLowerCase();
+            return (status && text.indexOf(status) === -1) || (aluno && text.indexOf(aluno) === -1) || (relator && text.indexOf(relator) === -1);
+        }).hide();
+    }
+});
+</script> 
 </body>
 </html>
