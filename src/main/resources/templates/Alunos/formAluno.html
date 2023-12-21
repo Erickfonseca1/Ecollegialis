@@ -33,6 +33,10 @@
             }
         }
 
+        .btn-save {
+            display: flex;
+            justify-content: flex-end;
+        }
 
     }
 </style>
@@ -50,7 +54,7 @@
             <a href="/admin/alunos" class="btn" style="background-color: #236da3; color: #fff;">Lista de alunos</a>
         </div>
     </div>
-    <form th:action="${acao} == 'salvar' ? @{/admin/alunos/criar} : @{/admin/alunos/editar/{id}(id=${aluno.id})}" method="post" th:object="${aluno}">
+    <form th:action="${acao} == 'salvar' ? @{/admin/alunos/criar} : @{/admin/alunos/editar/{id}(id=${aluno.id})}" method="post" th:object="${aluno}" style="width: 500px;">
         <div>
             <input type="hidden" th:field="*{id}">
         </div>

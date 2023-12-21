@@ -36,7 +36,10 @@
             }
         }
 
-
+        .btn-save {
+            display: flex;
+            justify-content: flex-end;
+        }
     }
 </style>
 <head th:replace="~{layouts :: head('Novo Coordenador')}"></head>
@@ -52,7 +55,7 @@
             <a th:href="@{/coordenadores}" class="btn" style="background-color: #236da3; color: #fff;">Lista de professores</a>
         </div>
       </div>
-      <form th:action="${acao} == 'salvar' ? @{/admin/coordenadores/criar} : @{/admin/coordenadores/editar/{id}(id=${coordenador.id})}" method="POST" th:object="${coordenador}" id="coordenadorForm">
+      <form th:action="${acao} == 'salvar' ? @{/admin/coordenadores/criar} : @{/admin/coordenadores/editar/{id}(id=${coordenador.id})}" method="POST" th:object="${coordenador}" id="coordenadorForm" style="width: 500px;">
         <!-- Seu código existente aqui -->
 
         <div class="form-group mb-3">

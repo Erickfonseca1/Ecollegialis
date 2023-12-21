@@ -28,8 +28,8 @@
 <head th:replace="~{layouts :: head('Lista dos Processos')}"></head>
 <body>
     <div th:replace="~{sidebar :: aside('Lista dos Processos')}"></div>
-    <div style="margin: 30px;">
-        <h1 style="margin-top: 20px">Processos Atribuidos ao Professor</h1>
+    <div class="container">
+        <h1>Processos Atribuidos</h1>
         <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 20px;">
             <div class="btn-group">
                 <div class="input-group mb-3" style="margin-right: 10px;">
@@ -45,39 +45,43 @@
                 </div>
             </div>
         </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Aluno</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Assunto</th>
-                    <th scope="col">Data de Criação</th>
-                    <th scope="col">Relator</th>
-                    <th scope="col">Opções</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="processo:${processos}">
-                    <td th:text="${processo.numero}"></td>
-                    <td th:text="${processo.aluno.nome}"></td>
-                    <td th:text="${processo.status}"></td>
-                    <td th:text="${processo.assunto.nome}"></td>
-                    <td th:text="${processo.dataCriacao}"></td>
-                    <td th:unless="${processo.relator} == null" th:text="${processo.relator.nome}"></td>
-                    <td th:if="${processo.tipoDecisao == null}">
-                        <a type="button" th:href="@{processos/votar/{idProcesso}(idProcesso=${processo.id})}" class="btn btn-primary" style="padding-left: 25px; padding-right:25px; width: 150px">Votar</a>
-                    </td>
-                    <td th:if="${processo.tipoDecisao != null}">
-                        <a type="button" th:href="@{processos/votar/{idProcesso}(idProcesso=${processo.id})}" class="btn btn-primary" style="padding-left: 25px; padding-right:25px; width: 150px">Ver Voto</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <th:block th:if="${not #lists.isEmpty(processos)}">
+            <table class="table table-ligth table-striped mt-2">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Aluno</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Assunto</th>
+                        <th scope="col">Data de Criação</th>
+                        <th scope="col">Relator</th>
+                        <th scope="col">Opções</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="processo:${processos}">
+                        <td th:text="${processo.numero}"></td>
+                        <td th:text="${processo.aluno.nome}"></td>
+                        <td th:text="${processo.status}"></td>
+                        <td th:text="${processo.assunto.nome}"></td>
+                        <td th:text="${processo.dataCriacao}"></td>
+                        <td th:unless="${processo.relator} == null" th:text="${processo.relator.nome}"></td>
+                        <td th:if="${processo.tipoDecisao == null}">
+                            <a type="button" th:href="@{processos/votar/{idProcesso}(idProcesso=${processo.id})}" class="btn btn-primary" style="padding-left: 25px; padding-right:25px; width: 150px">Votar</a>
+                        </td>
+                        <td th:if="${processo.tipoDecisao != null}">
+                            <a type="button" th:href="@{processos/votar/{idProcesso}(idProcesso=${processo.id})}" class="btn btn-primary" style="padding-left: 25px; padding-right:25px; width: 150px">Ver Voto</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </th:block>
+        <th:block th:if="${#lists.isEmpty(processos)}">
+            <div>
+                Você não possui processos atribuidos.
+            </div>
+        </th:block>
     </div>
-    <script th:src="@{/js/bootstrap.buddle.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
-    <script th:src="@{/js/popper.min.js}"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     
     <script>
