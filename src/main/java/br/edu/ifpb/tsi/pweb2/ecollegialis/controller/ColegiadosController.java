@@ -229,7 +229,7 @@ public class ColegiadosController {
         if (colegiado != null) {
             if (validation.hasErrors()) {
                 List<Processo> processosDisponiveis = colegiado.getProcessos().stream()
-                        .filter(processo -> processo.getRelator() != null)
+                        .filter(processo -> processo.getRelator() != null && processo.getStatus() == StatusEnum.CRIADO || processo.getRelator() != null && processo.getStatus() == StatusEnum.DISTRIBUIDO)
                         .collect(Collectors.toList());
 
                 List<Processo> processosEscolhidos = new ArrayList<>();
@@ -304,16 +304,6 @@ public class ColegiadosController {
         Voto voto = new Voto();
 
 
-        //variável para verificar se o professor já votou
-        boolean professorVotou = false;
-        if (processo.getListaDeVotos() != null) {
-            for (Voto votoAtual : processo.getListaDeVotos()) {
-                if (votoAtual.getProfessor().getId() == professor.getId()) {
-                    professorVotou = true;
-                }
-            }
-        }
-
         model.addObject("professor", professor);
         model.addObject("reuniao", reuniao);
         model.addObject("processo", processo);
@@ -321,7 +311,6 @@ public class ColegiadosController {
         model.addObject("decisaoTemporaria", decisaoTemporaria);
         model.addObject("numProcesso", numProcesso);
         model.addObject("voto", voto);
-        model.addObject("professorVotou", professorVotou);
         model.setViewName("Professor/votoProfessor");
         return model;
     }
@@ -352,7 +341,7 @@ public class ColegiadosController {
         // caso o numero de votos seja igual ao numero de membros da reuniao, com exceção do professor relator
         // o processo é alterado seu status para "JULGADO" e o resultado é definido
         if (listaVotosAtual.size() == processo.getReuniao().getColegiado().getMembros().size() - 1) {
-            processo.setStatus(StatusEnum.JULGADO);
+            
             System.out.println("status do processo: " + processo.getStatus());
 
             // verifica se há mais votos contrários ou a favor do voto do relator
@@ -383,9 +372,15 @@ public class ColegiadosController {
                 System.out.println("mais votos a favor do relator");
                 processo.setTipoDecisao(processo.getTipoDecisao());
             }
-            
 
+            processo.setStatus(StatusEnum.JULGADO);
+            System.out.println("status do processo: " + processo.getStatus());
+
+            this.processoService.atualizarProcessoParaJulgado(processo, idProcesso);
+            model.setViewName("redirect:/colegiados/reunioes/" + idReuniao);
+            return model;
         }
+        
         System.out.println("lista de votos atual: " + listaVotosAtual);
         processo.setListaDeVotos(listaVotosAtual);
 

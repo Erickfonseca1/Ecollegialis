@@ -75,7 +75,7 @@
                                 <span th:unless="${processo.assunto} == null" th:text="${processo.assunto.nome}"></span><br>
                                 <strong>Relator:</strong> <span th:if="${processo.relator} == null">-</span>
                                 <span th:unless="${processo.relator} == null" th:text="${processo.relator.nome}"></span><br>
-                                <strong>Decisão Relator:</strong> <span th:if="${processo.tipoDecisao} == null">-</span>
+                                <strong>Decisão:</strong> <span th:if="${processo.tipoDecisao} == null">-</span>
                                 <span th:unless="${processo.tipoDecisao} == null" th:text="${processo.tipoDecisao}"></span><br>
                                 <hr>
                                 <strong>Votação</strong>

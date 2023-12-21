@@ -40,15 +40,19 @@ public class ProcessoService {
     }
 
     public Processo atualizarProcesso(Processo processo, Long id){
-        
-        if (processo.getStatus() == StatusEnum.JULGADO) {
-            return null;
-        }
-
         Processo processoAtualizado = this.processoRepository.findById(id).orElse(new Processo());
         processoAtualizado.setParecerRelator(processo.getParecerRelator());
         processoAtualizado.setTipoDecisao(processo.getTipoDecisao());
         return this.processoRepository.save(processoAtualizado);
+    }
+
+    public void atualizarProcessoParaJulgado(Processo processo, Long id){
+        Processo processoAtualizado = this.processoRepository.findById(id).orElse(new Processo());
+        processoAtualizado.setStatus(StatusEnum.JULGADO);
+        processoAtualizado.setDataParecer(new Date());
+        processoAtualizado.setParecer(processo.getParecer());
+        processoAtualizado.setTipoDecisao(processo.getTipoDecisao());
+        this.processoRepository.save(processoAtualizado);
     }
 
     public Processo salvarProcesso(Processo processo){
@@ -61,11 +65,14 @@ public class ProcessoService {
         return this.processoRepository.save(processo);
     }
 
-    public Processo atribuirProcesso(Processo processo,Long id){
+    public Processo atribuirRelator(Processo processo,Long id){
         Processo processoAtualizado = this.processoRepository.findById(id).orElse(new Processo());
+        // esse relator vem do objeto processo que é passado como parâmetro, que é o que vem do nosso form
         processoAtualizado.setRelator(processo.getRelator());
         for (Colegiado colegiado : processo.getRelator().getListaColegiados()){
             if(colegiado.getCurso() == processo.getRelator().getCurso()){
+                // como temos a regra de que um curso só pode ter 1 colegiado,
+                // então se o curso do relator for igual ao curso do colegiado, atribuímos o colegiado ao processo
                 processoAtualizado.setColegiado(colegiado);
                 break;
             }

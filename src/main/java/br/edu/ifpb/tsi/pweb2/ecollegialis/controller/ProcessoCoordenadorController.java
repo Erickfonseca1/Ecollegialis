@@ -94,26 +94,27 @@ public class ProcessoCoordenadorController {
             Processo processo,
             @PathVariable("idProcesso") Long idProcesso,
             RedirectAttributes redirectAttributes) {
-        processoService.atribuirProcesso(processo, idProcesso);
+        processoService.atribuirRelator(processo, idProcesso);
         model.addObject("processos", processoService.getProcessos());
         model.setViewName("redirect:/coordenador/processos");
         return model;
     }
 
-    @GetMapping("{idProcesso}/atribuir-colegiado")
-    public ModelAndView exibirProcessoColegiado(ModelAndView model, @PathVariable("idProcesso") Long id) {
-        model.addObject("processo", processoService.getProcessoPorId(id));
-        model.addObject("colegiados", colegiadoService.getColegiados());
-        model.setViewName("Coordenador/atribuirColegiado");
-        return model;
-    }
-    @PostMapping("{idProcesso}/atribuir-colegiado")
-    public ModelAndView atribuirProcessoColegiado(
-            ModelAndView model,
-            @ModelAttribute("processo") Processo processo,
-            @PathVariable("idProcesso") Long idProcesso) {
-        colegiadoService.atribuirProcessoAoColegiado(processo, idProcesso);
-        model.setViewName("redirect:/coordenador/processos");
-        return model;
-    }
+    // @GetMapping("{idProcesso}/atribuir-colegiado")
+    // public ModelAndView exibirProcessoColegiado(ModelAndView model, @PathVariable("idProcesso") Long id) {
+    //     model.addObject("processo", processoService.getProcessoPorId(id));
+    //     model.addObject("colegiados", colegiadoService.getColegiados());
+    //     model.setViewName("Coordenador/atribuirColegiado");
+    //     return model;
+    // }
+    
+    // @PostMapping("{idProcesso}/atribuir-colegiado")
+    // public ModelAndView atribuirProcessoColegiado(
+    //         ModelAndView model,
+    //         @ModelAttribute("processo") Processo processo,
+    //         @PathVariable("idProcesso") Long idProcesso) {
+    //     colegiadoService.atribuirProcessoAoColegiado(processo, idProcesso);
+    //     model.setViewName("redirect:/coordenador/processos");
+    //     return model;
+    // }
 }
