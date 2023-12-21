@@ -67,7 +67,7 @@
                     <td th:text="${processo.numero}"></td>
                     <td th:text="${processo.status}"></td>
                     <td th:text="${processo.assunto.nome}"></td>
-                    <td th:text="${processo.dataCriacao}"></td>
+                    <td th:text="${#dates.format(processo.dataCriacao, 'dd/MM/yyyy')}"></td>
                     <td>
                         <a th:href="@{'/aluno/processos/' + ${processo.id}}">
                             <button type="button" class="btn btn-primary">Consultar</button>
